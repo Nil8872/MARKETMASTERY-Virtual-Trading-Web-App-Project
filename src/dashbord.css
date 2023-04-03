@@ -40,8 +40,8 @@
 }
 
 .share{
-    display: flex;
-    /* background-color: rgb(255, 255, 255, 0.1); */
+    display: flex; 
+    align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.5);
     border-left: 1px solid rgba(255,255,255,0.5) ;
     padding: 10px;
@@ -55,10 +55,16 @@
      flex: 0 0 50%;
      width: 50%;
 }
-.symbol-wrapper,.price-wrapper{
+.symbol-wrapper{
     display: flex;
-    flex: 0 0 50%;
-    width: 50%;
+    flex: 0 0 60%;
+    width: 60%;
+    align-items: center;
+}
+.price-wrapper{
+    display: flex;
+    flex: 0 0 40%;
+    width: 40%;
 }
 
 .price-wrapper{
