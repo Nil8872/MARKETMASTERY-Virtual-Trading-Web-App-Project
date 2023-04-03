@@ -1,0 +1,112 @@
+
+*{
+  margin:0;
+  padding: 0;
+}
+
+.icon {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  color: rgba(167, 5, 5, 0.8);
+}
+.deleteBtn:hover {
+  color: rgb(167, 5, 5);
+}
+
+.editBtn {
+  color: rgba(0, 128, 0, 0.8);
+  font-size: 26px;
+}
+.editBtn:hover {
+  color: rgba(0, 128, 0);
+}
+ 
+.background-radial-gradient{
+    height: 89.7vh;
+  background-color: hsl(218, 41%, 15%);
+ 
+/* position: fixed; */
+  background-image: radial-gradient(
+      650px circle at 0% 0%,
+      hsl(218, 41%, 35%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    ),
+    radial-gradient(
+      1250px circle at 100% 100%,
+      hsl(218, 41%, 45%) 15%,
+      hsl(218, 41%, 30%) 35%,
+      hsl(218, 41%, 20%) 75%,
+      hsl(218, 41%, 19%) 80%,
+      transparent 100%
+    );
+}
+
+#radius-shape-1{
+  height: 220px;
+  width: 220px;
+  top: -60px;
+  left: -130px;
+  background: radial-gradient(#44006b, #ad1fff);
+  overflow: hidden;
+}
+
+#radius-shape-2{
+  border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+  bottom: -60px;
+  right: -110px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(#44006b, #ad1fff);
+  overflow: hidden;
+}
+
+.bg-glass{
+  background-color: hsla(0, 0%, 100%, 0.7) !important;
+  backdrop-filter: saturate(200%) blur(25px);
+  background-repeat: repeat;
+} 
+.bg-glass-md{
+  background-color: hsla(0, 0%, 100%, 0.5) !important;
+  backdrop-filter: saturate(200%) blur(25px);
+} 
+
+#forLoginFormTextColor{
+    color: hsl(218, 81%, 85%);
+}
+#forLoginFormTitleColor{
+    color: hsl(218, 81%, 95%);
+}
+body{
+  overflow:auto;
+}
+/* body::-webkit-scrollbar {
+  display: none;
+} */
+
+.error{
+  margin:0;
+  padding:0;
+  color: red;
+}
+
+.box {
+  overflow: auto;
+}
+
+.box::-webkit-scrollbar {
+  display: none;
+}
+
+/* .box::-webkit-scrollbar-track {
+  background-color: #eee;
+}
+
+.box::-webkit-scrollbar-thumb {
+  background-color: #666;
+} */

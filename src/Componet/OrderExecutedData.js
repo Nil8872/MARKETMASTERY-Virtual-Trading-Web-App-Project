@@ -1,0 +1,68 @@
+const orderExecutedData = [
+    {
+      time: "10:30:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "5/5", 
+      price: 300.323,
+      status: "Completed",
+    },
+    {
+      time: "18:10:25",
+      type: "Sell",
+      shareName: "ADANIGREEN",
+      qty: "0/10", 
+      price: 0,
+      status: "Rejected",
+    },
+    {
+      time: "15:22:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "5/5", 
+      price: 300.33,
+      status: "Completed",
+    },
+    {
+      time: "15:22:25",
+      type: "Sell",
+      shareName: "SBIN",
+      qty: "5/5", 
+      price: 300.33,
+      status: "Completed",
+    },
+    {
+      time: "15:22:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "0/5", 
+      price: 0,
+      status: "Rejected",
+    },
+    {
+      time: "15:22:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "0/5",  
+      price: 300.33,
+      status: "Pending",
+    },
+    {
+      time: "15:22:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "0/5", 
+      price: 300.33,
+      status: "Rejected",
+    },
+    {
+      time: "15:22:25",
+      type: "Buy",
+      shareName: "SBIN",
+      qty: "0/5", 
+      price: 300.33,
+      status: "Completed",
+    },
+  ];
+
+export default orderExecutedData

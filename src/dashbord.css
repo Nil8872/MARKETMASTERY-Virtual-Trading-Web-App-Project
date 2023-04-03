@@ -1,0 +1,133 @@
+.main-Container{
+    display: flex;
+    width: 100%;
+}
+
+.watchListContainer{ 
+    flex : 0 0 40%;
+    width: 40%;
+    height: 100%;  
+}
+
+
+
+/* scroll bar for watchlist only */
+.mainWatchList{
+    width: 100%;
+    height: 76.5vh; 
+    overflow-y:scroll;
+    overflow-x:hidden;
+    border-bottom: 1px solid rgb(255, 255, 255, 0.5);
+    border-top: 1px solid rgb(255, 255, 255, 0.5);
+}
+.mainWatchList::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .mainWatchList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .mainWatchList::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+
+.sidebarContainer{ 
+    flex : 0 0 60%;
+    width: 60%;
+    height: 100%;
+}
+
+.share{
+    display: flex;
+    /* background-color: rgb(255, 255, 255, 0.1); */
+    border-bottom: 1px solid rgba(255,255,255,0.5);
+    border-left: 1px solid rgba(255,255,255,0.5) ;
+    padding: 10px;
+}
+.share:hover{
+    background-color:rgb(255, 255, 255, 0.05) ;
+}
+ 
+
+.shareName,.buySell{
+     flex: 0 0 50%;
+     width: 50%;
+}
+.symbol-wrapper,.price-wrapper{
+    display: flex;
+    flex: 0 0 50%;
+    width: 50%;
+}
+
+.price-wrapper{
+    display: flex;
+}
+
+.price-change{
+    flex : 0 0 66.66%;
+    width: 66.66%;
+}
+.price{
+    flex: 0 0 33.33%;
+    width: 33.33%;
+}
+
+.dim{
+    display: flex;
+}
+.price-absolute,.price-percentage{
+    flex: 0 0 50%;
+    width: 50%;
+}
+
+
+
+.sidebarContainer{
+    border-right: 1px solid rgb(255, 255, 255, 0.2);
+}
+.userNameD{
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    margin: 20px 10px 10px 20px;
+}
+
+.margin-box{
+    display: flex; 
+}
+
+.first-box, .second-box{
+    flex: 0 0 50%;
+    width: 50%;
+    height: 200px; 
+    margin: 20px 0 ; 
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+
+
+.avail-margin{
+    display: flex;
+}
+.main-margin, .used-margin{
+    flex: 0 0 50%;
+    width: 50%; 
+    margin: 20px 0;
+}
+
+.main-margin{
+
+    border-right: 2px solid white;
+}
+.main-margin span{ 
+    padding: 0 20px ;
+    font-size: 2.3rem;
+}
+
+.used-margin{
+   font-size: 14px; 
+   padding-left: 10px;
+   display: flex;
+   flex-direction: column;
+   justify-content: center; 
+} 

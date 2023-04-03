@@ -1,0 +1,57 @@
+.orderSidebar{ 
+    padding: 20px;
+}
+
+.orderSidebar {
+    width: 100%;
+    height: 86vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .orderSidebar::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .orderSidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  .orderSidebar::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+.openOrder{
+    /* margin-top: 10px; */
+    margin-bottom: 5px;
+    font-size: 1.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom:10px;
+}
+.row{
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+thead tr{
+    background-color: rgba(255, 255, 255, 0.3);
+    
+    
+  }
+  thead tr th{
+    padding:10px;
+    font-weight: 500; 
+    font-size: 14px;
+  }
+  tbody tr, tfoot tr{
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  tbody tr:hover, tfoot tr:hover{
+    background-color: rgba(255, 255, 255, 0.01);
+    
+}
+
+tbody tr td, tfoot tr td{
+    padding : 10px;
+    font-size : 12px;
+}
