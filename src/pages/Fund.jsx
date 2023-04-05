@@ -1,8 +1,8 @@
 import React from "react";
-import WatchList from "./WatchList";
+import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
 import { FcCurrencyExchange } from "react-icons/fc";
-import "./fund.css";
+import "../Styles/fund.css";
 
 function Fund() {
   const token = localStorage.getItem("token");

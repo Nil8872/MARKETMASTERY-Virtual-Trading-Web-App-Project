@@ -1,7 +1,7 @@
 import React from 'react'
 import OneShare from "./forWatchList/OneShare";
 import SearchBox from "./forWatchList/SearchBox";
-import data from './RealTimeData.js'
+import data from '../services/RealTimeData.js'
 
 function WatchList() {
   return (
@@ -12,7 +12,7 @@ function WatchList() {
 {
   data.map((share)=>{
     return (
-      <OneShare key={share.shareName} shareName={share.shareName} absolutePrice={share.absolutePrice} percentegePrice={share.percentegePrice} lastPrice={share.lastPrice} />
+      <OneShare key={share.sharename} sharename={share.sharename} absoluteprice={share.absoluteprice} percentegeprice={share.percentegeprice} lastprice={share.lastprice} />
       
     )
   })

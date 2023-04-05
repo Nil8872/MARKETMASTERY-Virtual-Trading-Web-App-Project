@@ -5,7 +5,7 @@ function HoldingStocks(props) {
     props;
   return (
     <>
-      <div className="holdingBox" style={{fontSize:'12px'}}>
+      <div className="holdingBox" style={{fontSize:'14px'}}>
         <div className="stockHoldingList" style={{borderBottom:"1px solid rgba(255,255,255,0.1)"}}>
           <div className="instrument">
             <div className="bar-item ">

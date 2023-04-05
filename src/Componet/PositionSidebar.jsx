@@ -1,7 +1,7 @@
 import React from "react";
-import "./position.css";
-import positionData from './positionData';
-import dayHistoryData from './DayHistoryData'
+import "../Styles/position.css";
+import positionData from '../services/positionData';
+import dayHistoryData from '../services/DayHistoryData'
 
 function PositionSidebar() {
   return (

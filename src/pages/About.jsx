@@ -1,8 +1,5 @@
  
-import React,{useState} from 'react'
-import BasicModal from './BasicModal'
-import MyForm from './MyForm'
-// import Modal from './Modal'
+import React,{useState} from 'react'  
 import Button from "@mui/material/Button";  
 import Modal from '@mui/material/Modal';
 
@@ -73,9 +70,9 @@ function About() {
 
 
   return (
-    <div>
+    <div style={{height:'92.5vh'}}>
       <h1>This is About</h1>
-      <MyForm/>
+    
       {/* <BasicModal/>
       <Modal showModal={true}/> */}
 

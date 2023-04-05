@@ -8,7 +8,7 @@ import NoteContex from "../Context/NoteContex";
 import UserContext from "../Context/UserContex";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RadiusShape from "./RadiusShape";
+import RadiusShape from "../Componet/RadiusShape";
 
 const baseUrl = "http://localhost:5000";
 function Login() {
@@ -64,17 +64,13 @@ function Login() {
       validationSchema,
     });
 
-  //   <Redirect to={{
-  //     pathname: '/',
-  //     state: { from: 'login' }
-  //   }} />
-
+  
   if (isLoggedIn) {
     return <Navigate to="/" replace={true} />;
   }
   return (
     <>
-      <div className=" ">
+      <div className="" style={{height:"92vh"}}>
         {/* <!-- Section: Design Block --> */}
 
         <section

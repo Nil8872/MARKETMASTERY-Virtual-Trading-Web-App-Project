@@ -1,7 +1,7 @@
 import React from 'react'
-import WatchList from "./WatchList";
+import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
-import PositionSidebar from './PositionSidebar';
+import PositionSidebar from '../Componet/PositionSidebar';
 
 function Position() {
   const token = localStorage.getItem('token');

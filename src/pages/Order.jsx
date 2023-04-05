@@ -1,7 +1,7 @@
 import React from "react";
-import WatchList from "./WatchList";
+import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
-import OrderSidebar from "./OrderSidebar";
+import OrderSidebar from "../Componet/OrderSidebar";
 
 
 function Order() {

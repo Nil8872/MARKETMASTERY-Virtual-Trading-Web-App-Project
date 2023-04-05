@@ -1,8 +1,8 @@
 import "./App.css";
 import React from "react";
-import Home from "./Componet/Home";
+import Home from "./pages/Home";
 import Navbar from "./Componet/Navbar";
-import About from "./Componet/About";
+import About from "./pages/About";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,13 +10,13 @@ import {
   Navigate,
 } from "react-router-dom";
 import NoteState from "./Context/NoteState";
-import Login from "./Componet/Login";
-import Register from "./Componet/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import UserDetail from "./Context/UserDetail";
-import Order from "./Componet/Order";
-import Position from "./Componet/Position";
-import Holding from "./Componet/Holding";
-import Fund from "./Componet/Fund";
+import Order from "./pages/Order";
+import Position from "./pages/Position";
+import Holding from "./pages/Holding";
+import Fund from "./pages/Fund";
  
 
 function App() {

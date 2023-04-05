@@ -1,6 +1,6 @@
 // import AddNote from "./AddNote";
 import { Navigate } from "react-router-dom";
-import Format from "./Format";
+import Format from "../Componet/Format";
 // import Notes from "./Notes";
 
 

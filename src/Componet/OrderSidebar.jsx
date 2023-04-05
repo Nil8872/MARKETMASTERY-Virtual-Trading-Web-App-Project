@@ -1,7 +1,7 @@
 import React from "react";
-import "./order.css";
-import openOrderData from './OrederOpenData'
-import orderExecutedData from './OrderExecutedData'
+import "../Styles/order.css";
+import openOrderData from '../services/OrederOpenData'
+import orderExecutedData from '../services/OrderExecutedData'
 
 
 function OrderSidebar() {

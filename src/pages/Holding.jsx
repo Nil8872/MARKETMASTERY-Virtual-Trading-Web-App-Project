@@ -1,9 +1,9 @@
 import React from "react";
-import WatchList from "./WatchList";
+import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
-import "./HoldingPage.css";
-import HoldingStocks from "./HoldingStocks";
-import hodingStockData from './HoldingStock';
+import "../Styles/HoldingPage.css";
+import HoldingStocks from "../Componet/HoldingStocks";
+import hodingStockData from '../services/HoldingStock';
 
 
 function Holding() {
@@ -23,7 +23,7 @@ function Holding() {
             </div>
             <div
               className="sidebarContainer"
-              style={{ color: "white", fontSize: "14px" }}
+              style={{ color: "white", fontSize: "16px" }}
             >
               <div className="holdingBox">
                 <div className="holdingBar">
