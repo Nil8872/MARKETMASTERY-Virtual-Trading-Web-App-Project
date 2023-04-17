@@ -5,6 +5,8 @@ import Modal from "@mui/material/Modal";
 import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles";
+import * as Yup from 'yup';
+import {useFormik} from 'formik';
 
 const useStyles = makeStyles({
   smallButton: {
@@ -31,11 +33,22 @@ const style = {
   borderRadius: 1,
 };
 
-function DraggableModal(props) {
-  const [qty, setQty] = useState(1);
-  const { action, open, handleclose, sharename, lastprice } = props;
-  const [price, setPrice] = useState(lastprice);
+function DraggableModal(props) { 
+  const { action, open, handleclose, sharename, lastprice } = props; 
   const [checked, setChecked] = useState(true);
+
+  const initialValues = {
+    price : lastprice,
+    qty : 1,
+    intraInvest : "Intraday",
+    limitMarket : "",}
+  const {handleChange, handleSubmit, values} = useFormik({
+    initialValues,
+    onSubmit: (values)=>{
+      const buySellShare = {...values, action, sharename}
+      console.log(buySellShare);
+    }
+  });
   return (
     <>
       <Draggable>
@@ -47,6 +60,7 @@ function DraggableModal(props) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
+          <form action="" onSubmit={handleSubmit}>
           <Box sx={style}>
             <div
               style={{
@@ -58,9 +72,9 @@ function DraggableModal(props) {
               className="buyHeading"
             >
               <span style={{ fontWeight: 700, fontSize: "20px" }}>
-                {action} {sharename} x {qty} Qty.
+                {action} {sharename} x {values.qty} Qty.
               </span>
-              <div>Price: ₹{lastprice}</div>
+              <div>Price: ₹{values.price}</div>
             </div>
             <div
               className="categary"
@@ -68,10 +82,9 @@ function DraggableModal(props) {
             >
               <div className="intraday">
                 <div className="intraInvest">
-                  <input
-                    checked={checked}
-                    onChange={()=>setChecked(!checked)}
-                    // onClick={setChecked(!checked)}
+                  <input 
+                    value="Intraday"
+                    onChange={handleChange}
                     type="radio"
                     name="intraInvest"
                     style={{ transform: "scale(1.2)" }}
@@ -80,11 +93,11 @@ function DraggableModal(props) {
                   <label htmlFor="Intra">Intraday</label>
                 </div>
                 <TextField
-                  onChange={(e) => setQty(e.target.value)}
-                  inputProps={{ min: 1 }}
+                  onChange={handleChange}
                   style={{ width: "200px" }}
                   id="outlined"
-                  value={qty}
+                  value={values.qty}
+                  name="qty"
                   label={
                     <span style={{ fontSize: "20px", fontWeight: 600 }}>
                       Qty.
@@ -96,6 +109,8 @@ function DraggableModal(props) {
               <div className="longterm">
                 <div className="intraInvest">
                   <input 
+                  value="Longterm"
+                  onChange={handleChange}
                     type="radio"
                     name="intraInvest"
                     style={{ transform: "scale(1.2)" }}
@@ -103,8 +118,7 @@ function DraggableModal(props) {
                   />
                   <label htmlFor="Invest">Longterm</label>
                 </div>
-                <TextField
-                  inputProps={{ min: 1 }}
+                <TextField 
                   style={{ width: "200px" }}
                   id="outlined-required1"
                   label={
@@ -112,16 +126,17 @@ function DraggableModal(props) {
                       Price
                     </span>
                   }
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  value={values.price} 
+                  name="price"
+                  onChange={handleChange}
                   type="number"
                 />
 
                 <div className="limitMarket">
                   <div className="limit">
-                    <input
-                    checked={checked}
-                    onChange={()=>setChecked(!checked)}
+                    <input 
+                    onChange={handleChange}
+                      value="Limit"
                       type="radio"
                       name="limitMarket"
                       style={{ transform: "scale(1.2)" }}
@@ -132,6 +147,8 @@ function DraggableModal(props) {
 
                   <div className="market">
                     <input
+                    value="Market"
+                    onChange={handleChange}
                       type="radio"
                       name="limitMarket"
                       style={{ transform: "scale(1.2)" }}
@@ -145,7 +162,7 @@ function DraggableModal(props) {
             <div className="footerbtns">
               <div className="calMargin">
                 Required margin{" "}
-                <span>{action == "Sell" ? 0 : (price * qty).toFixed(3)}</span>
+                <span>{action == "Sell" ? 0 : (values.price * values.qty).toFixed(3)}</span>
               </div>
 
               <div className="buttons">
@@ -153,6 +170,7 @@ function DraggableModal(props) {
                   style={{ marginRight: "10px" }}
                   variant="contained"
                   color={action == "Buy" ? "info" : "error"}
+                  type="submit"
                 >
                   {action}
                 </Button>
@@ -162,6 +180,7 @@ function DraggableModal(props) {
               </div>
             </div>
           </Box>
+          </form>
         </Modal>
       </Draggable>
     </>

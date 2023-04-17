@@ -21,7 +21,7 @@ function Sidebar() {
           </div>
           <div className="avail-margin">
             <div className="main-margin">
-              <span>10,00,000</span>
+              <span>{user.startAmount}</span>
               <div className="margin" style={{ paddingLeft: "26px" }}>
                 <p style={{ fontSize: "14px" }}>Margin available</p>
               </div>
