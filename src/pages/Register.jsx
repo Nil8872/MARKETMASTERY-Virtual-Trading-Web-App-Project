@@ -21,6 +21,9 @@ const registerSchema = Yup.object({
   confirm_password: Yup.string()
     .min(6)
     .oneOf([Yup.ref("password"), null], "password must match"),
+  startAmount: Yup.number().required("Please Enter Amount")
+  .min(10000, "Amount must be at least 10000")
+  .max(100000, "Amount cannot exceed 100000"),
 });
 
 const initialValues = {
@@ -29,6 +32,7 @@ const initialValues = {
   email: "",
   password: "",
   confirm_password: "",
+  startAmount: 0,
 };
 
 function Register() {
@@ -36,9 +40,9 @@ function Register() {
   const { values, handleSubmit,handleReset, handleBlur, handleChange, touched, errors } =
     useFormik({
       initialValues,
-      onSubmit: async(value, action) => {
-        const {firstName, email, password} = value;
-         
+      onSubmit: async(values, action) => {
+        const {firstName, email, password} = values;
+         console.log(values)
         // save in DataBase using api call
         const option = {
           method: "POST",
@@ -94,31 +98,42 @@ function Register() {
         <div className="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
           <div className="row gx-lg-5 align-items-center mb-5">
             <div className="col-lg-6 mb-5 mb-lg-0">
-              <h1
-                id="forLoginFormTitleColor"
-                className="my-5 display-5 fw-bold ls-tight"
-              >
-                {/* style="color: hsl(218, 81%, 95%) */}
-                The best offer <br />
-                {/* <span style={{color: hsl(218, 81%, 75%)}}>for your business</span> */}
-              </h1>
-              {/* style=color: hsl(218, 81%, 85%)" */}
-              <p id="forLoginFormTextColor" className="mb-4 opacity-70">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                ab ipsum nisi dolorem modi. Quos?
-              </p>
+            <div className="card bg-glass">
+                <div className="card-body px-4 py-5 px-md-5">
+                <div className="info-text">
+                        <p >
+                        How much money do you want to start trading with?
+                        </p>
+                      </div>
+                <div className="firstName">
+                          <TextField
+                          className="mt-4" 
+                            sx={{ width: "100%" }}
+                            id="startAmount"
+                            label="Amount"
+                            placeholder="Enter Amount"
+                            type="number"
+                            name="startAmount"
+                            onChange={handleChange}
+                            value={values.startAmount}
+                            onBlur={handleBlur}
+                          />
+                          {errors.startAmount && touched.startAmount ? (
+                            <p className="error">{errors.startAmount}</p>
+                          ) : null}
+                        </div>
+                  </div>
+                  </div>
             </div>
 
             <div className="col-lg-6 mb-5 mb-lg-0 position-relative">
               <RadiusShape/>
 
+                  <form action="" onSubmit={handleSubmit}>
               <div className="card bg-glass">
                 <div className="card-body px-4 py-5 px-md-5">
                   {/* <!-- Email input --> */}
 
-                  <form action="" onSubmit={handleSubmit}>
                      
                       
                       <div className="info-text">
@@ -130,8 +145,7 @@ function Register() {
                       <div className="box">
                         <div className="firstName">
                           <TextField
-                          className="mt-4"
-                            required
+                          className="mt-4" 
                             sx={{ width: "100%" }}
                             id="firstName"
                             label="First Name"
@@ -148,8 +162,7 @@ function Register() {
                         </div>
                         <div className="lastName">
                           <TextField
-                           className="mt-4"
-                            required
+                           className="mt-4" 
                             sx={{ width: "100%" }}
                             id="lastName"
                             label="Last Name"
@@ -168,8 +181,7 @@ function Register() {
                       <div className="email">
                         <TextField
                         className="mt-4"
-                          type="email"
-                          required
+                          type="email" 
                           sx={{ width: "100%" }}
                           id="email"
                           label="Eamil"
@@ -186,8 +198,7 @@ function Register() {
                       <div className="box">
                         <div className="firstName ">
                           <TextField
-                          className="mt-4"
-                            required
+                          className="mt-4" 
                             sx={{ width: "100%" }}
                             id="password"
                             label="Password"
@@ -205,8 +216,7 @@ function Register() {
                         </div>
                         <div className="lastName ">
                           <TextField
-                          className="mt-4"
-                            required
+                          className="mt-4" 
                             sx={{ width: "100%" }}
                             id="comfirm_password"
                             label="Confirm Password"
@@ -247,9 +257,9 @@ function Register() {
                         Reset
                       </Button>
                     </Stack>
-                  </form>
                 </div>
               </div>
+                  </form>
             </div>
           </div>
         </div>
