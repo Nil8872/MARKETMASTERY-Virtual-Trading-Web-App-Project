@@ -3,15 +3,10 @@ require('dotenv').config()
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const { body, validationResult } = require("express-validator");
-// const bcrypt = require('bcrypt');
+const { body, validationResult } = require("express-validator"); 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {fetchUser} = require('../middleware/userFetch')
-
-// const JWT_SECRET = "MynameIsNileshSariya@K3$5566$#";
-
-
+const {fetchUser} = require('../middleware/userFetch') 
 
 // here endpoint is /api/auth/createUser and this is POST request...
 router.post(
@@ -22,6 +17,7 @@ router.post(
     body("password", "password should be atleast 6 character").isLength({
       min: 6,
     }),
+    body("startAmount")
   ],
   async (req, res) => {
     // let success = false;
@@ -41,13 +37,14 @@ router.post(
       } else {
         const salt = await bcrypt.genSalt(10);
         const secPassword = await bcrypt.hash(req.body.password, salt);
-
+        console.log(req.body)
         
         // here new user is created
         const result = await User.create({
           name: req.body.name,
           email: req.body.email,
           password: secPassword,
+          startAmount: req.body.startAmount,
         });
 
         // const user = await User.findOne({email});

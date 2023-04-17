@@ -41,15 +41,15 @@ function Register() {
     useFormik({
       initialValues,
       onSubmit: async(values, action) => {
-        const {firstName, email, password} = values;
-         console.log(values)
+        const {firstName, email, password, startAmount} = values; 
+
         // save in DataBase using api call
         const option = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             },
-          body: JSON.stringify({name:firstName ,email, password}),
+          body: JSON.stringify({name:firstName ,email, password, startAmount}),
         };
     
         const response = await fetch(`${baseUrl}/api/auth/createUser`, option);
@@ -102,7 +102,7 @@ function Register() {
                 <div className="card-body px-4 py-5 px-md-5">
                 <div className="info-text">
                         <p >
-                        How much money do you want to start trading with?
+                        How much money do you want to start trading with? (10K to 10L)
                         </p>
                       </div>
                 <div className="firstName">
@@ -132,10 +132,10 @@ function Register() {
                   <form action="" onSubmit={handleSubmit}>
               <div className="card bg-glass">
                 <div className="card-body px-4 py-5 px-md-5">
-                  {/* <!-- Email input --> */}
 
                      
                       
+                  {/* <!-- Email input --> */}
                       <div className="info-text">
                         <p >
                           Please enter the following Information to create your
