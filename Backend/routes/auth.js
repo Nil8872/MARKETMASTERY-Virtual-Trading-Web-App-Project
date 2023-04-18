@@ -1,12 +1,11 @@
-
-require('dotenv').config()
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const { body, validationResult } = require("express-validator"); 
+const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const {fetchUser} = require('../middleware/userFetch') 
+const { fetchUser } = require("../middleware/userFetch");
 
 // here endpoint is /api/auth/createUser and this is POST request...
 router.post(
@@ -17,7 +16,7 @@ router.post(
     body("password", "password should be atleast 6 character").isLength({
       min: 6,
     }),
-    body("startAmount")
+    body("startAmount"),
   ],
   async (req, res) => {
     // let success = false;
@@ -37,8 +36,8 @@ router.post(
       } else {
         const salt = await bcrypt.genSalt(10);
         const secPassword = await bcrypt.hash(req.body.password, salt);
-        console.log(req.body)
-        
+        console.log(req.body);
+
         // here new user is created
         const result = await User.create({
           name: req.body.name,
@@ -56,7 +55,7 @@ router.post(
 
         // const userToken = jwt.sign(data, JWT_SECRET);
 
-        res.send({success:true});
+        res.send({ success: true });
       }
     } catch (error) {
       console.error(error);
@@ -74,64 +73,81 @@ router.post(
     body("password", "Password is not Empty").exists(),
   ],
   async (req, res) => {
-
-
     try {
-      
-    let success = false;
-      
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+      let success = false;
 
-    const {email, password} = req.body;
-    const user = await User.findOne({email});
-   
-    if(!user){
-      return res.status(400).send({ success, error : "Please Enter Correct Credential"})
-    }
-
-    const passwordCompare = await bcrypt.compare(password, user.password);
-    
-    if(!passwordCompare){
-      return res.status(400).send({success,error : "Please Enter Correct Credential"})
-      
-    }
-
-    const data = {
-      user: {
-        id: user.id
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
       }
-    };
 
-    const userToken = jwt.sign(data, process.env.JWT_SECRET);
+      const { email, password } = req.body;
+      const user = await User.findOne({ email });
 
-    res.send({success:true, userToken });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal server Error"); 
-  }
-  }
-  
-);
+      if (!user) {
+        return res
+          .status(400)
+          .send({ success, error: "Please Enter Correct Credential" });
+      }
 
+      const passwordCompare = await bcrypt.compare(password, user.password);
 
+      if (!passwordCompare) {
+        return res
+          .status(400)
+          .send({ success, error: "Please Enter Correct Credential" });
+      }
 
-// here endpoint is /api/auth/getuser and this is POST request... login required
-router.post(
-  "/getUser",fetchUser, async(req, res) => {
-    try {
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
 
-      const userId = await req.user.id;
-      const user = await User.findById(userId).select("-password, -_id");
-      res.send(user);
-    
-      
+      const userToken = jwt.sign(data, process.env.JWT_SECRET);
+
+      res.send({ success: true, userToken });
     } catch (error) {
       console.error(error);
-    res.status(500).send("Internal server Error"); 
+      res.status(500).send("Internal server Error");
     }
-  });
+  }
+);
+
+// here endpoint is /api/auth/getuser and this is POST request... login required
+router.post("/getUser", fetchUser, async (req, res) => {
+  try {
+    const userId = await req.user.id;
+    const user = await User.findById(userId).select("-password");
+    res.send(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server Error");
+  }
+});
+
+router.put("/updateUser/:id", fetchUser, async (req, res) => {
+  const updatedData = req.body;
+  console.log(updatedData);
+
+  try {
+    
+    // console.log(typeof(req.params.id));
+ 
+  const result = await User.findByIdAndUpdate(
+    (req.params.id).toString(),
+    { $set: updatedData },
+    
+    { new: true }
+  );
+  console.log(result);
+
+  res.status(200).send({success : true});
+} catch (error) {
+   console.log(error) 
+   res.status(500).send({success: false});
+}
+  
+});
 
 module.exports = router;

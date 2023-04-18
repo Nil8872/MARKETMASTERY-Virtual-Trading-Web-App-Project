@@ -28,8 +28,30 @@ function UserDetail(props) {
       fetchUserDetail();
     }
   }, [count]);
+
+  const updateUser =async (userId, updatedData)=>{
+    
+
+    try {
+      const option = {
+        method : "PUT",
+        headers : {
+          "Content-type" : "application/json",
+          "auth-token" : token,
+        },
+        body: JSON.stringify(updatedData)
+
+      }
+    
+      const data = await fetch(`${baseUrl}/api/auth/updateUser/${userId}`, option);
+      console.log(data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
-    <UserContext.Provider value={{ user,setUserCount }}>
+    <UserContext.Provider value={{ user,setUserCount, updateUser }}>
       {props.children}
     </UserContext.Provider>
   );

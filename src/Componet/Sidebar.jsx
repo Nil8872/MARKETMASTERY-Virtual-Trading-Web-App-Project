@@ -21,7 +21,7 @@ function Sidebar() {
           </div>
           <div className="avail-margin">
             <div className="main-margin">
-              <span>{user.startAmount}</span>
+              <span>{user.availMargin}</span>
               <div className="margin" style={{ paddingLeft: "26px" }}>
                 <p style={{ fontSize: "14px" }}>Margin available</p>
               </div>
@@ -67,7 +67,7 @@ function Sidebar() {
               </div>
               <div className="openingBalance">
                 <p>
-                  Investment: <span> 1.35L</span>
+                  Investment: <span>{(user.startAmount/100000)}L</span>
                 </p>
               </div>
             </div>

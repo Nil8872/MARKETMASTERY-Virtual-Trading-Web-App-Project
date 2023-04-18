@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -6,9 +6,11 @@ import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from 'yup';
-import {useFormik} from 'formik';
+import {useFormik} from 'formik'; 
 const baseUrl = "http://localhost:5000";
 const token = localStorage.getItem("token"); 
+
+import UseContex from '../../Context/UserContex';
 
 
 
@@ -53,8 +55,9 @@ const getshare = async() =>{
 
 
 function DraggableModal(props) { 
+  const {user, updateUser, setUserCount} = useContext(UseContex);
   const { action, open, handleclose, sharename, lastprice } = props; 
-
+ const id = user._id;
   
  useEffect(()=>{
   // getshare()
@@ -64,7 +67,7 @@ function DraggableModal(props) {
     price : lastprice,
     qty : 1,
     intraInvest : "Intraday",
-    limitMarket : "",}
+    limitMarket : "Market",}
   const {handleChange, handleSubmit, values} = useFormik({
     initialValues,
     onSubmit: async(values)=>{
@@ -84,6 +87,21 @@ function DraggableModal(props) {
     try {
       const response = await fetch(`${baseUrl}/api/share/add`, option);
       const result = await response.json() 
+      let prevused = parseInt(user.usedMargin)
+        // console.log(typeof(prevused));
+      
+        const used = (values.price * values.qty);
+        prevused = (prevused)+used;
+        console.log(typeof(prevused));  
+      console.log("Now privious used is : ", prevused);
+
+      let avail =  user.availMargin - used 
+      console.log(avail)
+      const updatedData = {...user, usedMargin: prevused.toFixed(2)  , availMargin : avail.toFixed(2)}
+      console.log(updatedData)
+      updateUser(id, updatedData);
+      setUserCount((e)=>e+1);
+
       
     } catch (error) {
       console.log(error);

@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
     usedMargin: {
       type : Number,
       default : 0
+    },
+    availMargin : {
+      type : Number,
+      default : 0
     }
   });
 

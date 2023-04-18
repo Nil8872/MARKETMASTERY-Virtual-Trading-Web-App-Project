@@ -15,6 +15,7 @@ router.get("/get", fetchUser, async (req, res) => {
 
     res.send(shares);
   } catch (error) {
+    console.log(error)
     res.status(500).send("Internal server Error");
   }
 
@@ -43,6 +44,7 @@ router.post(
       const result = await share.save();
       res.send({ status: "success" });
     } catch (error) {
+      console.log(error)
       res.status(500).send("Internal server Error");
     }
   }

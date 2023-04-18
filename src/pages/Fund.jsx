@@ -32,7 +32,7 @@ function Fund() {
                   </div>
                   <div className="avalMargin">
                     <div><span className="marginitem">Available margin</span></div>
-                    <div><span className="value">{user.startAmount}</span></div>
+                    <div><span className="value">{user.availMargin}</span></div>
                   </div>  
                   <div className="avalMargin">
                     <div><span className="marginitem">Used margin</span></div>
