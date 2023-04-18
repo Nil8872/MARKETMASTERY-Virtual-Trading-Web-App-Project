@@ -88,15 +88,19 @@ function DraggableModal(props) {
       const response = await fetch(`${baseUrl}/api/share/add`, option);
       const result = await response.json() 
       let prevused = parseInt(user.usedMargin)
-        // console.log(typeof(prevused));
-      
-        const used = (values.price * values.qty);
-        prevused = (prevused)+used;
-        console.log(typeof(prevused));  
-      console.log("Now privious used is : ", prevused);
+      let avail;
+      const used = (values.price * values.qty);
 
-      let avail =  user.availMargin - used 
-      console.log(avail)
+        // console.log(typeof(prevused));
+      if(action === "Buy"){
+        prevused = prevused+used; 
+        avail =  user.availMargin - used 
+
+      } 
+      if(action === "Sell"){
+        prevused = prevused-used; 
+        avail =  user.availMargin + used
+      }
       const updatedData = {...user, usedMargin: prevused.toFixed(2)  , availMargin : avail.toFixed(2)}
       console.log(updatedData)
       updateUser(id, updatedData);
@@ -132,6 +136,7 @@ function DraggableModal(props) {
                 padding: "15px",
                 backgroundColor: action === "Buy" ? "#0288d1" : "#d32f2f",
                 borderRadiusTopLeft: "5px",
+
                 color: "white",
               }}
               className="buyHeading"
@@ -148,6 +153,7 @@ function DraggableModal(props) {
               <div className="intraday">
                 <div className="intraInvest">
                   <input 
+                  checked={values.intraInvest === "Intraday"}
                     value="Intraday"
                     onChange={handleChange}
                     type="radio"
@@ -201,17 +207,18 @@ function DraggableModal(props) {
                   <div className="limit">
                     <input 
                     onChange={handleChange}
-                      value="Limit"
-                      type="radio"
-                      name="limitMarket"
-                      style={{ transform: "scale(1.2)" }}
-                      id="limit"
+                    value="Limit"
+                    type="radio"
+                    name="limitMarket"
+                    style={{ transform: "scale(1.2)" }}
+                    id="limit"
                     />
                     <label htmlFor="limit">Limit</label>
                   </div>
 
                   <div className="market">
                     <input
+                    checked={values.limitMarket === "Market"}
                     value="Market"
                     onChange={handleChange}
                       type="radio"
@@ -224,7 +231,7 @@ function DraggableModal(props) {
                 </div>
               </div>
             </div>
-            <div className="footerbtns">
+            <div className="footerbtns" style={{borderRadius: "5px"}}>
               <div className="calMargin">
                 Required margin{" "}
                 <span>{action == "Sell" ? 0 : (values.price * values.qty).toFixed(3)}</span>
