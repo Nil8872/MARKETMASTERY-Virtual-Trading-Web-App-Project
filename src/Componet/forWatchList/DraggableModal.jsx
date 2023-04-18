@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -7,6 +7,10 @@ import TextField from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from 'yup';
 import {useFormik} from 'formik';
+const baseUrl = "http://localhost:5000";
+const token = localStorage.getItem("token"); 
+
+
 
 const useStyles = makeStyles({
   smallButton: {
@@ -33,10 +37,29 @@ const style = {
   borderRadius: 1,
 };
 
+const getshare = async() =>{
+  const share = await fetch(`${baseUrl}/api/share/get`, {
+    method : "GET",
+    headers: {
+      "Content-Type" : "application/json",
+      "auth-token" : token,
+    }
+  })
+
+  const result =  await share.json() 
+  console.log(result)
+  return result
+}
+
+
 function DraggableModal(props) { 
   const { action, open, handleclose, sharename, lastprice } = props; 
-  const [checked, setChecked] = useState(true);
 
+  
+ useEffect(()=>{
+  getshare()
+
+ },[])
   const initialValues = {
     price : lastprice,
     qty : 1,
@@ -44,9 +67,33 @@ function DraggableModal(props) {
     limitMarket : "",}
   const {handleChange, handleSubmit, values} = useFormik({
     initialValues,
-    onSubmit: (values)=>{
+    onSubmit: async(values)=>{
       const buySellShare = {...values, action, sharename}
-      console.log(buySellShare);
+       
+      try {  
+        const option = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token":
+          token,
+            
+          },
+          body: JSON.stringify(buySellShare),
+        }; 
+    try {
+      const response = await fetch(`${baseUrl}/api/share/add`, option);
+      const result = await response.json() 
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+    handleclose();
+
+      } catch (error) {
+        
+      }
     }
   });
   return (
