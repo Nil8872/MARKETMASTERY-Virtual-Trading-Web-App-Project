@@ -1,16 +1,20 @@
-import React from "react";
+import React,{useContext} from "react";
 import "../Styles/position.css";
 import positionData from '../services/positionData';
 import dayHistoryData from '../services/DayHistoryData'
 
+import ShareContext from "../Context/ShareContext";
+
 function PositionSidebar() {
+  const {shares} = useContext(ShareContext); 
+  console.log(shares);
   return (
     <div>
       <div className="positionSidebar" style={{ color: "white" }}>
         <div className="positionBox">
           <div className="openOrder">
             <span>
-              Position<span>(5)</span>
+              Position<span>({shares.length})</span>
             </span>
           </div>
           <div className="row">
@@ -36,16 +40,16 @@ function PositionSidebar() {
               </tr>
             </tfoot>
             <tbody>
-              {positionData.map((order) => {
+              {shares.map((share) => {
                 return (
-                  <>
-                    <tr>
-                      <td>{order.shareName}</td>
-                      <td>{order.qty}</td>
-                      <td>{order.avgPrice}</td>
-                      <td>{order.ltp}</td>
-                      <td>{order.pAndL}</td>
-                      <td>{order.change}</td> 
+                  < >
+                    <tr key={share.price}>
+                      <td>{share.sharename}</td>
+                      <td>{share.qty}</td>
+                      <td>{share.price}</td>
+                      <td>{share.ltp}</td>
+                      <td>{share.pAndL}</td>
+                      <td>{share.change}</td> 
                     </tr>
                   </>
                 );

@@ -17,12 +17,14 @@ import Order from "./pages/Order";
 import Position from "./pages/Position";
 import Holding from "./pages/Holding";
 import Fund from "./pages/Fund";
+import ShareDetails from "./Context/ShareDetails";
  
 
 function App() {
   return (
     <div style={{ height: "100%" }} className="background-radial-gradient ">
       <UserDetail>
+        <ShareDetails>
         <NoteState>
           <Router>
             <Navbar />
@@ -38,6 +40,7 @@ function App() {
             </Routes>
           </Router>
         </NoteState>
+        </ShareDetails>
       </UserDetail>
     </div>
   );

@@ -4,10 +4,13 @@ import { Navigate } from "react-router-dom";
 import { FcCurrencyExchange } from "react-icons/fc";
 import "../Styles/fund.css";
 import UserContex from '../Context/UserContex'
+import ShareContext from "../Context/ShareContext";
 
 function Fund() {
   const token = localStorage.getItem("token");
   const {user} = useContext(UserContex);
+  const {shares} = useContext(ShareContext);
+  console.log(shares);
   return (
     <>
       {token === null ? (

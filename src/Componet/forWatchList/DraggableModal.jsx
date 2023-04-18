@@ -1,18 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import * as Yup from 'yup';
-import {useFormik} from 'formik'; 
-const baseUrl = "http://localhost:5000";
-const token = localStorage.getItem("token"); 
-
-import UseContex from '../../Context/UserContex';
-
-
+import { makeStyles } from "@material-ui/core/styles"; 
+import { useFormik } from "formik"; 
+ 
+import ShareContext from "../../Context/ShareContext";
 
 const useStyles = makeStyles({
   smallButton: {
@@ -39,84 +34,29 @@ const style = {
   borderRadius: 1,
 };
 
-const getshare = async() =>{
-  const share = await fetch(`${baseUrl}/api/share/get`, {
-    method : "GET",
-    headers: {
-      "Content-Type" : "application/json",
-      "auth-token" : token,
-    }
-  })
-
-  const result =  await share.json() 
-  console.log(result)
-  return result
-}
 
 
 function DraggableModal(props) { 
-  const {user, updateUser, setUserCount} = useContext(UseContex);
+
+  const {setCount, addShare} = useContext(ShareContext); 
   const { action, open, handleclose, sharename, lastprice } = props; 
- const id = user._id;
-  
- useEffect(()=>{
-  // getshare()
 
- },[])
   const initialValues = {
-    price : lastprice,
-    qty : 1,
-    intraInvest : "Intraday",
-    limitMarket : "Market",}
-  const {handleChange, handleSubmit, values} = useFormik({
+    price: lastprice,
+    qty: 1,
+    intraInvest: "Intraday",
+    limitMarket: "Market",
+  };
+
+  const { handleChange, handleSubmit, values } = useFormik({
     initialValues,
-    onSubmit: async(values)=>{
-      const buySellShare = {...values, action, sharename}
-       
-      try {  
-        const option = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token":
-          token,
-            
-          },
-          body: JSON.stringify(buySellShare),
-        }; 
-    try {
-      const response = await fetch(`${baseUrl}/api/share/add`, option);
-      const result = await response.json() 
-      let prevused = parseInt(user.usedMargin)
-      let avail;
-      const used = (values.price * values.qty);
+    onSubmit: async (values) => {
+      const buySellShare = { ...values, action, sharename }; 
 
-        // console.log(typeof(prevused));
-      if(action === "Buy"){
-        prevused = prevused+used; 
-        avail =  user.availMargin - used 
-
-      } 
-      if(action === "Sell"){
-        prevused = prevused-used; 
-        avail =  user.availMargin + used
-      }
-      const updatedData = {...user, usedMargin: prevused.toFixed(2)  , availMargin : avail.toFixed(2)}
-      console.log(updatedData)
-      updateUser(id, updatedData);
-      setUserCount((e)=>e+1);
-
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
-    handleclose();
-
-      } catch (error) {
-        
-      }
-    }
+      addShare(values.price, values.qty, action, buySellShare);
+      setCount(c=>c+1);
+      handleclose();
+    },
   });
   return (
     <>
@@ -130,128 +70,136 @@ function DraggableModal(props) {
           aria-describedby="modal-modal-description"
         >
           <form action="" onSubmit={handleSubmit}>
-          <Box sx={style}>
-            <div
-              style={{
-                padding: "15px",
-                backgroundColor: action === "Buy" ? "#0288d1" : "#d32f2f",
-                borderRadiusTopLeft: "5px",
+            <Box sx={style}>
+              <div
+                style={{
+                  padding: "15px",
+                  backgroundColor: action === "Buy" ? "#0288d1" : "#d32f2f",
+                  borderRadiusTopLeft: "5px",
 
-                color: "white",
-              }}
-              className="buyHeading"
-            >
-              <span style={{ fontWeight: 700, fontSize: "20px" }}>
-                {action} {sharename} x {values.qty} Qty.
-              </span>
-              <div>Price: ₹{values.price}</div>
-            </div>
-            <div
-              className="categary"
-              style={{ fontSize: "16px", fontWeight: 400 }}
-            >
-              <div className="intraday">
-                <div className="intraInvest">
-                  <input 
-                  checked={values.intraInvest === "Intraday"}
-                    value="Intraday"
-                    onChange={handleChange}
-                    type="radio"
-                    name="intraInvest"
-                    style={{ transform: "scale(1.2)" }}
-                    id="Intra"
-                  />
-                  <label htmlFor="Intra">Intraday</label>
-                </div>
-                <TextField
-                  onChange={handleChange}
-                  style={{ width: "200px" }}
-                  id="outlined"
-                  value={values.qty}
-                  name="qty"
-                  label={
-                    <span style={{ fontSize: "20px", fontWeight: 600 }}>
-                      Qty.
-                    </span>
-                  }
-                  type="number"
-                />
+                  color: "white",
+                }}
+                className="buyHeading"
+              >
+                <span style={{ fontWeight: 700, fontSize: "20px" }}>
+                  {action} {sharename} x {values.qty} Qty.
+                </span>
+                <div>Price: ₹{values.price}</div>
               </div>
-              <div className="longterm">
-                <div className="intraInvest">
-                  <input 
-                  value="Longterm"
-                  onChange={handleChange}
-                    type="radio"
-                    name="intraInvest"
-                    style={{ transform: "scale(1.2)" }}
-                    id="Invest"
-                  />
-                  <label htmlFor="Invest">Longterm</label>
-                </div>
-                <TextField 
-                  style={{ width: "200px" }}
-                  id="outlined-required1"
-                  label={
-                    <span style={{ fontSize: "20px", fontWeight: 600 }}>
-                      Price
-                    </span>
-                  }
-                  value={values.price} 
-                  name="price"
-                  onChange={handleChange}
-                  type="number"
-                />
-
-                <div className="limitMarket">
-                  <div className="limit">
-                    <input 
-                    onChange={handleChange}
-                    value="Limit"
-                    type="radio"
-                    name="limitMarket"
-                    style={{ transform: "scale(1.2)" }}
-                    id="limit"
-                    />
-                    <label htmlFor="limit">Limit</label>
-                  </div>
-
-                  <div className="market">
+              <div
+                className="categary"
+                style={{ fontSize: "16px", fontWeight: 400 }}
+              >
+                <div className="intraday">
+                  <div className="intraInvest">
                     <input
-                    checked={values.limitMarket === "Market"}
-                    value="Market"
-                    onChange={handleChange}
+                      checked={values.intraInvest === "Intraday"}
+                      value="Intraday"
+                      onChange={handleChange}
                       type="radio"
-                      name="limitMarket"
+                      name="intraInvest"
                       style={{ transform: "scale(1.2)" }}
-                      id="market"
+                      id="Intra"
                     />
-                    <label htmlFor="market">Market</label>
+                    <label htmlFor="Intra">Intraday</label>
+                  </div>
+                  <TextField
+                    onChange={handleChange}
+                    style={{ width: "200px" }}
+                    id="outlined"
+                    value={values.qty}
+                    name="qty"
+                    label={
+                      <span style={{ fontSize: "20px", fontWeight: 600 }}>
+                        Qty.
+                      </span>
+                    }
+                    type="number"
+                  />
+                </div>
+                <div className="longterm">
+                  <div className="intraInvest">
+                    <input
+                      value="Longterm"
+                      onChange={handleChange}
+                      type="radio"
+                      name="intraInvest"
+                      style={{ transform: "scale(1.2)" }}
+                      id="Invest"
+                    />
+                    <label htmlFor="Invest">Longterm</label>
+                  </div>
+                  <TextField
+                    style={{ width: "200px" }}
+                    id="outlined-required1"
+                    label={
+                      <span style={{ fontSize: "20px", fontWeight: 600 }}>
+                        Price
+                      </span>
+                    }
+                    value={values.price}
+                    name="price"
+                    onChange={handleChange}
+                    type="number"
+                  />
+
+                  <div className="limitMarket">
+                    <div className="limit">
+                      <input
+                        onChange={handleChange}
+                        value="Limit"
+                        type="radio"
+                        name="limitMarket"
+                        style={{ transform: "scale(1.2)" }}
+                        id="limit"
+                      />
+                      <label htmlFor="limit">Limit</label>
+                    </div>
+
+                    <div className="market">
+                      <input
+                        checked={values.limitMarket === "Market"}
+                        value="Market"
+                        onChange={handleChange}
+                        type="radio"
+                        name="limitMarket"
+                        style={{ transform: "scale(1.2)" }}
+                        id="market"
+                      />
+                      <label htmlFor="market">Market</label>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="footerbtns" style={{borderRadius: "5px"}}>
-              <div className="calMargin">
-                Required margin{" "}
-                <span>{action == "Sell" ? 0 : (values.price * values.qty).toFixed(3)}</span>
-              </div>
+              <div className="footerbtns" style={{ borderRadius: "5px" }}>
+                <div className="calMargin">
+                  Required margin{" "}
+                  <span>
+                    {action == "Sell"
+                      ? 0
+                      : (values.price * values.qty).toFixed(3)}
+                  </span>
+                </div>
 
-              <div className="buttons">
-                <Button
-                  style={{ marginRight: "10px" }}
-                  variant="contained"
-                  color={action == "Buy" ? "info" : "error"}
-                  type="submit"
-                >
-                  {action}
-                </Button>
-                <Button onClick={handleclose} variant="outlined" color="error">
-                  Cancel
-                </Button>
+                <div className="buttons">
+                  <Button
+                    style={{ marginRight: "10px" }}
+                    variant="contained"
+                    color={action == "Buy" ? "info" : "error"}
+                    type="submit"
+                  >
+                    {action}
+                  </Button>
+                  <Button
+                    onClick={handleclose}
+                    variant="outlined"
+                    color="error"
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
-            </div>
-          </Box>
+            </Box>
           </form>
         </Modal>
       </Draggable>

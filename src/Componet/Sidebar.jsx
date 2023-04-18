@@ -67,7 +67,7 @@ function Sidebar() {
               </div>
               <div className="openingBalance">
                 <p>
-                  Investment: <span>{(user.startAmount/100000)}L</span>
+                  Investment: <span>{(user.startAmount/100000).toFixed(2)}L</span>
                 </p>
               </div>
             </div>
