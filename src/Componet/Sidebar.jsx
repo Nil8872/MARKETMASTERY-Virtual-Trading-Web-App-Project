@@ -29,12 +29,12 @@ function Sidebar() {
             <div className="used-margin">
               <div className="useMargin">
                 <p>
-                  Margin used: <span> 2000</span>
+                  Margin used: <span> {user.usedMargin}</span>
                 </p>
               </div>
               <div className="openingBalance">
                 <p>
-                  Opening Balance: <span> 5000</span>
+                  Opening Balance: <span> {user.startAmount}</span>
                 </p>
               </div>
             </div>

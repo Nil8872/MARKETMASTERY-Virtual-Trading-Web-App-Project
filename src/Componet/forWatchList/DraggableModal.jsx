@@ -57,7 +57,7 @@ function DraggableModal(props) {
 
   
  useEffect(()=>{
-  getshare()
+  // getshare()
 
  },[])
   const initialValues = {

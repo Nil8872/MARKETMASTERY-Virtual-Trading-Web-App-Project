@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
 import { FcCurrencyExchange } from "react-icons/fc";
 import "../Styles/fund.css";
+import UserContex from '../Context/UserContex'
 
 function Fund() {
   const token = localStorage.getItem("token");
+  const {user} = useContext(UserContex);
   return (
     <>
       {token === null ? (
@@ -30,11 +32,11 @@ function Fund() {
                   </div>
                   <div className="avalMargin">
                     <div><span className="marginitem">Available margin</span></div>
-                    <div><span className="value">12000.00</span></div>
+                    <div><span className="value">{user.startAmount}</span></div>
                   </div>  
                   <div className="avalMargin">
                     <div><span className="marginitem">Used margin</span></div>
-                    <div><span className="value">4000.00</span></div>
+                    <div><span className="value">{user.usedMargin}</span></div>
                   </div>
                   <div className="avalMargin" style={{borderBottom:'1px solid rgba(255,255,255,0.1)'}}>
                     <div><span className="marginitem">Available cash</span></div>
@@ -42,7 +44,7 @@ function Fund() {
                   </div>
                   <div className="avalMargin"  >
                     <div><span className="marginitem">Opening balance</span></div>
-                    <div><span className="value" >10000.00</span></div>
+                    <div><span className="value" >{user.startAmount}</span></div>
                   </div>
                 </div>
               </div>

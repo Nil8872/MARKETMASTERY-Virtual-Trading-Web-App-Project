@@ -24,6 +24,11 @@ const userSchema = new mongoose.Schema({
     startAmount : {
       type : Number,
       required : true,
+    },
+
+    usedMargin: {
+      type : Number,
+      default : 0
     }
   });
 
