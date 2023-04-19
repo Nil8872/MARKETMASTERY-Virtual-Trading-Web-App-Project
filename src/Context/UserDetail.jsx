@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserContext from "./UserContex"; 
 const baseUrl = "http://localhost:5000";
 
@@ -44,7 +44,7 @@ function UserDetail(props) {
       }
     
       const data = await fetch(`${baseUrl}/api/auth/updateUser/${userId}`, option);
-      console.log(data);
+     console.log(await data.json());
 
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ function UserDetail(props) {
 
  
   return (
-    <UserContext.Provider value={{ user,setUserCount, updateUser }}>
+    <UserContext.Provider value={{ user,setUserCount, updateUser,fetchUserDetail }}>
       {props.children}
     </UserContext.Provider>
   );

@@ -46,15 +46,7 @@ router.post(
           startAmount: req.body.startAmount,
         });
 
-        // const user = await User.findOne({email});
-        // const data = {
-        //   user: {
-        //     id: result.id
-        //   }
-        // };
-
-        // const userToken = jwt.sign(data, JWT_SECRET);
-
+       
         res.send({ success: true });
       }
     } catch (error) {
@@ -135,10 +127,10 @@ router.put("/updateUser/:id", fetchUser, async (req, res) => {
     { $set: updatedData },
     
     { new: true }
-  );
-  console.log(result);
+  );  
+  
 
-  res.status(200).send({success : true});
+  res.status(200).send(result);
 } catch (error) {
    console.log(error) 
    res.status(500).send({success: false});

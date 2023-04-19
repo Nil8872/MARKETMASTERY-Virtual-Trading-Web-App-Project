@@ -5,11 +5,13 @@ import dayHistoryData from "../services/DayHistoryData";
 
 import Button from "@mui/material/Button";
 
-import ShareContext from "../Context/ShareContext";
+import ShareContext from "../Context/ShareContext"; 
+import UserContext from "../Context/UserContex";
 
 function PositionSidebar() {
-  const { shares, setCount, deleteShare } = useContext(ShareContext);
+  const { shares, setCount, deleteShare } = useContext(ShareContext); 
   const [checked, setChecked] = useState([]);
+  const {setUserCount} = useContext(UserContext);
 
   const handleChecked = (id) => {
     let present = false;
@@ -25,23 +27,28 @@ function PositionSidebar() {
       });
 
       setChecked(newChecked);
-    } else {
-      console.log("Else part run because first time");
+    } else { 
       const newChecked = [...checked, id];
       setChecked(newChecked);
     }
   };
 
+   
 let newArray = checked; 
 let l = newArray.length
-  const handleExit = ()=>{ 
+  const handleExit = async()=>{ 
 
     for(let i =0;i<l; i++){
-      let id = newArray[0];
-      deleteShare(id);
+      const shareVar = shares; 
+      let id = newArray[0]; 
+      console.log(id)
+      const {price, qty, action} =  shareVar.filter((share)=>{return share._id === id})[0]
+       
+      await deleteShare(id,price, qty, action);  
       newArray.shift(); 
       setChecked(newArray);
-      setCount((c) => c + 1);   
+      setCount((c) => c + 1); 
+      setUserCount((c)=>c+1);  
       
     }
   }

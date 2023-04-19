@@ -7,14 +7,16 @@ const token = localStorage.getItem("token");
 
 function ShareDetails(props) {
   const [shares, setShares] = useState([]);
-
   const [count, setCount] = useState(0);
+
   useEffect(() => {
     getShare();
   }, [count]);
 
-  const { user, updateUser, setUserCount } = useContext(UserContext);
+  const { user, updateUser, setUserCount } = useContext(UserContext); 
+  
   const id = user._id;
+
 
   // fuction for get Share detail from database
   const getShare = async () => {
@@ -49,14 +51,9 @@ function ShareDetails(props) {
         let avail;
         const used = price * qty;
 
-        if (action === "Buy") {
-          prevused = prevused + used;
-          avail = user.availMargin - used;
-        }
-        if (action === "Sell") {
-          prevused = prevused - used;
-          avail = user.availMargin + used;
-        }
+        prevused = prevused + used;
+        avail = user.availMargin - used;
+
         const updatedData = {
           ...user,
           usedMargin: prevused.toFixed(2),
@@ -94,21 +91,16 @@ function ShareDetails(props) {
       let avail;
       const used = price * qty;
 
-      if (action === "Buy") {
-        prevused = prevused + used;
-        avail = user.availMargin - used;
-      }
-      if (action === "Sell") {
-        prevused = prevused - used;
-        avail = user.availMargin + used;
-      }
+      prevused = prevused + used;
+      avail = user.availMargin - used;
+
       const updatedData = {
         ...user,
         usedMargin: prevused.toFixed(2),
         availMargin: avail.toFixed(2),
       };
 
-      updateUser(id, updatedData);
+      await updateUser(id, updatedData);
       setUserCount((e) => e + 1);
     } catch (error) {
       console.log(error);
@@ -117,28 +109,59 @@ function ShareDetails(props) {
 
   // fuction for delete Share from DataBase
 
-  const deleteShare = async(shareId) => { 
+
+  const nilo = async(price, qty)=>{
+    console.log(user);
+    console.log(await user.usedMargin)
+    console.log(await user.availMargin)
+    let prevused =  await user.usedMargin
+    let avail;
+    const used = price * qty;
+
+    prevused = prevused - used;
+    avail = (await user.availMargin) + used;
+
+    const updatedData = {
+      ...user,
+      usedMargin: prevused.toFixed(2),
+      availMargin: avail.toFixed(2),
+    };
+    return updatedData;
+  }
+
+
+
+  const deleteShare = async (shareId, price, qty, action) => {
     const option = {
       method: "DELETE",
       headers: {
         "Content-type": "application/json",
-        "auth-token": token
+        "auth-token": token,
       },
     };
     try {
-      
       const result = await fetch(
         `${baseUrl}/api/share/deleteShare/${shareId}`,
         option
       );
-    
-    console.log( await result.json());
-  } catch (error) {
+      console.log(result);
+
+      const updatedData = await nilo(price,qty); 
+     
+console.log(updatedData);
+     const nil = await updateUser(id, updatedData); 
+        console.log(nil);
+      setUserCount((e) => e + 1);
+      console.log("Share Deteted");
+      console.log(`Price is :${price} Qty is : ${qty} and Action is : ${action}`);
+    } catch (error) {
       console.log(error);
-  }
+    }
   };
   return (
-    <ShareContext.Provider value={{ shares, addShare, setCount, updateShare, deleteShare }}>
+    <ShareContext.Provider
+      value={{ shares, addShare, setCount, updateShare, deleteShare }}
+    >
       {props.children}
     </ShareContext.Provider>
   );
