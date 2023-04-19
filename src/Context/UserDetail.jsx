@@ -50,6 +50,9 @@ function UserDetail(props) {
       console.log(error);
     }
   }
+
+
+ 
   return (
     <UserContext.Provider value={{ user,setUserCount, updateUser }}>
       {props.children}

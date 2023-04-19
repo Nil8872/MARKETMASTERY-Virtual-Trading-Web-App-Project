@@ -4,12 +4,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import DraggableModal from "./DraggableModal";
 
 const useStyles = makeStyles({
-  smallButton: {
-    width: "30px",
-    padding: "0px",
-    margin: "0px",
-    height: "28px",
-  },
+smallButton: {
+  width: "30px",
+  padding: "0px",
+  margin: "0px",
+  height: "28px",
+},
 });
 
 function CustomBackdrop(props) {

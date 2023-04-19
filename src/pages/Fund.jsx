@@ -3,14 +3,11 @@ import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
 import { FcCurrencyExchange } from "react-icons/fc";
 import "../Styles/fund.css";
-import UserContex from '../Context/UserContex'
-import ShareContext from "../Context/ShareContext";
+import UserContex from '../Context/UserContex' 
 
 function Fund() {
   const token = localStorage.getItem("token");
-  const {user} = useContext(UserContex);
-  const {shares} = useContext(ShareContext);
-  console.log(shares);
+  const {user} = useContext(UserContex); 
   return (
     <>
       {token === null ? (

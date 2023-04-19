@@ -127,13 +127,9 @@ router.post("/getUser", fetchUser, async (req, res) => {
 });
 
 router.put("/updateUser/:id", fetchUser, async (req, res) => {
-  const updatedData = req.body;
-  console.log(updatedData);
+  const updatedData = req.body; 
 
   try {
-    
-    // console.log(typeof(req.params.id));
- 
   const result = await User.findByIdAndUpdate(
     (req.params.id).toString(),
     { $set: updatedData },
