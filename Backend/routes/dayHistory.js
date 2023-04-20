@@ -8,7 +8,7 @@ const DayHistory = require("../models/dayHistory");
 // Route : 1 endpoint is /api/dayHistory/getHistory and this is GET request... login required
 router.get("/getHistory", fetchUser, async (req, res) => {
     try {
-      const data = await DayHistory.find({ user: req.user.id });
+      const data = await DayHistory.find({ user: req.user.id }); 
       res.status(200).send(data);
   
     } catch (error) {
@@ -43,7 +43,7 @@ router.delete('/clearHistory', fetchUser, async (req, res)=>{
 
     try {
 
-         await DayHistory.remove({user: req.user.id})
+         await DayHistory.deleteMany({user: req.user.id})
 
         res.status(200).send({success: true, message: "History is Clear!"})
     } catch (error) {

@@ -18,6 +18,7 @@ import Position from "./pages/Position";
 import Holding from "./pages/Holding";
 import Fund from "./pages/Fund";
 import ShareDetails from "./Context/ShareDetails";
+import DayHistory from "./Context/DayHistory";
  
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
     <div style={{ height: "100%" }} className="background-radial-gradient ">
       <UserDetail>
         <ShareDetails>
+          <DayHistory>
         <NoteState>
           <Router>
             <Navbar />
@@ -40,6 +42,7 @@ function App() {
             </Routes>
           </Router>
         </NoteState>
+        </DayHistory>
         </ShareDetails>
       </UserDetail>
     </div>

@@ -8,11 +8,16 @@ import Button from "@mui/material/Button";
 import ShareContext from "../Context/ShareContext"; 
 import UserContext from "../Context/UserContex";
 
+import DayHistoryContext from "../Context/DayHistoryContext";
+
+
 function PositionSidebar() {
   const { shares, setShareCount, deleteShare } = useContext(ShareContext); 
   const [checked, setChecked] = useState([]);
   const {setUserCount} = useContext(UserContext);
+  const {addShareInHistory, dayHistory, clearDayHistory, setHistoryCount}= useContext(DayHistoryContext)
 
+  console.log(dayHistory);
   const handleChecked = (id) => {
     let present = false;
     checked.forEach((element) => {
@@ -41,15 +46,23 @@ let l = newArray.length
     for(let i =0;i<l; i++){
       const shareVar = shares; 
       let id = newArray[0];  
-      const {price, qty, action} =  shareVar.filter((share)=>{return share._id === id})[0]
-       
+      const {price, qty, action, sharename, intraInvest, limitMarket} =  shareVar.filter((share)=>{return share._id === id})[0]
+     
+      await addShareInHistory({price, qty, action, sharename, intraInvest, limitMarket});
       await deleteShare(id,price, qty, action);  
       newArray.shift(); 
       setChecked(newArray);
       setShareCount((c) => c + 1); 
+      setHistoryCount(c=>c+1);
       setUserCount((c)=>c+1);  
       
     }
+  }
+
+
+  const handleClear = ()=>{
+    clearDayHistory();
+    setHistoryCount(c=>c+1);
   }
 
   return (
@@ -123,11 +136,29 @@ let l = newArray.length
 
           <div className="openOrder">
             <span>
-              Day's History<span>(10)</span>
+              Day's History<span>({dayHistory.length})</span>
             </span>
           </div>
           <div className="row">
             <table>
+            <tfoot>
+                <tr>
+                  <td>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="error"
+                      onClick={handleClear}
+                      >
+                      Clear ({dayHistory.length})
+                    </Button>
+                  </td>
+                      <td>Clear</td>
+                  <td>History</td>
+                  <td> </td>
+                  <td> </td>
+                </tr>
+              </tfoot>
               <thead>
                 <tr>
                   <th>Instrument</th>
@@ -139,16 +170,17 @@ let l = newArray.length
                 </tr>
               </thead>
               <tbody>
-                {dayHistoryData.map((order) => {
+                {/* {dayHistoryData.map((order) => { */}
+                {dayHistory.map((order) => {
                   return (
                     <>
                       <tr>
-                        <td>{order.shareName}</td>
+                        <td>{order.sharename}</td>
                         <td>{order.qty}</td>
-                        <td>{order.avgPrice}</td>
-                        <td>{order.ltp}</td>
-                        <td>{order.pAndL}</td>
-                        <td>{order.change}</td>
+                        <td>{order.price}</td>
+                        <td>{order.action}</td>
+                        <td>{order.intraInvest}</td>
+                        <td>{order.limitMarket}</td>
                       </tr>
                     </>
                   );
