@@ -10,7 +10,13 @@ function DayHistory(props) {
   // using API End Point and store data in backend of When share is sell then that apper in Day History...
 
   useEffect(()=>{
-    getDayHistory();
+    if(!token){
+
+    }
+    else{
+
+      getDayHistory();
+    }
   },[historyCount])
 
   const getDayHistory = async () =>{
