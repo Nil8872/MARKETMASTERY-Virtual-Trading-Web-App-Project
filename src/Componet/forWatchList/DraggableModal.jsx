@@ -68,11 +68,12 @@ function DraggableModal(props) {
       })
 
       if(dubble){
-
+        const price = values.price
+        const qty = values.qty;
         values.qty += oldQty;
-        values.price = ((values.price + oldPrice)/2).toFixed(2);
+        // values.price = ((values.price + oldPrice)/2).toFixed(2);
         const shareUpdateData = {...values, sharename, action }
-        updateShare(shareId,values.price, values.qty, action, shareUpdateData);
+        updateShare(shareId,price,  qty, action, shareUpdateData);
         setShareCount(c=>c+1);
         handleclose();
       } 

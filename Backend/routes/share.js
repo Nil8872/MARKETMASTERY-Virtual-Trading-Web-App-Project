@@ -61,7 +61,7 @@ router.put("/updateShare/:id", fetchUser, async (req, res) => {
     );
     console.log(result);
 
-    res.status(200).send({ success: true });
+    res.status(200).send({ success: true, message: "Share Buy/Sell Successfully!"});
   } catch (error) {
     console.log(error);
     res.status(500).send({ success: false });
@@ -74,8 +74,7 @@ router.delete(
   fetchUser,
 
   async (req, res) => {
-    try {
-      console.log(req.params.id);
+    try { 
       let deleteNote = await BuySellShare.findById(req.params.id);
  
 
@@ -84,7 +83,7 @@ router.delete(
       }
 
       const result = await BuySellShare.findByIdAndDelete(req.params.id);
-      res.send({success : true});
+      res.send({success : true, message : "Share Successfully Deleted!"});
 
     } catch (error) {
       console.log(error)
