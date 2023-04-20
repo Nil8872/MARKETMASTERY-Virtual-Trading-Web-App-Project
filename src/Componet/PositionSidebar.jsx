@@ -9,7 +9,7 @@ import ShareContext from "../Context/ShareContext";
 import UserContext from "../Context/UserContex";
 
 function PositionSidebar() {
-  const { shares, setCount, deleteShare } = useContext(ShareContext); 
+  const { shares, setShareCount, deleteShare } = useContext(ShareContext); 
   const [checked, setChecked] = useState([]);
   const {setUserCount} = useContext(UserContext);
 
@@ -40,14 +40,13 @@ let l = newArray.length
 
     for(let i =0;i<l; i++){
       const shareVar = shares; 
-      let id = newArray[0]; 
-      console.log(id)
+      let id = newArray[0];  
       const {price, qty, action} =  shareVar.filter((share)=>{return share._id === id})[0]
        
       await deleteShare(id,price, qty, action);  
       newArray.shift(); 
       setChecked(newArray);
-      setCount((c) => c + 1); 
+      setShareCount((c) => c + 1); 
       setUserCount((c)=>c+1);  
       
     }

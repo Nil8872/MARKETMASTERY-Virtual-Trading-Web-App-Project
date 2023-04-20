@@ -38,7 +38,7 @@ const style = {
 
 function DraggableModal(props) { 
 
-  const {setCount, addShare, shares, updateShare} = useContext(ShareContext); 
+  const {setShareCount, addShare, shares, updateShare} = useContext(ShareContext); 
   const { action, open, handleclose, sharename, lastprice } = props; 
 
   const initialValues = {
@@ -73,13 +73,13 @@ function DraggableModal(props) {
         values.price = ((values.price + oldPrice)/2).toFixed(2);
         const shareUpdateData = {...values, sharename, action }
         updateShare(shareId,values.price, values.qty, action, shareUpdateData);
-        setCount(c=>c+1);
+        setShareCount(c=>c+1);
         handleclose();
       } 
       else{
 
         addShare(values.price, values.qty, action, buySellShare);
-        setCount(c=>c+1);
+        setShareCount(c=>c+1);
         handleclose();
       }
     },

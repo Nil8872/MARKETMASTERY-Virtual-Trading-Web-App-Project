@@ -7,11 +7,11 @@ const token = localStorage.getItem("token");
 
 function ShareDetails(props) {
   const [shares, setShares] = useState([]);
-  const [count, setCount] = useState(0);
+  const [shareCount, setShareCount] = useState(0);
 
   useEffect(() => {
     getShare();
-  }, [count]);
+  }, [shareCount]);
 
   const { user, updateUser, setUserCount } = useContext(UserContext); 
   
@@ -110,10 +110,7 @@ function ShareDetails(props) {
   // fuction for delete Share from DataBase
 
 
-  const nilo = async(price, qty)=>{
-    console.log(user);
-    console.log(await user.usedMargin)
-    console.log(await user.availMargin)
+  const nilo = async(price, qty)=>{ 
     let prevused =  await user.usedMargin
     let avail;
     const used = price * qty;
@@ -160,7 +157,7 @@ console.log(updatedData);
   };
   return (
     <ShareContext.Provider
-      value={{ shares, addShare, setCount, updateShare, deleteShare }}
+      value={{ shares, addShare, setShareCount, updateShare, deleteShare }}
     >
       {props.children}
     </ShareContext.Provider>
