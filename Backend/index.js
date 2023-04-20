@@ -19,7 +19,8 @@ app.get('/', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));
 // app.use('/api/share', require('./routes/share'));
-app.use('/api/share', require('./routes/share'))
+app.use('/api/share', require('./routes/share'));
+app.use('/api/dayHistory', require('./routes/dayHistory'))
 
 app.listen(port, () => {
   console.log(`app listening on port : ${port}`)
