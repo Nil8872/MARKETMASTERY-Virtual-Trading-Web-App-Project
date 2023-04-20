@@ -35,19 +35,15 @@ router.post(
         });
       } else {
         const salt = await bcrypt.genSalt(10);
-        const secPassword = await bcrypt.hash(req.body.password, salt);
-        console.log(req.body);
-
+        const secPassword = await bcrypt.hash(req.body.password, salt); 
+        const userData = req.body;
+        const registerData = {...userData, password:secPassword} 
+        
         // here new user is created
-        const result = await User.create({
-          name: req.body.name,
-          email: req.body.email,
-          password: secPassword,
-          startAmount: req.body.startAmount,
-        });
+        await User.create(registerData);
 
        
-        res.send({ success: true });
+        res.status(200).send({ success: true, message: "Register Successfully!" });
       }
     } catch (error) {
       console.error(error);

@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema({
       default : 0
     },
     availMargin : {
-      type : Number,
-      default : 0
+      type : Number, 
+      require: true,
     }
   });
 
