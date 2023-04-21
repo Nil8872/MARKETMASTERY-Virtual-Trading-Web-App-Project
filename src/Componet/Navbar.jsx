@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import LoginIcon from "@mui/icons-material/Login"; 
@@ -7,8 +7,16 @@ import { FaRegistered } from "react-icons/fa";
 import Stack from "@mui/material/Stack"; 
 import { useNavigate } from 'react-router-dom';
 import UserContext from "../Context/UserContex"; 
+import moment from 'moment';
+
 function Navbar() { 
   
+  const [time, setTime] = useState(); 
+
+  setInterval(()=>{
+    setTime(moment().format('LTS'))
+  },1000)
+
   const {user} = useContext(UserContext); 
   const location = useLocation();
   const token = localStorage.getItem('token');
@@ -119,6 +127,7 @@ function Navbar() {
             <form className="d-flex" role="search">
               {!token?(
                   <Stack direction="row" spacing={1}>
+                    <span>{time}</span>
                   <Link style={{marginRight: '4px'}}  className="navbar-brand"  to="/login">
                     <Button variant="contained" startIcon={<LoginIcon />}>
                       Login
@@ -133,6 +142,7 @@ function Navbar() {
                 </Stack>
               ):(
                 <Stack direction="row" spacing={2}>
+                  <span style={{color:'white', alignSelf:'center'}}>{time}</span>
                 <Button style={{marginRigth: '5px', borderRadius:'50%'}} className="navbar-brand" variant="contained" >
                       {user.name} 
                     </Button> 

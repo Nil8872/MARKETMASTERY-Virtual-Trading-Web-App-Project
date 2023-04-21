@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import ShareContext from "../../Context/ShareContext";
 import UserContext from "../../Context/UserContex"
 import OrederExecuteContext from "../../Context/OrederExecuteContext";
+import moment from 'moment';
 
 const useStyles = makeStyles({
   smallButton: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles({
 
 
 const toastedStyle = {
-  position: "top-center",
+  position: "top-right",
   theme: "colored",
   autoClose: 3000
 }
@@ -88,7 +89,7 @@ function DraggableModal(props) {
           updateShare(shareId,price,  qty, action, shareUpdateData);
           toast.success(`${sharename} X ${qty} ${action} Successfully!`, toastedStyle)
           const newQty = `${qty}/${qty}`;
-          const executeOrderData = {...buySellShare, status: "Completed", qty:newQty}
+          const executeOrderData = {...buySellShare, status: "Completed", qty:newQty,time:moment().format('LTS')}
           addExeOreder(executeOrderData);
           setExeOrderCount(c=>c+1);
         setShareCount(c=>c+1);
@@ -97,7 +98,7 @@ function DraggableModal(props) {
         else{
           toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
           const qty = `0/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Rejected",qty}
+          const executeOrderData = {...buySellShare, status: "Rejected",qty,time:moment().format('LTS')}
           addExeOreder(executeOrderData);
           setExeOrderCount(c=>c+1);
           handleclose();
@@ -109,7 +110,7 @@ function DraggableModal(props) {
           addShare(values.price, values.qty, action, buySellShare);
           toast.success(`${sharename} X ${values.qty} ${action} Successfully!`, toastedStyle);
           const qty = `${values.qty}/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Completed",qty}
+          const executeOrderData = {...buySellShare, status: "Completed",qty,time:moment().format('LTS')}
           addExeOreder(executeOrderData);
           setExeOrderCount(c=>c+1);
           setShareCount(c=>c+1);
@@ -119,7 +120,7 @@ function DraggableModal(props) {
         else{
           toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
           const qty = `0/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Rejected", qty}
+          const executeOrderData = {...buySellShare, status: "Rejected", qty,time:moment().format('LTS')}
           addExeOreder(executeOrderData);
           setExeOrderCount(c=>c+1);
           handleclose();
@@ -206,6 +207,7 @@ function DraggableModal(props) {
                         Price
                       </span>
                     }
+                    disabled={values.limitMarket === "Market"}
                     value={values.price}
                     name="price"
                     onChange={handleChange}

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "../Styles/position.css";
 import positionData from "../services/positionData";
 import dayHistoryData from "../services/DayHistoryData";
-
+import { ToastContainer, toast } from 'react-toastify';
 import Button from "@mui/material/Button";
 
 import ShareContext from "../Context/ShareContext"; 
@@ -10,6 +10,12 @@ import UserContext from "../Context/UserContex";
 
 import DayHistoryContext from "../Context/DayHistoryContext";
 
+const toastyStyle = {
+  position: "top-right",
+  autoClose: 3000,
+  theme: "colored",
+  draggable: true,
+}
 
 function PositionSidebar() {
   const { shares, setShareCount, deleteShare } = useContext(ShareContext); 
@@ -50,6 +56,7 @@ let l = newArray.length
      
       await addShareInHistory({price, qty, action, sharename, intraInvest, limitMarket});
       await deleteShare(id,price, qty, action);  
+      toast.error(`${sharename} X ${qty} is ${action} Successfully at price: ${price}`,toastyStyle)
       newArray.shift(); 
       setChecked(newArray);
       setShareCount((c) => c + 1); 
@@ -62,6 +69,7 @@ let l = newArray.length
 
   const handleClear = ()=>{
     clearDayHistory();
+    toast.success("Day History is Clear Successfully",toastyStyle)
     setHistoryCount(c=>c+1);
   }
 
@@ -192,6 +200,7 @@ let l = newArray.length
       </div>
     </div>
   );
+  <ToastContainer/>
 }
 
 export default PositionSidebar;

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const executeOrders = new mongoose.Schema({
+const openOrder = new mongoose.Schema({
   user:{
      
     type: mongoose.Schema.Types.ObjectId,
@@ -34,4 +34,4 @@ const executeOrders = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model("ExecuteOrder", executeOrders);
+module.exports = mongoose.model("OpenOreder", openOrder);

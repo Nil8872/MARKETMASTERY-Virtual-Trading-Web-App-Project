@@ -1,14 +1,29 @@
 import React, { useContext } from "react";
 import "../Styles/order.css";
-import openOrderData from '../services/OrederOpenData'
-import orderExecutedData from '../services/OrderExecutedData'
+import openOrderData from "../services/OrederOpenData";
 import OrederExecuteContext from "../Context/OrederExecuteContext";
+import { ToastContainer, toast } from "react-toastify";
+import Button from "@mui/material/Button";
 
+const toastyStyle = {
+  position: "top-right",
+  autoClose: 3000,
+  theme: "colored",
+  draggable: true,
+}
 
 function OrderSidebar() {
-  const {exeOrders} = useContext(OrederExecuteContext);
+  const { exeOrders, clearAllOrder,setExeOrderCount } = useContext(OrederExecuteContext);
+
+
+  const handleClearOrder = ()=>{
+    clearAllOrder();
+    setExeOrderCount();
+    toast.success("Executed Oredered History Cleared!",toastyStyle )
+  }
   return (
     <>
+    <ToastContainer/>
       <div className="orderSidebar" style={{ color: "white" }}>
         <div className="openOrder">
           <span>
@@ -44,14 +59,27 @@ function OrderSidebar() {
                   </>
                 );
               })}
-
             </tbody>
           </table>
         </div>
-        <div className="openOrder">
-          <span>
-            Executed orders<span>({exeOrders.length})</span>
-          </span>
+        <div
+          className="openOrder"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <div>
+            Executed orders<span> ({exeOrders.length})</span>
+          </div>
+          <div className="clear">
+            <Button
+              color="error"
+              size="small"
+              variant="contained"
+              style={{ marginRight: "9px" }}
+              onClick={handleClearOrder}
+            >
+              Clear ({exeOrders.length})
+            </Button>
+          </div>
         </div>
         <div className="row">
           <table>
@@ -60,7 +88,7 @@ function OrderSidebar() {
                 <th>Time</th>
                 <th>Type</th>
                 <th>Instrument</th>
-                <th>Qty.</th> 
+                <th>Qty.</th>
                 <th>Avg. price</th>
                 <th>Status</th>
               </tr>
@@ -74,14 +102,21 @@ function OrderSidebar() {
                       <td>{order.time}</td>
                       <td>{order.action}</td>
                       <td>{order.sharename}</td>
-                      <td>{order.qty}</td> 
+                      <td>{order.qty}</td>
                       <td>{order.price}</td>
-                      <td>{order.status}</td>
+                      {order.status === "Completed" ? (
+                        <td style={{ color: "green", fontWeight: "700" }}>
+                          {order.status}
+                        </td>
+                      ) : (
+                        <td style={{ color: "red", fontWeight: "700" }}>
+                          {order.status}
+                        </td>
+                      )}
                     </tr>
                   </>
                 );
               })}
-
             </tbody>
           </table>
         </div>
