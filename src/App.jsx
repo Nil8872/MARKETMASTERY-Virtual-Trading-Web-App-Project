@@ -18,8 +18,8 @@ import Position from "./pages/Position";
 import Holding from "./pages/Holding";
 import Fund from "./pages/Fund";
 import ShareDetails from "./Context/ShareDetails";
-import DayHistory from "./Context/DayHistory";
- 
+import DayHistory from "./Context/DayHistory"; 
+import OrederExecute from "./Context/OrederExecute";
 
 function App() {
   return (
@@ -27,26 +27,28 @@ function App() {
       <UserDetail>
         <ShareDetails>
           <DayHistory>
-        <NoteState>
-          <Router>
-            <Navbar />
-            <Routes>
-              <Route exact path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/order" element={<Order/>} />
-              <Route path="/position" element={<Position/>} />
-              <Route path="/holding" element={<Holding/>} />
-              <Route path="/fund" element={<Fund/>} />
-            </Routes>
-          </Router>
-        </NoteState>
-        </DayHistory>
+            <OrederExecute>
+              <NoteState>
+                <Router>
+                  <Navbar />
+                  <Routes>
+                    <Route exact path="/" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/order" element={<Order />} />
+                    <Route path="/position" element={<Position />} />
+                    <Route path="/holding" element={<Holding />} />
+                    <Route path="/fund" element={<Fund />} />
+                  </Routes>
+                </Router>
+              </NoteState>
+            </OrederExecute>
+          </DayHistory>
         </ShareDetails>
       </UserDetail>
     </div>
   );
 }
-  
+
 export default App;

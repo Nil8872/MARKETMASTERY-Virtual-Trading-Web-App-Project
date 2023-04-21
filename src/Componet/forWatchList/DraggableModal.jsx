@@ -6,8 +6,10 @@ import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
 import { makeStyles } from "@material-ui/core/styles"; 
 import { useFormik } from "formik"; 
- 
+import { ToastContainer, toast } from 'react-toastify';
 import ShareContext from "../../Context/ShareContext";
+import UserContext from "../../Context/UserContex"
+import OrederExecuteContext from "../../Context/OrederExecuteContext";
 
 const useStyles = makeStyles({
   smallButton: {
@@ -17,6 +19,13 @@ const useStyles = makeStyles({
     height: "28px",
   },
 });
+
+
+const toastedStyle = {
+  position: "top-center",
+  theme: "colored",
+  autoClose: 3000
+}
 
 function CustomBackdrop(props) {
   const classes = useStyles();
@@ -40,6 +49,8 @@ function DraggableModal(props) {
 
   const {setShareCount, addShare, shares, updateShare} = useContext(ShareContext); 
   const { action, open, handleclose, sharename, lastprice } = props; 
+  const {user} = useContext(UserContext);
+  const {setExeOrderCount,addExeOreder} = useContext(OrederExecuteContext);
 
   const initialValues = {
     price: lastprice,
@@ -68,20 +79,51 @@ function DraggableModal(props) {
       })
 
       if(dubble){
-        const price = values.price
-        const qty = values.qty;
-        values.qty += oldQty;
-        // values.price = ((values.price + oldPrice)/2).toFixed(2);
-        const shareUpdateData = {...values, sharename, action }
-        updateShare(shareId,price,  qty, action, shareUpdateData);
+
+        if(user.availMargin > (values.price * values.qty) ){
+          const price = values.price
+          const qty = values.qty;
+          values.qty += oldQty; 
+          const shareUpdateData = {...values, sharename, action }
+          updateShare(shareId,price,  qty, action, shareUpdateData);
+          toast.success(`${sharename} X ${qty} ${action} Successfully!`, toastedStyle)
+          const newQty = `${qty}/${qty}`;
+          const executeOrderData = {...buySellShare, status: "Completed", qty:newQty}
+          addExeOreder(executeOrderData);
+          setExeOrderCount(c=>c+1);
         setShareCount(c=>c+1);
         handleclose();
+        }
+        else{
+          toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
+          const qty = `0/${values.qty}`
+          const executeOrderData = {...buySellShare, status: "Rejected",qty}
+          addExeOreder(executeOrderData);
+          setExeOrderCount(c=>c+1);
+          handleclose();
+        }
       } 
       else{
 
-        addShare(values.price, values.qty, action, buySellShare);
-        setShareCount(c=>c+1);
-        handleclose();
+        if(user.availMargin > (values.price * values.qty) ){
+          addShare(values.price, values.qty, action, buySellShare);
+          toast.success(`${sharename} X ${values.qty} ${action} Successfully!`, toastedStyle);
+          const qty = `${values.qty}/${values.qty}`
+          const executeOrderData = {...buySellShare, status: "Completed",qty}
+          addExeOreder(executeOrderData);
+          setExeOrderCount(c=>c+1);
+          setShareCount(c=>c+1);
+          handleclose();
+
+        }
+        else{
+          toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
+          const qty = `0/${values.qty}`
+          const executeOrderData = {...buySellShare, status: "Rejected", qty}
+          addExeOreder(executeOrderData);
+          setExeOrderCount(c=>c+1);
+          handleclose();
+        }
       }
     },
   });
@@ -230,6 +272,7 @@ function DraggableModal(props) {
           </form>
         </Modal>
       </Draggable>
+      <ToastContainer/>
     </>
   );
 }

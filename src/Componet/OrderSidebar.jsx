@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../Styles/order.css";
 import openOrderData from '../services/OrederOpenData'
 import orderExecutedData from '../services/OrderExecutedData'
+import OrederExecuteContext from "../Context/OrederExecuteContext";
 
 
 function OrderSidebar() {
+  const {exeOrders} = useContext(OrederExecuteContext);
   return (
     <>
       <div className="orderSidebar" style={{ color: "white" }}>
@@ -48,7 +50,7 @@ function OrderSidebar() {
         </div>
         <div className="openOrder">
           <span>
-            Executed orders<span>(15)</span>
+            Executed orders<span>({exeOrders.length})</span>
           </span>
         </div>
         <div className="row">
@@ -64,13 +66,14 @@ function OrderSidebar() {
               </tr>
             </thead>
             <tbody>
-              {orderExecutedData.map((order) => {
+              {/* {orderExecutedData.map((order) => { */}
+              {exeOrders.map((order) => {
                 return (
                   <>
                     <tr>
                       <td>{order.time}</td>
-                      <td>{order.type}</td>
-                      <td>{order.shareName}</td>
+                      <td>{order.action}</td>
+                      <td>{order.sharename}</td>
                       <td>{order.qty}</td> 
                       <td>{order.price}</td>
                       <td>{order.status}</td>

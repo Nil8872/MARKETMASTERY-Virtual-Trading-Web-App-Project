@@ -9,9 +9,10 @@ const  ExecuteOrder = require("../models/executeOrders");
 router.post('/add', fetchUser, async (req,res)=>{
 
     const data = req.body
+    const OrederData = {...data, user: req.user.id}
     try {
 
-        await ExecuteOrder.create(data);
+        await ExecuteOrder.create(OrederData);
         res.status(200).send({success : true, message: "Oreder Added Successfully!"});
         
     } catch (error) {
@@ -22,10 +23,11 @@ router.post('/add', fetchUser, async (req,res)=>{
 
 // route 2 : get Data of Executed orders from DataBase 
 
-router.get('getOrders', fetchUser, async (req,res)=>{
+router.get('/getOrders', fetchUser, async (req,res)=>{
 
     try {
-        const data = await ExecuteOrder.find({user: req.use.id})
+        const data = await ExecuteOrder.find({user: req.user.id})
+        console.log(data)
         res.status(200).send(data);
 
     } catch (error) {

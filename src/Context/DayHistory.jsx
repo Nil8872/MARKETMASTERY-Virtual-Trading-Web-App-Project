@@ -7,6 +7,10 @@ function DayHistory(props) {
     const [historyCount, setHistoryCount] = useState(0);
   const token = localStorage.getItem("token");
 
+
+
+  
+
   // using API End Point and store data in backend of When share is sell then that apper in Day History...
 
   useEffect(()=>{
