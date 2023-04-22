@@ -4,6 +4,7 @@ import openOrderData from "../services/OrederOpenData";
 import OrederExecuteContext from "../Context/OrederExecuteContext";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
+import OpenOrderContext from "../Context/OpenOrderContext";
 
 const toastyStyle = {
   position: "top-right",
@@ -14,7 +15,7 @@ const toastyStyle = {
 
 function OrderSidebar() {
   const { exeOrders, clearAllOrder,setExeOrderCount } = useContext(OrederExecuteContext);
-
+  const {openOrders} = useContext(OpenOrderContext)
 
   const handleClearOrder = ()=>{
     clearAllOrder();
@@ -27,7 +28,7 @@ function OrderSidebar() {
       <div className="orderSidebar" style={{ color: "white" }}>
         <div className="openOrder">
           <span>
-            Open orders<span>(23)</span>
+            Open orders<span>({openOrders.length})</span>
           </span>
         </div>
         <div className="row">
@@ -44,13 +45,13 @@ function OrderSidebar() {
               </tr>
             </thead>
             <tbody>
-              {openOrderData.map((order) => {
+              {openOrders.map((order) => {
                 return (
                   <>
                     <tr>
                       <td>{order.time}</td>
-                      <td>{order.type}</td>
-                      <td>{order.shareName}</td>
+                      <td>{order.action}</td>
+                      <td>{order.sharename}</td>
                       <td>{order.qty}</td>
                       <td>{order.ltp}</td>
                       <td>{order.price}</td>

@@ -21,6 +21,7 @@ app.use('/api/notes', require('./routes/notes'));
 app.use('/api/share', require('./routes/share'));
 app.use('/api/dayHistory', require('./routes/dayHistory'))
 app.use('/api/exeOrders', require('./routes/exeOrders'));
+app.use('/api/openOrder', require('./routes/openOrders'))
 
 app.listen(port, () => {
   console.log(`app listening on port : ${port}`)

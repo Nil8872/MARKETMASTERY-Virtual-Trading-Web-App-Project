@@ -4,13 +4,14 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Draggable from "react-draggable";
 import TextField from "@mui/material/TextField";
-import { makeStyles } from "@material-ui/core/styles"; 
-import { useFormik } from "formik"; 
-import { ToastContainer, toast } from 'react-toastify';
+import { makeStyles } from "@material-ui/core/styles";
+import { useFormik } from "formik";
+import { ToastContainer, toast } from "react-toastify";
 import ShareContext from "../../Context/ShareContext";
-import UserContext from "../../Context/UserContex"
+import UserContext from "../../Context/UserContex";
 import OrederExecuteContext from "../../Context/OrederExecuteContext";
-import moment from 'moment';
+import OpenOrderContext from "../../Context/OpenOrderContext";
+import moment from "moment"; 
 
 const useStyles = makeStyles({
   smallButton: {
@@ -21,12 +22,11 @@ const useStyles = makeStyles({
   },
 });
 
-
 const toastedStyle = {
   position: "top-right",
   theme: "colored",
-  autoClose: 3000
-}
+  autoClose: 3000,
+};
 
 function CustomBackdrop(props) {
   const classes = useStyles();
@@ -44,14 +44,13 @@ const style = {
   borderRadius: 1,
 };
 
-
-
-function DraggableModal(props) { 
-
-  const {setShareCount, addShare, shares, updateShare} = useContext(ShareContext); 
-  const { action, open, handleclose, sharename, lastprice } = props; 
-  const {user} = useContext(UserContext);
-  const {setExeOrderCount,addExeOreder} = useContext(OrederExecuteContext);
+function DraggableModal(props) {
+  const { setShareCount, addShare, shares, updateShare } =
+    useContext(ShareContext);
+  const {addOpenOrder, setOpenOrderCount} = useContext(OpenOrderContext);
+  const { action, open, handleclose, sharename, lastprice } = props;
+  const { user } = useContext(UserContext);
+  const { setExeOrderCount, addExeOreder } = useContext(OrederExecuteContext); 
 
   const initialValues = {
     price: lastprice,
@@ -63,66 +62,137 @@ function DraggableModal(props) {
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues,
     onSubmit: async (values) => {
-      const buySellShare = { ...values, action, sharename }; 
+      const buySellShare = { ...values, action, sharename };
 
-      //  console.log(shares)
       let dubble = false;
       let shareId;
-      let oldPrice ;
-      let oldQty ;
-      shares.map((item)=>{
-        if(item.sharename === sharename){
-          dubble= true;
+      let oldPrice;
+      let oldQty;
+
+      shares.map((item) => {
+        if (item.sharename === sharename && item.action === action) {
+          dubble = true;
           shareId = item._id;
           oldPrice = item.price;
           oldQty = item.qty;
         }
-      })
+      });
 
-      if(dubble){
-
-        if(user.availMargin > (values.price * values.qty) ){
-          const price = values.price
+      if (dubble) {
+        if (user.availMargin > values.price * values.qty) {
+          const price = values.price;
           const qty = values.qty;
-          values.qty += oldQty; 
-          const shareUpdateData = {...values, sharename, action }
-          updateShare(shareId,price,  qty, action, shareUpdateData);
-          toast.success(`${sharename} X ${qty} ${action} Successfully!`, toastedStyle)
-          const newQty = `${qty}/${qty}`;
-          const executeOrderData = {...buySellShare, status: "Completed", qty:newQty,time:moment().format('LTS')}
+          values.qty += oldQty;
+
+          const shareUpdateData = { ...values, sharename, action };
+          if (values.limitMarket === "Market") {
+            updateShare(shareId, price, qty, action, shareUpdateData);
+
+            toast.success(
+              `${sharename} X ${qty} ${action} Successfully!`,
+              toastedStyle
+            );
+
+            const newQty = `${qty}/${qty}`;
+            const executeOrderData = {
+              ...buySellShare,
+              status: "Completed",
+              qty: newQty,
+              time: moment().format("LTS"),
+            };
+
+            addExeOreder(executeOrderData);
+            setExeOrderCount((c) => c + 1);
+            setShareCount((c) => c + 1);
+            handleclose();
+
+          } 
+          else {
+            const qty = `0/${values.qty}`;
+            const openOrderData = {
+              ...buySellShare,
+              qty,
+              status: "Open",
+              time: moment().format("LTS"),
+            };
+
+            addOpenOrder(openOrderData);
+            toast.success(
+              `${sharename} X ${qty} ${action} Order Place Successfully!`,
+              toastedStyle
+            );
+            setOpenOrderCount(c=>c+1);
+            handleclose();
+          }
+        } else {
+          toast.error(
+            "Order Rejected due to Insufficient Balanace",
+            toastedStyle
+          );
+          const qty = `0/${values.qty}`;
+          const executeOrderData = {
+            ...buySellShare,
+            status: "Rejected",
+            qty,
+            time: moment().format("LTS"),
+          };
           addExeOreder(executeOrderData);
-          setExeOrderCount(c=>c+1);
-        setShareCount(c=>c+1);
-        handleclose();
-        }
-        else{
-          toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
-          const qty = `0/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Rejected",qty,time:moment().format('LTS')}
-          addExeOreder(executeOrderData);
-          setExeOrderCount(c=>c+1);
+          setExeOrderCount((c) => c + 1);
           handleclose();
         }
-      } 
-      else{
+      } else {
+        if (user.availMargin > values.price * values.qty) {
+          if(values.limitMarket === 'Market'){
 
-        if(user.availMargin > (values.price * values.qty) ){
+         
           addShare(values.price, values.qty, action, buySellShare);
-          toast.success(`${sharename} X ${values.qty} ${action} Successfully!`, toastedStyle);
-          const qty = `${values.qty}/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Completed",qty,time:moment().format('LTS')}
+          toast.success(
+            `${sharename} X ${values.qty} ${action} Successfully!`,
+            toastedStyle
+          );
+          const qty = `${values.qty}/${values.qty}`;
+          const executeOrderData = {
+            ...buySellShare,
+            status: "Completed",
+            qty,
+            time: moment().format("LTS"),
+          };
           addExeOreder(executeOrderData);
-          setExeOrderCount(c=>c+1);
-          setShareCount(c=>c+1);
+          setExeOrderCount((c) => c + 1);
+          setShareCount((c) => c + 1);
           handleclose();
-
         }
         else{
-          toast.error("Order Rejected due to Insufficient Balanace", toastedStyle);
-          const qty = `0/${values.qty}`
-          const executeOrderData = {...buySellShare, status: "Rejected", qty,time:moment().format('LTS')}
+          const qty = `0/${values.qty}`;
+            const openOrderData = {
+              ...buySellShare,
+              qty,
+              status: "Open",
+              time: moment().format("LTS"),
+            };
+
+            addOpenOrder(openOrderData);
+            toast.success(
+              `${sharename} X ${qty} ${action} Order Place Successfully!`,
+              toastedStyle
+            );
+            setOpenOrderCount(c=>c+1);
+            handleclose();
+        }
+        } else {
+          toast.error(
+            "Order Rejected due to Insufficient Balanace",
+            toastedStyle
+          );
+          const qty = `0/${values.qty}`;
+          const executeOrderData = {
+            ...buySellShare,
+            status: "Rejected",
+            qty,
+            time: moment().format("LTS"),
+          };
           addExeOreder(executeOrderData);
-          setExeOrderCount(c=>c+1);
+          setExeOrderCount((c) => c + 1);
           handleclose();
         }
       }
@@ -274,7 +344,7 @@ function DraggableModal(props) {
           </form>
         </Modal>
       </Draggable>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 }

@@ -20,6 +20,7 @@ import Fund from "./pages/Fund";
 import ShareDetails from "./Context/ShareDetails";
 import DayHistory from "./Context/DayHistory"; 
 import OrederExecute from "./Context/OrederExecute";
+import OpenOrder from "./Context/OpenOrder";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <ShareDetails>
           <DayHistory>
             <OrederExecute>
+              <OpenOrder>
               <NoteState>
                 <Router>
                   <Navbar />
@@ -43,6 +45,7 @@ function App() {
                   </Routes>
                 </Router>
               </NoteState>
+              </OpenOrder>
             </OrederExecute>
           </DayHistory>
         </ShareDetails>

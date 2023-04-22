@@ -91,6 +91,7 @@ let l = newArray.length
                     <input style={{ cursor: "pointer" }} type="checkbox" />
                   </th>
                   <th>Instrument</th>
+                  <th>Type</th>
                   <th>Qty.</th>
                   <th>Avg.</th>
                   <th>LTP</th>
@@ -129,11 +130,13 @@ let l = newArray.length
                           />
                         </td>
                         <td>{share.sharename}</td>
+                        <td>{share.action}</td>
                         <td>{share.qty}</td>
                         <td>{share.price}</td>
                         <td>{share.ltp}</td>
                         <td>{share.pAndL}</td>
                         <td>{share.change}</td>
+
                       </tr>
                     </>
                   );
@@ -170,6 +173,7 @@ let l = newArray.length
               <thead>
                 <tr>
                   <th>Instrument</th>
+                  <th>Type</th>
                   <th>Qty.</th>
                   <th>Avg.</th>
                   <th>LTP</th>
@@ -184,6 +188,7 @@ let l = newArray.length
                     <>
                       <tr>
                         <td>{order.sharename}</td>
+                        <td>{order.action}</td>
                         <td>{order.qty}</td>
                         <td>{order.price}</td>
                         <td>{order.action}</td>
