@@ -27,9 +27,6 @@ function OneShare(props) {
   const handleClose = () => setOpen(false);
   const handleClose1 = () => setOpen1(false);
 
-  // const shareName = useRef();
-  // console.log(shareName.current.textContent);
-  
   return (
     <>
     <DraggableModal action={"Buy"} sharename={sharename}  open={open} lastprice={lastprice} handleclose={handleClose}/>
@@ -49,7 +46,7 @@ function OneShare(props) {
               {sharename}
             </div>
             <div className="buySell">
-              <div style={{ display: "flex" }}>
+              <div style={{ display: "flex" }}> 
                 <Button
                   onClick={handleOpen}
                   className={classes.smallButton}

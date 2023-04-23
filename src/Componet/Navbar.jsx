@@ -127,7 +127,7 @@ function Navbar() {
             <form className="d-flex" role="search">
               {!token?(
                   <Stack direction="row" spacing={1}>
-                    <span>{time}</span>
+                   <span style={{color:'white', alignSelf:'center'}}>{time}</span>
                   <Link style={{marginRight: '4px'}}  className="navbar-brand"  to="/login">
                     <Button variant="contained" startIcon={<LoginIcon />}>
                       Login
