@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from "react";
-import UserContext from "./UserContex"; 
+import React, { useContext, useEffect, useState } from "react";
+import UserContext from "./UserContex";  
+import DayHistoryContext from "./DayHistoryContext"; 
+import OrederExecuteContext from "./OrederExecuteContext";
+import OpenOrderContext from "./OpenOrderContext";
+import ShareContext from "./ShareContext";
 const baseUrl = "http://localhost:5000";
 
 function UserDetail(props) { 
   const [user, setUser] = useState({});
   const [count, setUserCount] = useState(0);
   const token =  localStorage.getItem("token");
+  const {setHistoryCount} = useContext(DayHistoryContext) ; 
+  const {setExeOrderCount} = useContext(OrederExecuteContext);
+  const {setOpenOrderCount} = useContext(OpenOrderContext);
+  const {setShareCount} = useContext(ShareContext);
+  
+
   const fetchUserDetail = async () => { 
 
     // using API End Point and store data in backend
@@ -19,13 +29,21 @@ function UserDetail(props) {
 
     const response = await fetch(`${baseUrl}/api/auth/getUser`, option);
     const result = await response.json();
+    console.log(result);
     setUser(result);
   };
   useEffect(() => {
     console.log("UseEffect called");
     if (!token) {
     } else {
-      fetchUserDetail();
+      fetchUserDetail(); 
+      setHistoryCount(C=>C+1) 
+      setExeOrderCount(c=>c+1);
+      setOpenOrderCount(c=>c+1);
+      setShareCount(c=>c+1);
+    
+
+      console.log("function Call fetchUserDetail")
     }
   }, [count]);
 

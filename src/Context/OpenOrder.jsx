@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import OpenOrderContext from "./OpenOrderContext";
+
 const baseUrl = "http://localhost:5000"
+const token = localStorage.getItem("token");
 
 function OpenOrder(props) {
-  const token = localStorage.getItem("token");
   const [openOrders, setOpenOrders] = useState([]);
   const [openOrderCount, setOpenOrderCount] = useState(0);
 
@@ -27,6 +28,7 @@ function OpenOrder(props) {
       const data = await fetch(`${baseUrl}/api/openOrder/getOpenOrder`, option);
       const openOrderData = await data.json();
       setOpenOrders(openOrderData);
+      
     } catch (error) {
       console.log(error);
     }

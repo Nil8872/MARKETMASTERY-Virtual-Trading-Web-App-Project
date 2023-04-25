@@ -1,11 +1,9 @@
 import React, { useContext, useState } from "react";
-import "../Styles/position.css";
-import positionData from "../services/positionData";
-import dayHistoryData from "../services/DayHistoryData";
-import { ToastContainer, toast } from 'react-toastify';
+import "../Styles/position.css"; 
+import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 
-import ShareContext from "../Context/ShareContext"; 
+import ShareContext from "../Context/ShareContext";
 import UserContext from "../Context/UserContex";
 
 import DayHistoryContext from "../Context/DayHistoryContext";
@@ -15,15 +13,15 @@ const toastyStyle = {
   autoClose: 3000,
   theme: "colored",
   draggable: true,
-}
+};
 
 function PositionSidebar() {
-  const { shares, setShareCount, deleteShare } = useContext(ShareContext); 
+  const { shares, setShareCount, deleteShare } = useContext(ShareContext);
   const [checked, setChecked] = useState([]);
-  const {setUserCount} = useContext(UserContext);
-  const {addShareInHistory, dayHistory, clearDayHistory, setHistoryCount}= useContext(DayHistoryContext)
-
-  console.log(dayHistory);
+  const { user, updateUser,  setUserCount } = useContext(UserContext);
+  const { addShareInHistory, dayHistory, clearDayHistory, setHistoryCount } =
+    useContext(DayHistoryContext);  
+    
   const handleChecked = (id) => {
     let present = false;
     checked.forEach((element) => {
@@ -38,40 +36,76 @@ function PositionSidebar() {
       });
 
       setChecked(newChecked);
-    } else { 
+    } else {
       const newChecked = [...checked, id];
       setChecked(newChecked);
     }
   };
 
-   
-let newArray = checked; 
-let l = newArray.length
-  const handleExit = async()=>{ 
+  const updateUserWithData = async(price, qty)=>{ 
+    let prevused =  await user.usedMargin
+    let avail;
+    const used = price * qty;
 
-    for(let i =0;i<l; i++){
-      const shareVar = shares; 
-      let id = newArray[0];  
-      const {price, qty, action, sharename, intraInvest, limitMarket} =  shareVar.filter((share)=>{return share._id === id})[0]
+    prevused = prevused - used;
+    avail = (await user.availMargin) + used;
+
+    const updatedData = {
+      ...user,
+      usedMargin: prevused.toFixed(2),
+      availMargin: avail.toFixed(2),
+    };
+
+       
+ 
+    await updateUser(user._id, updatedData);  
+    setUserCount(e => e + 1);
      
-      await addShareInHistory({price, qty, action, sharename, intraInvest, limitMarket});
-      await deleteShare(id,price, qty, action);  
-      toast.error(`${sharename} X ${qty} is ${action} Successfully at price: ${price}`,toastyStyle)
-      newArray.shift(); 
+  }
+
+  let newArray = checked;
+  let l = newArray.length;
+  const handleExit = async () => {
+    for (let i = 0; i < l; i++) {
+      const shareVar = shares;
+      let id = newArray[0];
+      const { price, qty, action, sharename, intraInvest, limitMarket } =
+        shareVar.filter((share) => {
+          return share._id === id;
+        })[0];
+
+      await addShareInHistory({
+        price,
+        qty,
+        action,
+        sharename,
+        intraInvest,
+        limitMarket,
+      });
+    
+
+
+      await deleteShare(id, price, qty, action);
+      await updateUserWithData(price,qty);
+
+
+      toast.error(
+        `${sharename} X ${qty} is ${action} Successfully at price: ${price}`,
+        toastyStyle
+      );
+      newArray.shift();
       setChecked(newArray);
-      setShareCount((c) => c + 1); 
-      setHistoryCount(c=>c+1);
-      setUserCount((c)=>c+1);  
-      
+      setShareCount((c) => c + 1);
+      setHistoryCount((c) => c + 1);
+      setUserCount((c) => c + 1);
     }
-  }
+  };
 
-
-  const handleClear = ()=>{
+  const handleClear = () => {
     clearDayHistory();
-    toast.success("Day History is Clear Successfully",toastyStyle)
-    setHistoryCount(c=>c+1);
-  }
+    toast.success("Day History is Clear Successfully", toastyStyle);
+    setHistoryCount((c) => c + 1);
+  };
 
   return (
     <div>
@@ -136,7 +170,6 @@ let l = newArray.length
                         <td>{share.ltp}</td>
                         <td>{share.pAndL}</td>
                         <td>{share.change}</td>
-
                       </tr>
                     </>
                   );
@@ -152,7 +185,7 @@ let l = newArray.length
           </div>
           <div className="row">
             <table>
-            <tfoot>
+              <tfoot>
                 <tr>
                   <td>
                     <Button
@@ -160,11 +193,11 @@ let l = newArray.length
                       size="small"
                       color="error"
                       onClick={handleClear}
-                      >
+                    >
                       Clear ({dayHistory.length})
                     </Button>
                   </td>
-                      <td>Clear</td>
+                  <td>Clear</td>
                   <td>History</td>
                   <td> </td>
                   <td> </td>
@@ -205,7 +238,7 @@ let l = newArray.length
       </div>
     </div>
   );
-  <ToastContainer/>
+  <ToastContainer />;
 }
 
 export default PositionSidebar;

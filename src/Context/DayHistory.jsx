@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import DayHistoryContext from "./DayHistoryContext";
-const baseUrl = "http://localhost:5000";
+const baseUrl = "http://localhost:5000";  
 
 function DayHistory(props) {
     const [dayHistory, setDayHistory] = useState([]);
-    const [historyCount, setHistoryCount] = useState(0);
-  const token = localStorage.getItem("token");
+    const [historyCount, setHistoryCount] = useState(0); 
+  const token = localStorage.getItem("token"); 
 
 
 
@@ -19,7 +19,8 @@ function DayHistory(props) {
     }
     else{
 
-      getDayHistory();
+      getDayHistory(); 
+      console.log("Get day History funtioin called")
     }
   },[historyCount])
 
@@ -37,8 +38,8 @@ function DayHistory(props) {
         
        const data =  await fetch(`${baseUrl}/api/dayHistory/getHistory`, option);
         const dayHistoryData = await data.json(); 
-       setDayHistory(dayHistoryData);
-
+        console.log(dayHistoryData)
+       setDayHistory(dayHistoryData); 
     } catch (error) {
         
     }

@@ -49,8 +49,9 @@ function DraggableModal(props) {
     useContext(ShareContext);
   const {addOpenOrder, setOpenOrderCount} = useContext(OpenOrderContext);
   const { action, open, handleclose, sharename, lastprice } = props;
-  const { user } = useContext(UserContext);
+  const { user,updateUser, setUserCount } = useContext(UserContext);
   const { setExeOrderCount, addExeOreder } = useContext(OrederExecuteContext); 
+  const id = user._id;
 
   const initialValues = {
     price: lastprice,
@@ -58,6 +59,26 @@ function DraggableModal(props) {
     intraInvest: "Intraday",
     limitMarket: "Market",
   };
+
+
+
+  const updateUserWithData = async(price,qty) =>{
+    let prevused = parseInt(user.usedMargin);
+    let avail;
+    const used = price * qty;
+    prevused = prevused + used;
+    avail = user.availMargin - used;
+    const updatedData = {
+      ...user,
+      usedMargin: prevused.toFixed(2),
+      availMargin: avail.toFixed(2),
+    };
+    await updateUser(id, updatedData);
+    setUserCount((e) => e + 1);
+  }
+
+
+
 
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues,
@@ -86,7 +107,9 @@ function DraggableModal(props) {
 
           const shareUpdateData = { ...values, sharename, action };
           if (values.limitMarket === "Market") {
-            updateShare(shareId, price, qty, action, shareUpdateData);
+            await updateShare(shareId, price, qty, action, shareUpdateData);
+
+            await updateUserWithData(price, qty);
 
             toast.success(
               `${sharename} X ${qty} ${action} Successfully!`,
@@ -146,6 +169,8 @@ function DraggableModal(props) {
 
          
           addShare(values.price, values.qty, action, buySellShare);
+          await updateUserWithData(values.price, values.qty);
+
           toast.success(
             `${sharename} X ${values.qty} ${action} Successfully!`,
             toastedStyle
