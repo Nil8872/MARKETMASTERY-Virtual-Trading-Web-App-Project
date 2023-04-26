@@ -11,7 +11,7 @@ const connectToMongo = () => {
       useUnifiedTopology: true
     })
     .then(() => {
-      console.log("Connection is Successfull");
+      console.log("Connection with DataBase is Successfull");
     })
     .catch((e) => console.log(e));
 };

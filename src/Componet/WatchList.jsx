@@ -1,6 +1,5 @@
-import React,{useState} from "react";
-import OneShare from "./forWatchList/OneShare";
-// import SearchBox from "./forWatchList/SearchBox";
+import React,{useContext, useEffect, useState} from "react";
+import OneShare from "./forWatchList/OneShare"; 
 import data from '../services/RealTimeData.js'
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -8,8 +7,34 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton"; 
 import SearchIcon from "@mui/icons-material/Search";  
 import Tooltip from "@mui/material/Tooltip";
+import RealTimeDataContext from "../Context/RealTimeDataContext";
+import prices from "../services/RealTimeData.js";
 
 function WatchList() {
+  
+  const {sharePrices} = useContext(RealTimeDataContext);
+  // const [sharePrices, setSharePrices] = useState(prices);
+
+  // const randomPriceGenerator = (prices) => {
+  //     prices.map((share) => {
+  //       setInterval(() => {
+  //         let randomprice = Math.random() - 0.5;
+  //         share.ltp = share.ltp + randomprice;
+  //         share.absoluteprice = share.lastprice - share.ltp;
+  //         share.percentegeprice = ((share.absoluteprice)*100)/ (share.lastprice);
+  //       }, [1000]);
+  //     });
+  //   };
+
+  //   randomPriceGenerator(prices);
+
+
+  //   useEffect(() => {
+  //     setSharePrices(prices);
+  //   }, [prices]);
+    // console.log(sharePrices);
+  // console.log(nilesh);
+
   const [searchShare, setSearchShare] = useState(""); 
   const handleSearch = (event)=>{
     setSearchShare((event.target.value) )
@@ -51,9 +76,9 @@ function WatchList() {
 
 <div className="mainWatchList" >
 {
- data.filter((share)=> share.sharename.includes(search)).map((share)=>{
+ sharePrices.filter((share)=> share.sharename.includes(search)).map((share)=>{
     return (
-      <OneShare key={share.sharename} sharename={share.sharename} absoluteprice={share.absoluteprice} percentegeprice={share.percentegeprice} lastprice={share.lastprice} />
+      <OneShare key={share.sharename} sharename={share.sharename} absoluteprice={(share.absoluteprice).toFixed(2)} percentegeprice={share.percentegeprice.toFixed(2)} lastprice={(share.ltp).toFixed(2)} />
       
     )
   })
