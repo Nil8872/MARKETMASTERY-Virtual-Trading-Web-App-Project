@@ -13,27 +13,7 @@ import prices from "../services/RealTimeData.js";
 function WatchList() {
   
   const {sharePrices} = useContext(RealTimeDataContext);
-  // const [sharePrices, setSharePrices] = useState(prices);
-
-  // const randomPriceGenerator = (prices) => {
-  //     prices.map((share) => {
-  //       setInterval(() => {
-  //         let randomprice = Math.random() - 0.5;
-  //         share.ltp = share.ltp + randomprice;
-  //         share.absoluteprice = share.lastprice - share.ltp;
-  //         share.percentegeprice = ((share.absoluteprice)*100)/ (share.lastprice);
-  //       }, [1000]);
-  //     });
-  //   };
-
-  //   randomPriceGenerator(prices);
-
-
-  //   useEffect(() => {
-  //     setSharePrices(prices);
-  //   }, [prices]);
-    // console.log(sharePrices);
-  // console.log(nilesh);
+   
 
   const [searchShare, setSearchShare] = useState(""); 
   const handleSearch = (event)=>{

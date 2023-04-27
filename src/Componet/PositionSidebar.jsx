@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 
 import ShareContext from "../Context/ShareContext";
 import UserContext from "../Context/UserContex";
-
+import RealTimeDataContext from "../Context/RealTimeDataContext";
 import DayHistoryContext from "../Context/DayHistoryContext";
 
 const toastyStyle = {
@@ -21,7 +21,10 @@ function PositionSidebar() {
   const { user, updateUser,  setUserCount } = useContext(UserContext);
   const { addShareInHistory, dayHistory, clearDayHistory, setHistoryCount } =
     useContext(DayHistoryContext);  
-    
+
+  const {sharePrices} = useContext(RealTimeDataContext); 
+
+
   const handleChecked = (id) => {
     let present = false;
     checked.forEach((element) => {
@@ -106,6 +109,25 @@ function PositionSidebar() {
     toast.success("Day History is Clear Successfully", toastyStyle);
     setHistoryCount((c) => c + 1);
   };
+ 
+
+  const getShareLTP = (sharename)=>{ 
+    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
+      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+    }
+  }
+
+const getTotalProfit = ()=>{
+  let profit = 0; 
+  shares.map((share)=>{   
+    profit += parseFloat((share.qty * (getShareLTP(share.sharename) - share.price)))
+    // console.log(profit);
+  })
+  return (profit.toFixed(2))
+
+}
+
+
 
   return (
     <div>
@@ -146,8 +168,11 @@ function PositionSidebar() {
                     </Button>
                   </td>
                   <td></td>
+                  <td></td>
+                  <td></td>
                   <td>Total</td>
-                  <td>20L</td>
+                  <td id="total">{getTotalProfit()}</td>
+                  <td></td>
                 </tr>
               </tfoot>
               <tbody>
@@ -166,10 +191,10 @@ function PositionSidebar() {
                         <td>{share.sharename}</td>
                         <td>{share.action}</td>
                         <td>{share.qty}</td>
-                        <td>{share.price}</td>
-                        <td>{share.ltp}</td>
-                        <td>{share.pAndL}</td>
-                        <td>{share.change}</td>
+                        <td>{(share.price).toFixed(2)}</td>
+                        <td>{getShareLTP(share.sharename)}</td>
+                        <td>{ (share.qty * (getShareLTP(share.sharename) - share.price)).toFixed(2)}</td>
+                        <td>{(getShareLTP(share.sharename) - share.price).toFixed(2)}</td>
                       </tr>
                     </>
                   );
@@ -223,8 +248,8 @@ function PositionSidebar() {
                         <td>{order.sharename}</td>
                         <td>{order.action}</td>
                         <td>{order.qty}</td>
-                        <td>{order.price}</td>
-                        <td>{order.action}</td>
+                        <td>{(order.price).toFixed(2)}</td>
+                        <td>{getShareLTP(order.sharename)}</td>
                         <td>{order.intraInvest}</td>
                         <td>{order.limitMarket}</td>
                       </tr>

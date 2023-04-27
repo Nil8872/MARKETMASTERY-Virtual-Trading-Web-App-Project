@@ -11,6 +11,7 @@ import ShareContext from "../../Context/ShareContext";
 import UserContext from "../../Context/UserContex";
 import OrederExecuteContext from "../../Context/OrederExecuteContext";
 import OpenOrderContext from "../../Context/OpenOrderContext";
+import RealTimeDataContext from "../../Context/RealTimeDataContext";
 import moment from "moment"; 
 
 const useStyles = makeStyles({
@@ -45,6 +46,9 @@ const style = {
 };
 
 function DraggableModal(props) {
+
+  const {sharePrices} = useContext(RealTimeDataContext); 
+
   const { setShareCount, addShare, shares, updateShare } =
     useContext(ShareContext);
   const {addOpenOrder, setOpenOrderCount} = useContext(OpenOrderContext);
@@ -59,6 +63,13 @@ function DraggableModal(props) {
     intraInvest: "Intraday",
     limitMarket: "Market",
   };
+
+
+  const getShareLTP = (sharename)=>{ 
+    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
+      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+    }
+  }
 
 
 
@@ -89,6 +100,7 @@ function DraggableModal(props) {
       let shareId;
       let oldPrice;
       let oldQty;
+      let oldSharename;
 
       shares.map((item) => {
         if (item.sharename === sharename && item.action === action) {
@@ -96,16 +108,20 @@ function DraggableModal(props) {
           shareId = item._id;
           oldPrice = item.price;
           oldQty = item.qty;
+          oldSharename = item.sharename;
         }
       });
 
       if (dubble) {
-        if (user.availMargin > values.price * values.qty) {
-          const price = values.price;
+        // if (user.availMargin > values.price * values.qty) {
+          console.log(getShareLTP(sharename))
+        if (user.availMargin > getShareLTP(sharename) * values.qty) {
           const qty = values.qty;
           values.qty += oldQty;
+ 
+          const price = (getShareLTP(oldSharename) * qty + oldPrice *oldQty)/values.qty;
 
-          const shareUpdateData = { ...values, sharename, action };
+          const shareUpdateData = { ...values, sharename, action, price };
           if (values.limitMarket === "Market") {
             await updateShare(shareId, price, qty, action, shareUpdateData);
 
@@ -137,6 +153,7 @@ function DraggableModal(props) {
               qty,
               status: "Open",
               time: moment().format("LTS"),
+              price: getShareLTP(sharename)
             };
 
             addOpenOrder(openOrderData);
@@ -158,18 +175,19 @@ function DraggableModal(props) {
             status: "Rejected",
             qty,
             time: moment().format("LTS"),
+            price: getShareLTP(sharename)
           };
           addExeOreder(executeOrderData);
           setExeOrderCount((c) => c + 1);
           handleclose();
         }
       } else {
-        if (user.availMargin > values.price * values.qty) {
+        if (user.availMargin > getShareLTP(sharename) * values.qty) {
           if(values.limitMarket === 'Market'){
 
-         
-          addShare(values.price, values.qty, action, buySellShare);
-          await updateUserWithData(values.price, values.qty);
+    
+          addShare(values.price, values.qty, action, {...buySellShare, price: getShareLTP(sharename)});
+          await updateUserWithData(getShareLTP(sharename), values.qty);
 
           toast.success(
             `${sharename} X ${values.qty} ${action} Successfully!`,
@@ -181,6 +199,7 @@ function DraggableModal(props) {
             status: "Completed",
             qty,
             time: moment().format("LTS"),
+            price : getShareLTP(sharename),
           };
           addExeOreder(executeOrderData);
           setExeOrderCount((c) => c + 1);
@@ -194,6 +213,7 @@ function DraggableModal(props) {
               qty,
               status: "Open",
               time: moment().format("LTS"),
+              price : getShareLTP(sharename),
             };
 
             addOpenOrder(openOrderData);
@@ -215,6 +235,7 @@ function DraggableModal(props) {
             status: "Rejected",
             qty,
             time: moment().format("LTS"),
+            price : getShareLTP(sharename),
           };
           addExeOreder(executeOrderData);
           setExeOrderCount((c) => c + 1);
@@ -249,7 +270,7 @@ function DraggableModal(props) {
                 <span style={{ fontWeight: 700, fontSize: "20px" }}>
                   {action} {sharename} x {values.qty} Qty.
                 </span>
-                <div>Price: ₹{values.price}</div>
+                <div>Price: ₹{getShareLTP(sharename)}</div>
               </div>
               <div
                 className="categary"
@@ -303,7 +324,7 @@ function DraggableModal(props) {
                       </span>
                     }
                     disabled={values.limitMarket === "Market"}
-                    value={values.price}
+                    value={getShareLTP(sharename)}
                     name="price"
                     onChange={handleChange}
                     type="number"
@@ -343,7 +364,7 @@ function DraggableModal(props) {
                   <span>
                     {action == "Sell"
                       ? 0
-                      : (values.price * values.qty).toFixed(3)}
+                      : (getShareLTP(sharename) * values.qty).toFixed(3)}
                   </span>
                 </div>
 

@@ -19,8 +19,7 @@ function DayHistory(props) {
     }
     else{
 
-      getDayHistory(); 
-      console.log("Get day History funtioin called")
+      getDayHistory();  
     }
   },[historyCount])
 
@@ -37,8 +36,7 @@ function DayHistory(props) {
     try {
         
        const data =  await fetch(`${baseUrl}/api/dayHistory/getHistory`, option);
-        const dayHistoryData = await data.json(); 
-        console.log(dayHistoryData)
+        const dayHistoryData = await data.json();  
        setDayHistory(dayHistoryData); 
     } catch (error) {
         
@@ -80,7 +78,7 @@ const clearDayHistory = async()=> {
 
     try {
          const result  = await fetch(`${baseUrl}/api/dayHistory/clearHistory`, option)
-         console.log(await result.json());
+         await result.json()
     } catch (error) {
         
     }
