@@ -132,7 +132,8 @@
 //       percentegeprice : 0.20,
 //       ltp: 383.50,
 //       lastprice: 383.50,
-//   }
+//   },
+
 
 //   ];
 
@@ -177,7 +178,7 @@ const randomPriceGenerator = () => {
         { new: true }
       );
     });
-  }, [500]);
+  }, [300]);
 };
 
 randomPriceGenerator();

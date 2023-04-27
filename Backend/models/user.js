@@ -33,6 +33,10 @@ const userSchema = new mongoose.Schema({
     availMargin : {
       type : Number, 
       require: true,
+    },
+    pAndL :{
+      type : Number, 
+      required: true,
     }
   });
 

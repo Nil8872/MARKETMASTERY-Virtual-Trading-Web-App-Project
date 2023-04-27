@@ -2,13 +2,17 @@ import React, { useContext } from "react";
 import UserContext from "../Context/UserContex";
 import { FcCurrencyExchange } from "react-icons/fc";
 import { BsFillBriefcaseFill } from "react-icons/bs";
-
+import ShareContext from "../Context/ShareContext";
 
 function Sidebar() {
   const { user } = useContext(UserContext);
+  const {shares} = useContext(ShareContext);
   return (
     <>
-      <div className="userNameD">
+    {
+      (user !== undefined ) ? (
+        <>
+          <div className="userNameD">
         <h1 style={{ color: "rgba(255,255,255,0.8)" }}>Hii, {user.name}</h1>
       </div>
       <div className="margin-box" style={{ color: "white" }}>
@@ -21,7 +25,7 @@ function Sidebar() {
           </div>
           <div className="avail-margin">
             <div className="main-margin">
-              <span>{user.availMargin}</span>
+              {user.availMargin ? <span>{(user.availMargin).toFixed(2)}</span> : ''} 
               <div className="margin" style={{ paddingLeft: "26px" }}>
                 <p style={{ fontSize: "14px" }}>Margin available</p>
               </div>
@@ -29,7 +33,7 @@ function Sidebar() {
             <div className="used-margin">
               <div className="useMargin">
                 <p>
-                  Margin used: <span> {user.usedMargin}</span>
+                  Margin used:  {(user.usedMargin)? <span>{(user.usedMargin).toFixed(2)}</span>: 0 }
                 </p>
               </div>
               <div className="openingBalance">
@@ -50,11 +54,15 @@ function Sidebar() {
             <span className="icon" style={{ margin: "20px" }}>
               < BsFillBriefcaseFill />
             </span>
-            <span style={{ fontSize: "1.3rem" }}>Portfolio <span className="count"> (32)</span></span>
+            <span style={{ fontSize: "1.3rem" }}>Portfolio <span className="count"> ({shares.length})</span></span>
           </div>
           <div className="avail-margin">
             <div className="main-margin">
-              <span>5,00,00</span> 
+              
+
+              {
+                (user.pAndL)? <span>{(user.pAndL).toFixed(2)}</span>:""
+              }
               <div className="margin" style={{ paddingLeft: "26px" }}>
                 <p style={{ fontSize: "14px" }}>P&L</p>
               </div>
@@ -62,7 +70,7 @@ function Sidebar() {
             <div className="used-margin">
               <div className="useMargin">
                 <p>
-                  Current value: <span> 3L</span>
+                  Current value: {(user.availMargin) ?<span>{(user.availMargin).toFixed(2) }</span> : ''} 
                 </p>
               </div>
               <div className="openingBalance">
@@ -75,6 +83,10 @@ function Sidebar() {
         </div>
         <div className="second-box"></div>
       </div>
+        </>
+      ): ""
+    }
+      
     </>
   );
 }

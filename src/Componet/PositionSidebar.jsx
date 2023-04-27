@@ -45,20 +45,24 @@ function PositionSidebar() {
     }
   };
 
-  const updateUserWithData = async(price, qty)=>{ 
+  const updateUserWithData = async(price, qty, sharePandL)=>{ 
     let prevused =  await user.usedMargin
     let avail;
     const used = price * qty;
+    let pAndL = user.pAndL;
+    pAndL += parseFloat(sharePandL);
 
     prevused = prevused - used;
-    avail = (await user.availMargin) + used;
+    avail = (await user.availMargin) + used + parseFloat(sharePandL);
+     
 
     const updatedData = {
       ...user,
       usedMargin: prevused.toFixed(2),
-      availMargin: avail.toFixed(2),
+      availMargin: avail.toFixed(2), 
+      pAndL,
     };
-
+ 
        
  
     await updateUser(user._id, updatedData);  
@@ -77,6 +81,7 @@ function PositionSidebar() {
           return share._id === id;
         })[0];
 
+        const sharePandL =   (qty * (getShareLTP(sharename) - price)).toFixed(2);
       await addShareInHistory({
         price,
         qty,
@@ -84,12 +89,13 @@ function PositionSidebar() {
         sharename,
         intraInvest,
         limitMarket,
+        sharePandL,
       });
     
 
 
       await deleteShare(id, price, qty, action);
-      await updateUserWithData(price,qty);
+      await updateUserWithData(price,qty,sharePandL);
 
 
       toast.error(
@@ -250,8 +256,8 @@ const getTotalProfit = ()=>{
                         <td>{order.qty}</td>
                         <td>{(order.price).toFixed(2)}</td>
                         <td>{getShareLTP(order.sharename)}</td>
-                        <td>{order.intraInvest}</td>
-                        <td>{order.limitMarket}</td>
+                        <td>{order.sharePandL}</td>
+                        <td>{(getShareLTP(order.sharename) - order.price).toFixed(2)}</td>
                       </tr>
                     </>
                   );

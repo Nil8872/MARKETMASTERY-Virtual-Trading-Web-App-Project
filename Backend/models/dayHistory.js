@@ -34,6 +34,11 @@ const dayHistory = new mongoose.Schema({
   price : {
     type :Number,
     required: true,
+  },
+  sharePandL:{
+    type: Number,
+    default: 0,
+    required : true,
   }
 
 });
