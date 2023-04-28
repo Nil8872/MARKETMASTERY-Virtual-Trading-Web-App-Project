@@ -8,8 +8,7 @@ import {
   Routes,
   Route,
   Navigate,
-} from "react-router-dom";
-import NoteState from "./Context/NoteState";
+} from "react-router-dom"; 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserDetail from "./Context/UserDetail";
@@ -31,8 +30,7 @@ function App() {
           <OpenOrder>
             <OrederExecute>
               <ShareDetails>
-                <UserDetail>
-                  <NoteState>
+                <UserDetail> 
                     <Router>
                       <Navbar />
                       <Routes>
@@ -45,8 +43,7 @@ function App() {
                         <Route path="/holding" element={<Holding />} />
                         <Route path="/fund" element={<Fund />} />
                       </Routes>
-                    </Router>
-                  </NoteState>
+                    </Router> 
                 </UserDetail>
               </ShareDetails>
             </OrederExecute>

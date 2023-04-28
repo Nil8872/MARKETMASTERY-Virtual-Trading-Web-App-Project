@@ -3,16 +3,14 @@ import React, { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import { useFormik } from "formik";
 import * as Yup from "yup"; 
-import { Navigate } from "react-router-dom";
-import NoteContex from "../Context/NoteContex";
+import { Navigate } from "react-router-dom"; 
 import UserContext from "../Context/UserContex";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RadiusShape from "../Componet/RadiusShape";
 
 const baseUrl = "http://localhost:5000";
-function Login() {
-  const { setCount } = useContext(NoteContex);
+function Login() { 
   const { setUserCount } = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -47,8 +45,7 @@ function Login() {
         if (result.success) {
           localStorage.setItem("token", result.userToken);
           console.log("ssucess");
-          setIsLoggedIn(true);
-          setCount((c) => c + 1);
+          setIsLoggedIn(true); 
           setUserCount((c)=>c+1);
           toast("Login SuccessFully!");
         } else {
