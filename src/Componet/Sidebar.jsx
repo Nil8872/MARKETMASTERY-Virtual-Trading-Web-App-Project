@@ -70,7 +70,7 @@ function Sidebar() {
             <div className="used-margin">
               <div className="useMargin">
                 <p>
-                  Current value: {(user.availMargin) ?<span>{(user.availMargin).toFixed(2) }</span> : ''} 
+                  Current value: {(user.availMargin) ?<span>{(user.startAmount + user.pAndL).toFixed(2) }</span> : ''} 
                 </p>
               </div>
               <div className="openingBalance">

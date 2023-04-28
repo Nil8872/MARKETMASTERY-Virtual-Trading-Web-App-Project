@@ -37,4 +37,22 @@ router.get('/getOpenOrder', fetchUser, async (req,res)=>{
 });
 
 
+// route 3 : find buy id and delete(cancle) order 
+
+router.delete('/cancle/:id', fetchUser, async (req, res)=>{
+
+    let id = req.params.id
+    try {
+
+        await OpenOreder.findByIdAndDelete(id);
+        res.status(204).send({success: true, message: "Order Cancle successfully!"})
+
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({success: false, message: "Internal Server Error!"});
+    }
+})
+
+
 module.exports = router;

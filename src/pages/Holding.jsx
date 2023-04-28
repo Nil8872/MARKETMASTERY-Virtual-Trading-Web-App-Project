@@ -3,11 +3,21 @@ import WatchList from "../Componet/WatchList";
 import { Navigate } from "react-router-dom";
 import "../Styles/HoldingPage.css"; 
 import ShareContext from "../Context/ShareContext";
+import RealTimeDataContext from "../Context/RealTimeDataContext";
 
 function Holding() {
-  const { shares } = useContext(ShareContext);
-  console.log(shares);
+  const { shares } = useContext(ShareContext); 
+  const {sharePrices} = useContext(RealTimeDataContext);
   const token = localStorage.getItem("token");
+
+
+  
+  const getShareLTP = (sharename)=>{ 
+    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
+      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+    }
+  }
+
   return (
     <>
       {token === null ? (
@@ -46,12 +56,13 @@ function Holding() {
                           <tr>
                             <td>{order.sharename}</td>
                             <td>{order.qty}</td>
-                            <td>{order.price}</td>
-                            <td>{order.ltp}</td>
-                            <td>{order.ltp}</td>
-                            <td>{order.cur}</td>
-                            <td>{order.status}</td>
-                            <td>{order.status}</td>
+                            <td>{(order.price).toFixed(2)}</td>
+                            <td>{getShareLTP(order.sharename)}</td>
+                            <td>{(order.qty * (getShareLTP(order.sharename))).toFixed(2)}</td>
+                            <td>{ (order.qty * (getShareLTP(order.sharename) - order.price)).toFixed(2)}</td>
+                            <td>{(getShareLTP(order.sharename) - order.price).toFixed(2)}</td>
+                            <td>{(getShareLTP(order.sharename) - order.price).toFixed(2)}</td>
+                            {/* <td>{order.status}</td> */}
                           </tr>
                         </>
                       );

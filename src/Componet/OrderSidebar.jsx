@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import "../Styles/order.css";
-import openOrderData from "../services/OrederOpenData";
+import React, { useContext, useState } from "react";
+import "../Styles/order.css"; 
 import OrederExecuteContext from "../Context/OrederExecuteContext";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
-import OpenOrderContext from "../Context/OpenOrderContext";
+import OpenOrderContext from "../Context/OpenOrderContext";  
+import RealTimeDataContext from "../Context/RealTimeDataContext";
 
 const toastyStyle = {
   position: "top-right",
@@ -14,14 +14,61 @@ const toastyStyle = {
 }
 
 function OrderSidebar() {
+  const {sharePrices} = useContext(RealTimeDataContext);
+  const [count, setCount] = useState(0);
+  const [checked, setChecked] = useState([]);
   const { exeOrders, clearAllOrder,setExeOrderCount } = useContext(OrederExecuteContext);
-  const {openOrders} = useContext(OpenOrderContext)
+  const {openOrders, cancleOrder, setOpenOrderCount} = useContext(OpenOrderContext)
+
+  const getShareLTP = (sharename)=>{ 
+    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
+      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+    }
+  }
 
   const handleClearOrder = ()=>{
     clearAllOrder();
     setExeOrderCount();
     toast.success("Executed Oredered History Cleared!",toastyStyle )
   }
+
+  let newArray = checked;
+  let l = newArray.length;
+
+  const handleCancle = async()=>{
+
+    for (let i = 0; i < l; i++) { 
+      let id = newArray[0];
+
+      await cancleOrder(id);
+      toast.success("Order Cancle Successfully!", toastyStyle);
+
+      newArray.shift();
+      setChecked(newArray);
+      setOpenOrderCount(c=>c+1);
+      setCount(c=>c+1);
+    }
+  }
+
+  const handleChecked = (id) => {
+    let present = false;
+    checked.forEach((element) => {
+      if (element === id) {
+        present = true;
+      }
+    }); 
+    if (present) {
+      const newChecked = checked.filter((item) => {
+        return item !== id;
+      });
+
+      setChecked(newChecked);
+    } else {
+      const newChecked = [...checked, id];
+      setChecked(newChecked);
+    }
+  };
+
   return (
     <>
     <ToastContainer/>
@@ -35,6 +82,10 @@ function OrderSidebar() {
           <table>
             <thead>
               <tr>
+              <th>
+                    {" "}
+                    <input style={{ cursor: "pointer" }} type="checkbox" />
+                  </th>
                 <th>Time</th>
                 <th>Type</th>
                 <th>Instrument</th>
@@ -44,16 +95,44 @@ function OrderSidebar() {
                 <th>Status</th>
               </tr>
             </thead>
+            <tfoot>
+                <tr>
+                  <td></td>
+                  <td>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={handleCancle}
+                    >
+                      Cancle ({checked.length})
+                    </Button>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td id="total"></td>
+                  <td></td>
+                </tr>
+                </tfoot>
             <tbody>
               {openOrders.map((order) => {
                 return (
                   <>
                     <tr>
+                    <td>
+                          <input
+                            style={{ cursor: "pointer" }}
+                            type="checkbox"
+                            checked={order.checked}
+                            onChange={() => handleChecked(order._id)}
+                          />
+                        </td>
                       <td>{order.time}</td>
                       <td>{order.action}</td>
                       <td>{order.sharename}</td>
                       <td>{order.qty}</td>
-                      <td>{order.ltp}</td>
+                      <td>{(getShareLTP(order.sharename))}</td>
                       <td>{order.price}</td>
                       <td>{order.status}</td>
                     </tr>
@@ -94,8 +173,7 @@ function OrderSidebar() {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-              {/* {orderExecutedData.map((order) => { */}
+            <tbody> 
               {exeOrders.map((order) => {
                 return (
                   <>

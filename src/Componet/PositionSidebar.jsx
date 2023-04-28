@@ -8,6 +8,7 @@ import UserContext from "../Context/UserContex";
 import RealTimeDataContext from "../Context/RealTimeDataContext";
 import DayHistoryContext from "../Context/DayHistoryContext";
 
+
 const toastyStyle = {
   position: "top-right",
   autoClose: 3000,
@@ -18,6 +19,7 @@ const toastyStyle = {
 function PositionSidebar() {
   const { shares, setShareCount, deleteShare } = useContext(ShareContext);
   const [checked, setChecked] = useState([]);
+  const [count, setCount] = useState(0);
   const { user, updateUser,  setUserCount } = useContext(UserContext);
   const { addShareInHistory, dayHistory, clearDayHistory, setHistoryCount } =
     useContext(DayHistoryContext);  
@@ -72,6 +74,7 @@ function PositionSidebar() {
 
   let newArray = checked;
   let l = newArray.length;
+
   const handleExit = async () => {
     for (let i = 0; i < l; i++) {
       const shareVar = shares;
@@ -98,7 +101,7 @@ function PositionSidebar() {
       await updateUserWithData(price,qty,sharePandL);
 
 
-      toast.error(
+      toast.success(
         `${sharename} X ${qty} is ${action} Successfully at price: ${price}`,
         toastyStyle
       );
@@ -107,6 +110,7 @@ function PositionSidebar() {
       setShareCount((c) => c + 1);
       setHistoryCount((c) => c + 1);
       setUserCount((c) => c + 1);
+      setCount(c=>c+1);
     }
   };
 
@@ -126,8 +130,7 @@ function PositionSidebar() {
 const getTotalProfit = ()=>{
   let profit = 0; 
   shares.map((share)=>{   
-    profit += parseFloat((share.qty * (getShareLTP(share.sharename) - share.price)))
-    // console.log(profit);
+    profit += parseFloat((share.qty * (getShareLTP(share.sharename) - share.price))) 
   })
   return (profit.toFixed(2))
 
@@ -245,8 +248,7 @@ const getTotalProfit = ()=>{
                   <th>Chg.</th>
                 </tr>
               </thead>
-              <tbody>
-                {/* {dayHistoryData.map((order) => { */}
+              <tbody> 
                 {dayHistory.map((order) => {
                   return (
                     <>
@@ -267,9 +269,9 @@ const getTotalProfit = ()=>{
           </div>
         </div>
       </div>
+      <ToastContainer />;
     </div>
   );
-  <ToastContainer />;
 }
 
 export default PositionSidebar;

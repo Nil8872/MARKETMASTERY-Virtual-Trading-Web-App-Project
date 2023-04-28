@@ -53,9 +53,30 @@ function OpenOrder(props) {
     }
   };
 
+  const cancleOrder = async(id)=>{
+    const option = {
+      method : 'DELETE',
+      headers : {
+        "Content-type": "application/json",
+        "auth-token": token,
+      }
+    }
+
+    try {
+
+      const data = await fetch(`${baseUrl}/api/openOrder/cancle/${id}`, option);
+      const result = await data.json()
+      console.log(result);
+      
+    } catch (error) {
+      
+    }
+
+  }
+
   return (
     <OpenOrderContext.Provider
-      value={{ openOrders, setOpenOrderCount, addOpenOrder }}
+      value={{ openOrders, setOpenOrderCount, addOpenOrder, cancleOrder }}
     >
       {props.children}
     </OpenOrderContext.Provider>
