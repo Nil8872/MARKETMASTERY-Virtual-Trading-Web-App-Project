@@ -65,9 +65,7 @@ function OpenOrder(props) {
     try {
 
       const data = await fetch(`${baseUrl}/api/openOrder/cancle/${id}`, option);
-      const result = await data.json()
-      console.log(result);
-      
+ 
     } catch (error) {
       
     }

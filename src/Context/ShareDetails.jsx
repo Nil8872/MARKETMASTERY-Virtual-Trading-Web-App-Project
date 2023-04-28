@@ -104,9 +104,9 @@ function ShareDetails(props) {
         `${baseUrl}/api/share/deleteShare/${shareId}`,
         option
       );
-      console.log(result); 
-      console.log("Share Deteted");
-      console.log(`Price is :${price} Qty is : ${qty} and Action is : ${action}`);
+      // console.log(result); 
+      // console.log("Share Deteted");
+      // console.log(`Price is :${price} Qty is : ${qty} and Action is : ${action}`);
     } catch (error) {
       console.log(error);
     }

@@ -29,11 +29,11 @@ function UserDetail(props) {
 
     const response = await fetch(`${baseUrl}/api/auth/getUser`, option);
     const result = await response.json();
-    console.log(result);
+    // console.log(result);
     setUser(result);
   };
   useEffect(() => {
-    console.log("UseEffect called");
+    // console.log("UseEffect called");
     if (!token) {
     } else {
       fetchUserDetail(); 
@@ -43,7 +43,7 @@ function UserDetail(props) {
       setShareCount(c=>c+1);
     
 
-      console.log("function Call fetchUserDetail")
+      // console.log("function Call fetchUserDetail")
     }
   }, [count]);
 
@@ -62,7 +62,7 @@ function UserDetail(props) {
       }
     
       const data = await fetch(`${baseUrl}/api/auth/updateUser/${userId}`, option);
-     console.log(await data.json());
+    //  console.log(await data.json());
 
     } catch (error) {
       console.log(error);

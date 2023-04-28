@@ -4,7 +4,9 @@ import OrederExecuteContext from "../Context/OrederExecuteContext";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
 import OpenOrderContext from "../Context/OpenOrderContext";  
-import RealTimeDataContext from "../Context/RealTimeDataContext";
+import RealTimeDataContext from "../Context/RealTimeDataContext"; 
+import UserContext from "../Context/UserContex";
+const baseUrl = "http://localhost:5000";
 
 const toastyStyle = {
   position: "top-right",
@@ -16,6 +18,7 @@ const toastyStyle = {
 function OrderSidebar() {
   const {sharePrices} = useContext(RealTimeDataContext);
   const [count, setCount] = useState(0);
+  const {setUserCount, updateUser} = useContext(UserContext);
   const [checked, setChecked] = useState([]);
   const { exeOrders, clearAllOrder,setExeOrderCount } = useContext(OrederExecuteContext);
   const {openOrders, cancleOrder, setOpenOrderCount} = useContext(OpenOrderContext)
@@ -29,7 +32,37 @@ function OrderSidebar() {
   const handleClearOrder = ()=>{
     clearAllOrder();
     setExeOrderCount();
-    toast.success("Executed Oredered History Cleared!",toastyStyle )
+    toast.success("Executed Oredered History Cleared!",toastyStyle );
+  }
+
+
+  const updateUserWithData = async(price,qty) =>{
+
+    
+    const token = localStorage.getItem('token');
+    const option = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    };
+
+    const response = await fetch(`${baseUrl}/api/auth/getUser`, option);
+    const user = await response.json();
+
+    let prevused = parseInt(user.usedMargin);
+    let avail;
+    const used = price * qty;
+    prevused = prevused - used;
+    avail = user.availMargin + used;
+    const updatedData = {
+      ...user,
+      usedMargin: prevused.toFixed(2),
+      availMargin: avail.toFixed(2),
+    };
+    await updateUser(user._id, updatedData);
+    setUserCount((e) => e + 1);
   }
 
   let newArray = checked;
@@ -41,6 +74,12 @@ function OrderSidebar() {
       let id = newArray[0];
 
       await cancleOrder(id);
+
+      const {price, qty} = 
+      (openOrders.filter((order)=>{return order._id === id }))[0]
+      // console.log(price, qty);
+      const quentity = parseInt(qty.split('/')[1])
+      await updateUserWithData(price,quentity );
       toast.success("Order Cancle Successfully!", toastyStyle);
 
       newArray.shift();
@@ -68,6 +107,27 @@ function OrderSidebar() {
       setChecked(newChecked);
     }
   };
+
+
+  if(openOrders){
+   let time =  setInterval(()=>{
+
+      openOrders.map((order)=>{
+        const range = [0.00, 0.20];
+
+      
+        const difference = Math.abs(getShareLTP(order.sharename) - order.price);
+    
+    if (difference >= range[0] && difference <= range[1]) { 
+          console.log("Yes Buy ho gaya at price :"+getShareLTP(order.sharename) + "qty :"+ parseInt((order.qty).split('/')[1])  )
+          cancleOrder(order._id); 
+          setCount(c=>c+1);
+          setOpenOrderCount(c=>c+1);
+          clearInterval(time);
+        }
+      })
+    },500)
+  }
 
   return (
     <>

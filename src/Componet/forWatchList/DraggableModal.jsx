@@ -74,6 +74,8 @@ function DraggableModal(props) {
 
 
   const updateUserWithData = async(price,qty) =>{
+
+
     let prevused = parseInt(user.usedMargin);
     let avail;
     const used = price * qty;
@@ -112,10 +114,8 @@ function DraggableModal(props) {
         }
       });
 
-      if (dubble) {
-        // if (user.availMargin > values.price * values.qty) {
-          console.log(getShareLTP(sharename))
-        if (user.availMargin > getShareLTP(sharename) * values.qty) {
+      if (dubble) { 
+        if (user.availMargin > (getShareLTP(sharename) * values.qty || values.price*values.qty)) {
           const qty = values.qty;
           values.qty += oldQty;
  
@@ -147,14 +147,15 @@ function DraggableModal(props) {
 
           } 
           else {
-            const qty = `0/${values.qty}`;
+            const qty = `0/${values.qty}`
             const openOrderData = {
               ...buySellShare,
               qty,
               status: "Open",
-              time: moment().format("LTS"),
-              price: getShareLTP(sharename)
+              time: moment().format("LTS"), 
             };
+
+            await updateUserWithData(values.price, values.qty);
 
             addOpenOrder(openOrderData);
             toast.success(
@@ -182,7 +183,7 @@ function DraggableModal(props) {
           handleclose();
         }
       } else {
-        if (user.availMargin > getShareLTP(sharename) * values.qty) {
+        if (user.availMargin > (getShareLTP(sharename)) * values.qty) {
           if(values.limitMarket === 'Market'){
 
     
@@ -212,10 +213,10 @@ function DraggableModal(props) {
               ...buySellShare,
               qty,
               status: "Open",
-              time: moment().format("LTS"),
-              price : getShareLTP(sharename),
+              time: moment().format("LTS"), 
             };
 
+            await updateUserWithData(values.price, values.qty);
             addOpenOrder(openOrderData);
             toast.success(
               `${sharename} X ${qty} ${action} Order Place Successfully!`,
@@ -315,20 +316,41 @@ function DraggableModal(props) {
                     />
                     <label htmlFor="Invest">Longterm</label>
                   </div>
-                  <TextField
-                    style={{ width: "200px" }}
-                    id="outlined-required1"
-                    label={
-                      <span style={{ fontSize: "20px", fontWeight: 600 }}>
-                        Price
-                      </span>
-                    }
-                    disabled={values.limitMarket === "Market"}
-                    value={getShareLTP(sharename)}
-                    name="price"
-                    onChange={handleChange}
-                    type="number"
-                  />
+                  {
+                    (values.limitMarket === "Market") ? (
+                      <TextField
+                      style={{ width: "200px" }}
+                      id="outlined-required1"
+                      label={
+                        <span style={{ fontSize: "20px", fontWeight: 600 }}>
+                          Price
+                        </span>
+                      }
+                      disabled={values.limitMarket === "Market"}
+                      value={getShareLTP(sharename)}
+                      name="price"
+                      onChange={handleChange}
+                      type="number"
+                    />
+                    ):
+                    (
+                      <TextField
+                      style={{ width: "200px" }}
+                      id="outlined-required1"
+                      label={
+                        <span style={{ fontSize: "20px", fontWeight: 600 }}>
+                          Price
+                        </span>
+                      }
+                      disabled={values.limitMarket === "Market"}
+                      value={values.price}
+                      name="price"
+                      onChange={handleChange}
+                      type="number"
+                    />
+                    )
+                  }
+                 
 
                   <div className="limitMarket">
                     <div className="limit">

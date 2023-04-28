@@ -7,7 +7,7 @@ import ShareContext from "../Context/ShareContext";
 import UserContext from "../Context/UserContex";
 import RealTimeDataContext from "../Context/RealTimeDataContext";
 import DayHistoryContext from "../Context/DayHistoryContext";
-
+const baseUrl = "http://localhost:5000";
 
 const toastyStyle = {
   position: "top-right",
@@ -20,7 +20,7 @@ function PositionSidebar() {
   const { shares, setShareCount, deleteShare } = useContext(ShareContext);
   const [checked, setChecked] = useState([]);
   const [count, setCount] = useState(0);
-  const { user, updateUser,  setUserCount } = useContext(UserContext);
+  const {updateUser,  setUserCount } = useContext(UserContext);
   const { addShareInHistory, dayHistory, clearDayHistory, setHistoryCount } =
     useContext(DayHistoryContext);  
 
@@ -34,7 +34,7 @@ function PositionSidebar() {
         present = true;
       }
     });
-    console.log(present);
+    
     if (present) {
       const newChecked = checked.filter((item) => {
         return item !== id;
@@ -48,6 +48,21 @@ function PositionSidebar() {
   };
 
   const updateUserWithData = async(price, qty, sharePandL)=>{ 
+
+    const token = localStorage.getItem('token');
+    const option = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token": token,
+      },
+    };
+
+    const response = await fetch(`${baseUrl}/api/auth/getUser`, option);
+    const user = await response.json();
+
+
+
     let prevused =  await user.usedMargin
     let avail;
     const used = price * qty;
@@ -73,12 +88,15 @@ function PositionSidebar() {
   }
 
   let newArray = checked;
-  let l = newArray.length;
-
+  // let l = newArray.length;
+// console.log(user);
   const handleExit = async () => {
-    for (let i = 0; i < l; i++) {
+    // for (let i = 0; i < l; i++) {
+       while(newArray.length !==0){
       const shareVar = shares;
+      console.log(newArray)
       let id = newArray[0];
+      console.log('Id is :'+ id);
       const { price, qty, action, sharename, intraInvest, limitMarket } =
         shareVar.filter((share) => {
           return share._id === id;
@@ -98,8 +116,7 @@ function PositionSidebar() {
 
 
       await deleteShare(id, price, qty, action);
-      await updateUserWithData(price,qty,sharePandL);
-
+      await updateUserWithData(price,qty,sharePandL); 
 
       toast.success(
         `${sharename} X ${qty} is ${action} Successfully at price: ${price}`,
