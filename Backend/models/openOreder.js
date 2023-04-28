@@ -29,7 +29,16 @@ const openOrder = new mongoose.Schema({
   status :{
     type:String,
     required : true,
-  }
+  },
+  // intraInvest:{
+  //   type : String,
+  //   required : true,
+  // },
+
+  // limitMarket :  {
+  //   type : String,
+  //   required : true,
+  // },
 
 });
 

@@ -41,7 +41,7 @@ function ShareDetails(props) {
   
   // fuction for addShare in DataBase
   
-  const addShare = async (price, qty, action, buySellShare) => {
+  const addShare = async (buySellShare) => {
     try {
       const option = {
         method: "POST",
@@ -66,7 +66,7 @@ function ShareDetails(props) {
 
   // fuction for updateShare in DataBase
   
-  const updateShare = async (shareId, price, qty, action, updatedData) => {
+  const updateShare = async (shareId, updatedData) => {
     const option = {
       method: "PUT",
       headers: {
@@ -77,9 +77,10 @@ function ShareDetails(props) {
     };
 
     try {
-      const result = await fetch(
+     await fetch(
         `${baseUrl}/api/share/updateShare/${shareId}`,
         option
+
       );
 
       
@@ -91,7 +92,7 @@ function ShareDetails(props) {
   
   // fuction for delete Share from DataBase
  
-  const deleteShare = async (shareId, price, qty, action) => {
+  const deleteShare = async (shareId) => {
     const option = {
       method: "DELETE",
       headers: {

@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
-import "../Styles/order.css"; 
+import "../Styles/order.css";
 import OrederExecuteContext from "../Context/OrederExecuteContext";
 import { ToastContainer, toast } from "react-toastify";
 import Button from "@mui/material/Button";
-import OpenOrderContext from "../Context/OpenOrderContext";  
-import RealTimeDataContext from "../Context/RealTimeDataContext"; 
+import OpenOrderContext from "../Context/OpenOrderContext";
+import RealTimeDataContext from "../Context/RealTimeDataContext";
 import UserContext from "../Context/UserContex";
+import ShareContext from "../Context/ShareContext";
 const baseUrl = "http://localhost:5000";
 
 const toastyStyle = {
@@ -13,33 +14,41 @@ const toastyStyle = {
   autoClose: 3000,
   theme: "colored",
   draggable: true,
-}
+};
 
 function OrderSidebar() {
-  const {sharePrices} = useContext(RealTimeDataContext);
+  const { sharePrices } = useContext(RealTimeDataContext);
   const [count, setCount] = useState(0);
-  const {setUserCount, updateUser} = useContext(UserContext);
+  const { setUserCount, updateUser } = useContext(UserContext);
   const [checked, setChecked] = useState([]);
-  const { exeOrders, clearAllOrder,setExeOrderCount } = useContext(OrederExecuteContext);
-  const {openOrders, cancleOrder, setOpenOrderCount} = useContext(OpenOrderContext)
+  const { addShare,setShareCount } = useContext(ShareContext);
+  const { exeOrders, clearAllOrder, setExeOrderCount } =
+    useContext(OrederExecuteContext);
+  const { openOrders, cancleOrder, setOpenOrderCount } =
+    useContext(OpenOrderContext);
 
-  const getShareLTP = (sharename)=>{ 
-    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
-      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+  const getShareLTP = (sharename) => {
+    if (
+      sharePrices.filter((dataShare) => {
+        return dataShare.sharename === sharename;
+      })[0]
+    ) {
+      return sharePrices
+        .filter((dataShare) => {
+          return dataShare.sharename === sharename;
+        })[0]
+        .ltp.toFixed(2);
     }
-  }
+  };
 
-  const handleClearOrder = ()=>{
+  const handleClearOrder = () => {
     clearAllOrder();
     setExeOrderCount();
-    toast.success("Executed Oredered History Cleared!",toastyStyle );
-  }
+    toast.success("Executed Oredered History Cleared!", toastyStyle);
+  };
 
-
-  const updateUserWithData = async(price,qty) =>{
-
-    
-    const token = localStorage.getItem('token');
+  const updateUserWithData = async (price, qty) => {
+    const token = localStorage.getItem("token");
     const option = {
       method: "POST",
       headers: {
@@ -63,31 +72,31 @@ function OrderSidebar() {
     };
     await updateUser(user._id, updatedData);
     setUserCount((e) => e + 1);
-  }
+  };
 
   let newArray = checked;
   let l = newArray.length;
 
-  const handleCancle = async()=>{
-
-    for (let i = 0; i < l; i++) { 
+  const handleCancle = async () => {
+    for (let i = 0; i < l; i++) {
       let id = newArray[0];
 
       await cancleOrder(id);
 
-      const {price, qty} = 
-      (openOrders.filter((order)=>{return order._id === id }))[0]
+      const { price, qty } = openOrders.filter((order) => {
+        return order._id === id;
+      })[0];
       // console.log(price, qty);
-      const quentity = parseInt(qty.split('/')[1])
-      await updateUserWithData(price,quentity );
+      const quentity = parseInt(qty.split("/")[1]);
+      await updateUserWithData(price, quentity);
       toast.success("Order Cancle Successfully!", toastyStyle);
 
       newArray.shift();
       setChecked(newArray);
-      setOpenOrderCount(c=>c+1);
-      setCount(c=>c+1);
+      setOpenOrderCount((c) => c + 1);
+      setCount((c) => c + 1);
     }
-  }
+  };
 
   const handleChecked = (id) => {
     let present = false;
@@ -95,7 +104,7 @@ function OrderSidebar() {
       if (element === id) {
         present = true;
       }
-    }); 
+    });
     if (present) {
       const newChecked = checked.filter((item) => {
         return item !== id;
@@ -108,30 +117,42 @@ function OrderSidebar() {
     }
   };
 
+  if (openOrders) {
+    let time = setInterval(() => {
+      openOrders.map(async (order) => {
+        const range = [0.0, 0.2];
 
-  if(openOrders){
-   let time =  setInterval(()=>{
-
-      openOrders.map((order)=>{
-        const range = [0.00, 0.20];
-
-      
         const difference = Math.abs(getShareLTP(order.sharename) - order.price);
-    
-    if (difference >= range[0] && difference <= range[1]) { 
-          console.log("Yes Buy ho gaya at price :"+getShareLTP(order.sharename) + "qty :"+ parseInt((order.qty).split('/')[1])  )
-          cancleOrder(order._id); 
-          setCount(c=>c+1);
-          setOpenOrderCount(c=>c+1);
+
+        if (difference >= range[0] && difference <= range[1]) {
+          
+          let qty = order.qty.split("/")[1];
+          let intraInvest= "Intraday";
+          let limitMarket= "Limit";
+          
+          try {
+            if(order._id){
+
+              const result = await addShare({...order, qty,intraInvest ,limitMarket });
+            }
+            
+            
+          } catch (error) {
+            console.log(error);
+          }
+          await cancleOrder(order._id);
+          setCount((c) => c + 1);
+          setOpenOrderCount((c) => c + 1);
+          setShareCount(c=>c+1);
           clearInterval(time);
         }
-      })
-    },500)
+      });
+    }, 500);
   }
 
   return (
     <>
-    <ToastContainer/>
+      <ToastContainer />
       <div className="orderSidebar" style={{ color: "white" }}>
         <div className="openOrder">
           <span>
@@ -142,10 +163,10 @@ function OrderSidebar() {
           <table>
             <thead>
               <tr>
-              <th>
-                    {" "}
-                    <input style={{ cursor: "pointer" }} type="checkbox" />
-                  </th>
+                <th>
+                  {" "}
+                  <input style={{ cursor: "pointer" }} type="checkbox" />
+                </th>
                 <th>Time</th>
                 <th>Type</th>
                 <th>Instrument</th>
@@ -156,43 +177,43 @@ function OrderSidebar() {
               </tr>
             </thead>
             <tfoot>
-                <tr>
-                  <td></td>
-                  <td>
-                    <Button
-                      variant="contained"
-                      size="small"
-                      onClick={handleCancle}
-                    >
-                      Cancle ({checked.length})
-                    </Button>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td id="total"></td>
-                  <td></td>
-                </tr>
-                </tfoot>
+              <tr>
+                <td></td>
+                <td>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    onClick={handleCancle}
+                  >
+                    Cancle ({checked.length})
+                  </Button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td id="total"></td>
+                <td></td>
+              </tr>
+            </tfoot>
             <tbody>
               {openOrders.map((order) => {
                 return (
                   <>
                     <tr>
-                    <td>
-                          <input
-                            style={{ cursor: "pointer" }}
-                            type="checkbox"
-                            checked={order.checked}
-                            onChange={() => handleChecked(order._id)}
-                          />
-                        </td>
+                      <td>
+                        <input
+                          style={{ cursor: "pointer" }}
+                          type="checkbox"
+                          checked={order.checked}
+                          onChange={() => handleChecked(order._id)}
+                        />
+                      </td>
                       <td>{order.time}</td>
                       <td>{order.action}</td>
                       <td>{order.sharename}</td>
                       <td>{order.qty}</td>
-                      <td>{(getShareLTP(order.sharename))}</td>
+                      <td>{getShareLTP(order.sharename)}</td>
                       <td>{order.price}</td>
                       <td>{order.status}</td>
                     </tr>
@@ -233,7 +254,7 @@ function OrderSidebar() {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody> 
+            <tbody>
               {exeOrders.map((order) => {
                 return (
                   <>

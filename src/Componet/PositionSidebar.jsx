@@ -87,9 +87,7 @@ function PositionSidebar() {
      
   }
 
-  let newArray = checked;
-  // let l = newArray.length;
-// console.log(user);
+  let newArray = checked; 
   const handleExit = async () => {
     // for (let i = 0; i < l; i++) {
        while(newArray.length !==0){
@@ -104,7 +102,7 @@ function PositionSidebar() {
 
         const sharePandL =   (qty * (getShareLTP(sharename) - price)).toFixed(2);
       await addShareInHistory({
-        price,
+        price :(getShareLTP(sharename)),
         qty,
         action,
         sharename,

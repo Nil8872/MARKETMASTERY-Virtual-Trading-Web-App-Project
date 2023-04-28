@@ -12,7 +12,7 @@ import UserContext from "../../Context/UserContex";
 import OrederExecuteContext from "../../Context/OrederExecuteContext";
 import OpenOrderContext from "../../Context/OpenOrderContext";
 import RealTimeDataContext from "../../Context/RealTimeDataContext";
-import moment from "moment"; 
+import moment from "moment";
 
 const useStyles = makeStyles({
   smallButton: {
@@ -46,15 +46,14 @@ const style = {
 };
 
 function DraggableModal(props) {
-
-  const {sharePrices} = useContext(RealTimeDataContext); 
+  const { sharePrices } = useContext(RealTimeDataContext);
 
   const { setShareCount, addShare, shares, updateShare } =
     useContext(ShareContext);
-  const {addOpenOrder, setOpenOrderCount} = useContext(OpenOrderContext);
+  const { addOpenOrder, setOpenOrderCount } = useContext(OpenOrderContext);
   const { action, open, handleclose, sharename, lastprice } = props;
-  const { user,updateUser, setUserCount } = useContext(UserContext);
-  const { setExeOrderCount, addExeOreder } = useContext(OrederExecuteContext); 
+  const { user, updateUser, setUserCount } = useContext(UserContext);
+  const { setExeOrderCount, addExeOreder } = useContext(OrederExecuteContext);
   const id = user._id;
 
   const initialValues = {
@@ -64,18 +63,21 @@ function DraggableModal(props) {
     limitMarket: "Market",
   };
 
-
-  const getShareLTP = (sharename)=>{ 
-    if((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0]){
-      return (((sharePrices.filter((dataShare)=>{return dataShare.sharename === sharename }))[0].ltp).toFixed(2))
+  const getShareLTP = (sharename) => {
+    if (
+      sharePrices.filter((dataShare) => {
+        return dataShare.sharename === sharename;
+      })[0]
+    ) {
+      return sharePrices
+        .filter((dataShare) => {
+          return dataShare.sharename === sharename;
+        })[0]
+        .ltp.toFixed(2);
     }
-  }
+  };
 
-
-
-  const updateUserWithData = async(price,qty) =>{
-
-
+  const updateUserWithData = async (price, qty) => {
     let prevused = parseInt(user.usedMargin);
     let avail;
     const used = price * qty;
@@ -88,10 +90,7 @@ function DraggableModal(props) {
     };
     await updateUser(id, updatedData);
     setUserCount((e) => e + 1);
-  }
-
-
-
+  };
 
   const { handleChange, handleSubmit, values } = useFormik({
     initialValues,
@@ -114,17 +113,17 @@ function DraggableModal(props) {
         }
       });
 
-      if (dubble) { 
-        if (user.availMargin > (getShareLTP(sharename) * values.qty || values.price*values.qty)) {
-          const qty = values.qty;
-          values.qty += oldQty;
- 
-          const price = (getShareLTP(oldSharename) * qty + oldPrice *oldQty)/values.qty;
+      if (values.limitMarket === "Market") {
+        if (user.availMargin > getShareLTP(sharename) * values.qty) {
+          if (dubble) {
+            const qty = values.qty;
+            values.qty += oldQty;
+            const price =
+              (getShareLTP(oldSharename) * qty + oldPrice * oldQty) /
+              values.qty;
+            const shareUpdateData = { ...values, sharename, action, price };
 
-          const shareUpdateData = { ...values, sharename, action, price };
-          if (values.limitMarket === "Market") {
-            await updateShare(shareId, price, qty, action, shareUpdateData);
-
+            await updateShare(shareId, shareUpdateData);
             await updateUserWithData(price, qty);
 
             toast.success(
@@ -144,25 +143,25 @@ function DraggableModal(props) {
             setExeOrderCount((c) => c + 1);
             setShareCount((c) => c + 1);
             handleclose();
+          } else {
+            addShare({ ...buySellShare, price: getShareLTP(sharename) });
+            await updateUserWithData(getShareLTP(sharename), values.qty);
 
-          } 
-          else {
-            const qty = `0/${values.qty}`
-            const openOrderData = {
-              ...buySellShare,
-              qty,
-              status: "Open",
-              time: moment().format("LTS"), 
-            };
-
-            await updateUserWithData(values.price, values.qty);
-
-            addOpenOrder(openOrderData);
             toast.success(
-              `${sharename} X ${qty} ${action} Order Place Successfully!`,
+              `${sharename} X ${values.qty} ${action} Successfully!`,
               toastedStyle
             );
-            setOpenOrderCount(c=>c+1);
+            const qty = `${values.qty}/${values.qty}`;
+            const executeOrderData = {
+              ...buySellShare,
+              status: "Completed",
+              qty,
+              time: moment().format("LTS"),
+              price: getShareLTP(sharename),
+            };
+            addExeOreder(executeOrderData);
+            setExeOrderCount((c) => c + 1);
+            setShareCount((c) => c + 1);
             handleclose();
           }
         } else {
@@ -176,55 +175,32 @@ function DraggableModal(props) {
             status: "Rejected",
             qty,
             time: moment().format("LTS"),
-            price: getShareLTP(sharename)
+            price: getShareLTP(sharename),
           };
           addExeOreder(executeOrderData);
           setExeOrderCount((c) => c + 1);
           handleclose();
         }
       } else {
-        if (user.availMargin > (getShareLTP(sharename)) * values.qty) {
-          if(values.limitMarket === 'Market'){
+        console.log(values.price * values.qty);
+        if (user.availMargin >= values.price * values.qty) {
+          const qty = `0/${values.qty}`;
+          const openOrderData = {
+            ...buySellShare,
+            qty,
+            status: "Open",
+            time: moment().format("LTS"),
+          };
 
-    
-          addShare(values.price, values.qty, action, {...buySellShare, price: getShareLTP(sharename)});
-          await updateUserWithData(getShareLTP(sharename), values.qty);
+          await updateUserWithData(values.price, values.qty);
 
+          addOpenOrder(openOrderData);
           toast.success(
-            `${sharename} X ${values.qty} ${action} Successfully!`,
+            `${sharename} X ${qty} ${action} Order Place Successfully!`,
             toastedStyle
           );
-          const qty = `${values.qty}/${values.qty}`;
-          const executeOrderData = {
-            ...buySellShare,
-            status: "Completed",
-            qty,
-            time: moment().format("LTS"),
-            price : getShareLTP(sharename),
-          };
-          addExeOreder(executeOrderData);
-          setExeOrderCount((c) => c + 1);
-          setShareCount((c) => c + 1);
+          setOpenOrderCount((c) => c + 1);
           handleclose();
-        }
-        else{
-          const qty = `0/${values.qty}`;
-            const openOrderData = {
-              ...buySellShare,
-              qty,
-              status: "Open",
-              time: moment().format("LTS"), 
-            };
-
-            await updateUserWithData(values.price, values.qty);
-            addOpenOrder(openOrderData);
-            toast.success(
-              `${sharename} X ${qty} ${action} Order Place Successfully!`,
-              toastedStyle
-            );
-            setOpenOrderCount(c=>c+1);
-            handleclose();
-        }
         } else {
           toast.error(
             "Order Rejected due to Insufficient Balanace",
@@ -236,13 +212,145 @@ function DraggableModal(props) {
             status: "Rejected",
             qty,
             time: moment().format("LTS"),
-            price : getShareLTP(sharename),
+            price: getShareLTP(sharename),
           };
           addExeOreder(executeOrderData);
           setExeOrderCount((c) => c + 1);
           handleclose();
         }
       }
+
+      // if (dubble) {
+      //   if (
+      //     user.availMargin >
+      //     (getShareLTP(sharename) * values.qty || values.price * values.qty)
+      //   ) {
+      //     const qty = values.qty;
+      //     values.qty += oldQty;
+
+      //     const price =
+      //       (getShareLTP(oldSharename) * qty + oldPrice * oldQty) / values.qty;
+
+      //     const shareUpdateData = { ...values, sharename, action, price };
+      //     if (values.limitMarket === "Market") {
+      //       await updateShare(shareId, price, qty, action, shareUpdateData);
+
+      //       await updateUserWithData(price, qty);
+
+      //       toast.success(
+      //         `${sharename} X ${qty} ${action} Successfully!`,
+      //         toastedStyle
+      //       );
+
+      //       const newQty = `${qty}/${qty}`;
+      //       const executeOrderData = {
+      //         ...buySellShare,
+      //         status: "Completed",
+      //         qty: newQty,
+      //         time: moment().format("LTS"),
+      //       };
+
+      //       addExeOreder(executeOrderData);
+      //       setExeOrderCount((c) => c + 1);
+      //       setShareCount((c) => c + 1);
+      //       handleclose();
+      //     } else {
+      //       const qty = `0/${values.qty}`;
+      //       const openOrderData = {
+      //         ...buySellShare,
+      //         qty,
+      //         status: "Open",
+      //         time: moment().format("LTS"),
+      //       };
+
+      //       await updateUserWithData(values.price, values.qty);
+
+      //       addOpenOrder(openOrderData);
+      //       toast.success(
+      //         `${sharename} X ${qty} ${action} Order Place Successfully!`,
+      //         toastedStyle
+      //       );
+      //       setOpenOrderCount((c) => c + 1);
+      //       handleclose();
+      //     }
+      //   } else {
+      //     toast.error(
+      //       "Order Rejected due to Insufficient Balanace",
+      //       toastedStyle
+      //     );
+      //     const qty = `0/${values.qty}`;
+      //     const executeOrderData = {
+      //       ...buySellShare,
+      //       status: "Rejected",
+      //       qty,
+      //       time: moment().format("LTS"),
+      //       price: getShareLTP(sharename),
+      //     };
+      //     addExeOreder(executeOrderData);
+      //     setExeOrderCount((c) => c + 1);
+      //     handleclose();
+      //   }
+      // } else {
+      //   if (user.availMargin > getShareLTP(sharename) * values.qty) {
+      //     if (values.limitMarket === "Market") {
+      //       addShare(values.price, values.qty, action, {
+      //         ...buySellShare,
+      //         price: getShareLTP(sharename),
+      //       });
+      //       await updateUserWithData(getShareLTP(sharename), values.qty);
+
+      //       toast.success(
+      //         `${sharename} X ${values.qty} ${action} Successfully!`,
+      //         toastedStyle
+      //       );
+      //       const qty = `${values.qty}/${values.qty}`;
+      //       const executeOrderData = {
+      //         ...buySellShare,
+      //         status: "Completed",
+      //         qty,
+      //         time: moment().format("LTS"),
+      //         price: getShareLTP(sharename),
+      //       };
+      //       addExeOreder(executeOrderData);
+      //       setExeOrderCount((c) => c + 1);
+      //       setShareCount((c) => c + 1);
+      //       handleclose();
+      //     } else {
+      //       const qty = `0/${values.qty}`;
+      //       const openOrderData = {
+      //         ...buySellShare,
+      //         qty,
+      //         status: "Open",
+      //         time: moment().format("LTS"),
+      //       };
+
+      //       await updateUserWithData(values.price, values.qty);
+      //       addOpenOrder(openOrderData);
+      //       toast.success(
+      //         `${sharename} X ${qty} ${action} Order Place Successfully!`,
+      //         toastedStyle
+      //       );
+      //       setOpenOrderCount((c) => c + 1);
+      //       handleclose();
+      //     }
+      //   } else {
+      //     toast.error(
+      //       "Order Rejected due to Insufficient Balanace",
+      //       toastedStyle
+      //     );
+      //     const qty = `0/${values.qty}`;
+      //     const executeOrderData = {
+      //       ...buySellShare,
+      //       status: "Rejected",
+      //       qty,
+      //       time: moment().format("LTS"),
+      //       price: getShareLTP(sharename),
+      //     };
+      //     addExeOreder(executeOrderData);
+      //     setExeOrderCount((c) => c + 1);
+      //     handleclose();
+      //   }
+      // }
     },
   });
   return (
@@ -316,9 +424,8 @@ function DraggableModal(props) {
                     />
                     <label htmlFor="Invest">Longterm</label>
                   </div>
-                  {
-                    (values.limitMarket === "Market") ? (
-                      <TextField
+                  {values.limitMarket === "Market" ? (
+                    <TextField
                       style={{ width: "200px" }}
                       id="outlined-required1"
                       label={
@@ -332,9 +439,8 @@ function DraggableModal(props) {
                       onChange={handleChange}
                       type="number"
                     />
-                    ):
-                    (
-                      <TextField
+                  ) : (
+                    <TextField
                       style={{ width: "200px" }}
                       id="outlined-required1"
                       label={
@@ -348,9 +454,7 @@ function DraggableModal(props) {
                       onChange={handleChange}
                       type="number"
                     />
-                    )
-                  }
-                 
+                  )}
 
                   <div className="limitMarket">
                     <div className="limit">
