@@ -85,7 +85,7 @@ function Login() {
                   id="forLoginFormTitleColor"
                   className="my-5 display-5 fw-bold ls-tight"
                 >
-                  The best offer
+                  Market Mastery
                 </h1>
 
                 <p id="forLoginFormTextColor" className="mb-4 opacity-70">
@@ -156,7 +156,7 @@ function Login() {
                     </form>
                   </div>
                 </div>
-              </div>
+              </div> 
             </div>
           </div>
         </section>

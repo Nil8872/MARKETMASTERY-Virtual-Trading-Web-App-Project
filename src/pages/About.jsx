@@ -62,8 +62,7 @@ function About() {
                         <td>{(share.ltp).toFixed(2)}</td>
                         <td>{(share.absoluteprice).toFixed(2)}</td>
                         <td>{(share.percentegeprice).toFixed(2)}</td>
-                      </tr>
-                
+                      </tr> 
                     )
                   })
                 }

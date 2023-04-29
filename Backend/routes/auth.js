@@ -30,8 +30,8 @@ router.post(
       const userOne = await User.findOne({ email: req.body.email });
 
       if (userOne) {
-        return res.send({
-          error: "Email is already exist please try with other Email.",
+        return res.send({ success: false, 
+          message: "Email is already exist please try with other Email.",
         });
       } else {
         const salt = await bcrypt.genSalt(10);
@@ -47,7 +47,7 @@ router.post(
       }
     } catch (error) {
       console.error(error);
-      res.status(500).send("Internal server Error");
+      res.status(500).send("Internal server Error"); 
     }
   }
 );

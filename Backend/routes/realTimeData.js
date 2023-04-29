@@ -152,7 +152,7 @@ const firstTimeSaveShare = async () => {
 };
 // firstTimeSaveShare();
 
-console.log("Now Starting to Save data in DataBase");
+ 
 
 let prices;
 
@@ -178,7 +178,7 @@ const randomPriceGenerator = () => {
         { new: true }
       );
     });
-  }, [300]);
+  }, [500]);
 };
 
 randomPriceGenerator();

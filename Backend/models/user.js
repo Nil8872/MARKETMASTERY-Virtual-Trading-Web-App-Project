@@ -36,7 +36,8 @@ const userSchema = new mongoose.Schema({
     },
     pAndL :{
       type : Number, 
-      required: true,
+      default : 0,
+      // required: true,
     }
   });
 

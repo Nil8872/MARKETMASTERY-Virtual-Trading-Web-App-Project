@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../Styles/order.css";
 import OrederExecuteContext from "../Context/OrederExecuteContext";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,17 +17,69 @@ const toastyStyle = {
 };
 
 function OrderSidebar() {
+  const [timer, setTimer] = useState(null);
   const { sharePrices } = useContext(RealTimeDataContext);
   const [count, setCount] = useState(0);
   const { setUserCount, updateUser } = useContext(UserContext);
   const [checked, setChecked] = useState([]);
-  const { addShare,setShareCount } = useContext(ShareContext);
+  const { addShare, setShareCount } = useContext(ShareContext);
   const { exeOrders, clearAllOrder, setExeOrderCount } =
     useContext(OrederExecuteContext);
   const { openOrders, cancleOrder, setOpenOrderCount } =
     useContext(OpenOrderContext);
 
-  const getShareLTP = (sharename) => {
+  useEffect(() => { 
+    console.log(openOrders)
+    console.log(!timer)
+    console.log(openOrders && !timer)
+    if (openOrders && !timer) {
+      setTimer(
+        setInterval(() => {  
+          openOrders.map(async (order) => {
+            setCount((c) => c + 1);
+            const range = [0.0, 0.5]; 
+
+          
+
+
+
+            const difference = Math.abs(
+              getShareLTP(order.sharename) - order.price
+              ); 
+            console.log(difference);
+            console.log(difference >= range[0] && difference <= range[1])
+
+            if (difference >= range[0] && difference <= range[1]) {
+              console.log(order._id);
+              await cancleOrder(order._id);
+              setOpenOrderCount((c) => c + 1);
+              
+              let qty = order.qty.split("/")[1];
+              let intraInvest = "Intraday";
+              let limitMarket = "Limit";
+              try {
+                if (order._id) {
+                  await addShare({ ...order, qty, intraInvest, limitMarket });
+                  setShareCount((c) => c + 1);
+                  
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            }
+          });
+        }, 1000)
+        );
+      } 
+      return () => {
+        if (timer) {
+          clearInterval(timer); 
+          setTimer(null);
+        }
+      };
+  }, [openOrders, timer,count]);
+
+  const getShareLTP = (sharename) => { 
     if (
       sharePrices.filter((dataShare) => {
         return dataShare.sharename === sharename;
@@ -86,7 +138,7 @@ function OrderSidebar() {
       const { price, qty } = openOrders.filter((order) => {
         return order._id === id;
       })[0];
-      // console.log(price, qty);
+
       const quentity = parseInt(qty.split("/")[1]);
       await updateUserWithData(price, quentity);
       toast.success("Order Cancle Successfully!", toastyStyle);
@@ -116,39 +168,7 @@ function OrderSidebar() {
       setChecked(newChecked);
     }
   };
-
-  if (openOrders) {
-    let time = setInterval(() => {
-      openOrders.map(async (order) => {
-        const range = [0.0, 0.2];
-
-        const difference = Math.abs(getShareLTP(order.sharename) - order.price);
-
-        if (difference >= range[0] && difference <= range[1]) {
-          
-          let qty = order.qty.split("/")[1];
-          let intraInvest= "Intraday";
-          let limitMarket= "Limit";
-          
-          try {
-            if(order._id){
-
-              const result = await addShare({...order, qty,intraInvest ,limitMarket });
-            }
-            
-            
-          } catch (error) {
-            console.log(error);
-          }
-          await cancleOrder(order._id);
-          setCount((c) => c + 1);
-          setOpenOrderCount((c) => c + 1);
-          setShareCount(c=>c+1);
-          clearInterval(time);
-        }
-      });
-    }, 500);
-  }
+ 
 
   return (
     <>

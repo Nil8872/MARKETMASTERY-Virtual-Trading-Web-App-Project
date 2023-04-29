@@ -8,7 +8,7 @@ import {
   Routes,
   Route,
   Navigate,
-} from "react-router-dom"; 
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserDetail from "./Context/UserDetail";
@@ -27,27 +27,27 @@ function App() {
     <div style={{ height: "100%" }} className="background-radial-gradient ">
       <RealTimeData>
         <DayHistory>
-          <OpenOrder>
-            <OrederExecute>
-              <ShareDetails>
-                <UserDetail> 
-                    <Router>
-                      <Navbar />
-                      <Routes>
-                        <Route exact path="/" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/order" element={<Order />} />
-                        <Route path="/position" element={<Position />} />
-                        <Route path="/holding" element={<Holding />} />
-                        <Route path="/fund" element={<Fund />} />
-                      </Routes>
-                    </Router> 
+          <OrederExecute>
+            <ShareDetails>
+              <OpenOrder>
+                <UserDetail>
+                  <Router>
+                    <Navbar />
+                    <Routes>
+                      <Route exact path="/" element={<Home />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/order" element={<Order />} />
+                      <Route path="/position" element={<Position />} />
+                      <Route path="/holding" element={<Holding />} />
+                      <Route path="/fund" element={<Fund />} />
+                    </Routes>
+                  </Router>
                 </UserDetail>
-              </ShareDetails>
-            </OrederExecute>
-          </OpenOrder>
+              </OpenOrder>
+            </ShareDetails>
+          </OrederExecute>
         </DayHistory>
       </RealTimeData>
     </div>

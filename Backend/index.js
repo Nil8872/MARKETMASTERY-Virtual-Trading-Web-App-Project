@@ -16,8 +16,7 @@ app.get('/', (req, res) => {
 
 // Avilable routes
 
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/notes', require('./routes/notes')); 
+app.use('/api/auth', require('./routes/auth')); 
 app.use('/api/share', require('./routes/share'));
 app.use('/api/dayHistory', require('./routes/dayHistory'))
 app.use('/api/exeOrders', require('./routes/exeOrders'));

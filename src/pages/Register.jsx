@@ -8,9 +8,16 @@ import TextField from "@mui/material/TextField";
 import { Navigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import RadiusShape from "../Componet/RadiusShape";
+import RadiusShape from "../Componet/RadiusShape"; 
 
 const baseUrl = "http://localhost:5000";
+
+const toastyStyle = {
+  position: "top-right",
+  autoClose: 3000,
+  theme: "colored",
+  draggable: true,
+};
 
 const registerSchema = Yup.object({
   firstName: Yup.string().min(2).max(25).required("Please Enter First Name"),
@@ -66,19 +73,18 @@ function Register() {
       };
 
       const response = await fetch(`${baseUrl}/api/auth/createUser`, option);
-      const result = await response.json();
-      setIsRegister(true);
+      const result = await response.json(); 
+      if(result.success){
+        setIsRegister(true);
+        toast.success(result.message, toastyStyle);
+        action.resetForm();
 
-      if (result.error) {
-        toast.error(result.error, {
-          position: "top-center",
-          autoClose: 3000,
-          theme: "colored",
-        });
-      } else {
-        toast("SuccessFully Registred!");
       }
-      action.resetForm();
+      else{
+        toast.error(result.message, toastyStyle) 
+      }
+
+
     },
     onReset: () => {
       toast.info("Successfully Reseted!", {
@@ -95,6 +101,7 @@ function Register() {
 
   return (
     <div>
+            <ToastContainer />
       <section
         style={{
           display: "flex",

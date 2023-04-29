@@ -11,8 +11,8 @@ const BuySellShare = require("../models/buySellShare");
 router.get("/get", fetchUser, async (req, res) => {
   try {
     const shares = await BuySellShare.find({ user: req.user.id });
-
     res.send(shares);
+
   } catch (error) {
     console.log(error);
     res.status(500).send("Internal server Error");
@@ -40,6 +40,7 @@ router.post(
 
       const result = await share.save();
       res.send({ status: "success" });
+
     } catch (error) {
       console.log(error);
       res.status(500).send("Internal server Error");
@@ -59,12 +60,13 @@ router.put("/updateShare/:id", fetchUser, async (req, res) => {
 
       { new: true }
     );
-    console.log(result);
+    // console.log(result);
 
     res.status(200).send({ success: true, message: "Share Buy/Sell Successfully!"});
+
   } catch (error) {
     console.log(error);
-    res.status(500).send({ success: false });
+    res.status(500).send({ success: false, message: "Internal Server error" });
   }
 });
 
@@ -82,12 +84,12 @@ router.delete(
         return res.status(400).send("Not Allowed");
       }
 
-      const result = await BuySellShare.findByIdAndDelete(req.params.id);
+       await BuySellShare.findByIdAndDelete(req.params.id);
       res.send({success : true, message : "Share Successfully Deleted!"});
 
     } catch (error) {
       console.log(error)
-      res.status(500).send("Internal server Error");
+      res.status(500).send({success:false, message:"Internal server Error"});
     }
   }
 );
