@@ -18,7 +18,8 @@ function RealTimeData(props) {
 
 
     const data = await fetch(`${baseUrl}/api/realTime/getPrices`, option);
-    const sharePrices = await data.json()
+    let sharePrices = await data.json()
+   
     setSharePrices(sharePrices);
   }
 
@@ -27,11 +28,9 @@ function RealTimeData(props) {
     setInterval(()=>{
       getRealTimePrices()
 
-    },500)
+    },5000)
   },[])
-  // setInterval(()=>{
-  // },[500])
- 
+  
   return (
     <RealTimeDataContext.Provider value={{sharePrices}}>
       {props.children}

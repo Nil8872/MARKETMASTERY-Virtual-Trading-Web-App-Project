@@ -13,7 +13,7 @@ function UserDetail(props) {
   const {setHistoryCount} = useContext(DayHistoryContext) ; 
   const {setExeOrderCount} = useContext(OrederExecuteContext);
   const {setOpenOrderCount} = useContext(OpenOrderContext);
-  const {setShareCount} = useContext(ShareContext);
+  const {setShareCount, setWatchListCount} = useContext(ShareContext);
   
 
   const fetchUserDetail = async () => { 
@@ -41,6 +41,7 @@ function UserDetail(props) {
       setExeOrderCount(c=>c+1);
       setOpenOrderCount(c=>c+1);
       setShareCount(c=>c+1);
+      setWatchListCount(c=>c+1);
     
 
       // console.log("function Call fetchUserDetail")

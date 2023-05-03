@@ -39,8 +39,8 @@ function OpenOrder(props) {
               const difference = Math.abs(
                 getShareLTP(order.sharename) - order.price
                 ); 
-              console.log(difference);
-              console.log(difference >= range[0] && difference <= range[1])
+              // console.log(difference);
+              // console.log(difference >= range[0] && difference <= range[1])
   
               if (difference >= range[0] && difference <= range[1]) {
                 console.log(order._id);

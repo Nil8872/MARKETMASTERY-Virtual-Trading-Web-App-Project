@@ -1,6 +1,6 @@
 import React,{useContext, useEffect, useState} from "react";
-import OneShare from "./forWatchList/OneShare"; 
-import data from '../services/RealTimeData.js'
+import Button from "@mui/material/Button";
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import Divider from "@mui/material/Divider";
@@ -8,12 +8,18 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";  
 import Tooltip from "@mui/material/Tooltip";
 import RealTimeDataContext from "../Context/RealTimeDataContext";
-import prices from "../services/RealTimeData.js";
+import ShareContext from "../Context/ShareContext";
+import DraggableModal from "./forWatchList/DraggableModal";
+import { MdAddCircle } from "react-icons/md";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function WatchList() {
   
   const {sharePrices} = useContext(RealTimeDataContext);
-   
+  const {watchListShares,addtoWatchList,deleteWatchList,setWatchListCount } = useContext(ShareContext);   
+
+  const [showMyComponent, setShowMyComponent] = useState(false);
+  const [buttonDetails, setButtonDetails] = useState(null);
 
   const [searchShare, setSearchShare] = useState(""); 
   const handleSearch = (event)=>{
@@ -22,8 +28,47 @@ function WatchList() {
   
   const search = searchShare.toUpperCase();
 
-  console.log()
+  const useStyles = makeStyles({
+    smallButton: {
+      width: "30px",
+      padding: "0px",
+      margin: "0px",
+      height: "28px",
+    },
+    });
    
+    const classes = useStyles();
+    const [open, setOpen] = useState(false);
+    const [open1, setOpen1] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleOpen1 = () => setOpen1(true);
+    const handleClose = () => setOpen(false);
+    const handleClose1 = () => setOpen1(false);
+
+    const handleAddWatchList = async(name) =>{
+      
+      const result =  await addtoWatchList({sharename: name}) ; 
+      setWatchListCount(c=>c+1);
+      setSearchShare("")
+      
+    }
+
+    const handleDeleteWatchList = async(name) =>{
+      await deleteWatchList(name);
+      setWatchListCount(c=>c+1);
+      console.log("Delete")
+    }
+
+    const handleBuy = (details)=>{
+      setButtonDetails(details);
+      handleOpen()
+    }
+
+    const handleSell = (details) =>{
+      console.log(details)
+      setButtonDetails(details);
+      handleOpen1();
+    }
   return (
     <>
       {/* <SearchBox /> */}
@@ -54,15 +99,193 @@ function WatchList() {
           </Paper>
         </div>
 
-<div className="mainWatchList" >
-{
- sharePrices.filter((share)=> share.sharename.includes(search)).map((share)=>{
+<div className="mainWatchList" style={{color: "white"}}>
+  <table>
+    <thead>
+      <tr>
+        <th style={{width: '117.21px'}} >Sharename</th> 
+        <th style={{width:'35px'}}></th>
+        <th style={{width:'69px'}}>Buy</th>
+        <th style={{width:'74.44px'}}>Sell</th>
+        <th style={{width:'68.33px'}}>CHNG</th>
+        <th style={{width:'75.88px'}}>LTP</th>
+        <th style={{width:'71.29px'}}> %CHN.</th>
+      </tr>
+    </thead>
+    <tbody>
+
+   
+{ (searchShare.length<3) ? 
+(
+
+ 
+  watchListShares.map((share)=>{
+    
+    if(sharePrices.length!==0){
+      const {sharename, absoluteprice,percentegeprice, ltp, lastprice} = ((sharePrices.filter((fshare)=>{return fshare.sharename === share.sharename}))[0])
+       
+      return (
+        <>
+        {
+          (buttonDetails) ? (
+            <>
+            {(buttonDetails.sharename === sharename)? (
+
+            <> 
+             {
+              open === true ?
+              <DraggableModal action={"Buy"} setButtonDetails={setButtonDetails} sharename={buttonDetails.sharename}  open={open} lastprice={buttonDetails.lastprice} handleclose={handleClose}/>
+              : ""
+            }
+
+              {open1 === true ?
+              <DraggableModal action={"Sell"} setButtonDetails={setButtonDetails} sharename={buttonDetails.sharename} open={open1} lastprice={buttonDetails.lastprice} handleclose={handleClose1}/> 
+              :""
+            }
+            </>
+
+            )
+            
+            :""}
+           
+          </>
+
+          ):"" 
+         
+          }
+          <tr>
+           <td>
+             {sharename}
+           </td>
+           <td style={{padding:"10px 0px"}}>
+           <IconButton aria-label="delete"
+             onClick={ ()=>handleDeleteWatchList(sharename)}
+             className={classes.smallButton}>
+         <DeleteIcon style={{color:'red'}} />
+       </IconButton>
+             </td> 
+ 
+           <td  style={{padding:"5px 0px"}}>
+           <Button
+                   onClick={ ()=>handleBuy({...share, lastprice})}
+                   className={classes.smallButton}
+                   style={{ marginRight: "5px" }}
+                   color="success"
+                   variant="contained"
+                   size="small"
+                 >
+                   Buy
+                 </Button>
+           </td>
+           <td style={{padding:"0px 5px"}}>
+           <Button
+                    onClick={ ()=>handleSell(share)}
+                   className={classes.smallButton}
+                   color="error"
+                   variant="contained"
+                   size="small"
+                 >
+                   Sell
+                 </Button>
+           </td> 
+           <td>{(absoluteprice).toFixed(2)}</td>
+           <td>{(ltp).toFixed(2)}</td>
+           <td>{(percentegeprice).toFixed(2)}</td>
+          </tr>
+       
+       </>
+     )
+    }
+    })
+
+): (
+
+  sharePrices.filter((share)=> share.sharename.includes(search)).map((share)=>{
     return (
-      <OneShare key={share.sharename} sharename={share.sharename} absoluteprice={(share.absoluteprice).toFixed(2)} percentegeprice={share.percentegeprice.toFixed(2)} lastprice={(share.ltp).toFixed(2)} />
-      
+      <>
+     
+
+{
+          (buttonDetails) ? (
+            <>
+            {(buttonDetails.sharename === share.sharename)? (
+
+            <> 
+             {
+              open === true ?
+              <DraggableModal action={"Buy"} setButtonDetails={setButtonDetails} sharename={buttonDetails.sharename}  open={open} lastprice={buttonDetails.lastprice} handleclose={handleClose}/>
+              : ""
+            }
+
+              {open1 === true ?
+              <DraggableModal action={"Sell"} setButtonDetails={setButtonDetails} sharename={buttonDetails.sharename} open={open1} lastprice={buttonDetails.lastprice} handleclose={handleClose1}/> 
+              :""
+            }
+            </>
+
+            )
+            
+            :""}
+           
+          </>
+
+          ):"" 
+         
+          }
+         <tr>
+          <td>
+            {share.sharename}
+          </td>
+          <td style={{padding:"0px 0px"}}>
+          <IconButton aria-label="delete"
+            onClick={ ()=>handleAddWatchList(share.sharename)}
+            // className={classes.smallButton}
+            >
+        < MdAddCircle style={{color:'green'}} />
+      </IconButton>
+            </td> 
+
+          <td  style={{padding:"5px 0px"}}>
+          <Button
+                  onClick={ ()=>handleBuy(share)}
+                  className={classes.smallButton}
+                  style={{ marginRight: "5px" }}
+                  color="success"
+                  variant="contained"
+                  size="small"
+                >
+                  Buy
+                </Button>
+          </td>
+          <td style={{padding:"0px 5px"}}>
+          <Button
+                    onClick={ ()=>handleSell(share)}
+                  className={classes.smallButton}
+                  color="error"
+                  variant="contained"
+                  size="small"
+                >
+                  Sell
+                </Button>
+          </td> 
+          <td>{(share.absoluteprice).toFixed(2)}</td>
+          <td>{(share.ltp).toFixed(2)}</td>
+          <td>{(share.percentegeprice).toFixed(2)}</td>
+         </tr>
+      </>
+   
     )
   })
+
+)
+  
+ 
+   
+      
+  
 }
+</tbody>
+      </table>
 </div>
     </>
   )

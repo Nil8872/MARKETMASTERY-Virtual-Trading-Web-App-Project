@@ -68,6 +68,29 @@ function About() {
                 }
               </tbody>
             </table> 
+
+{/* <table>
+  <thead>
+    <tr>
+      <th style={{width: '50px'}}>Column 1</th>
+      <th style={{width: '100px'}}>Column 2</th>
+      <th style={{width: '150px'}}>Column 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cell 1-1</td>
+      <td>Cell 1-2</td>
+      <td>Cell 1-3</td>
+    </tr>
+    <tr>
+      <td>Cell 2-1</td>
+      <td>Cell 2-2</td>
+      <td>Cell 2-3</td>
+    </tr>
+  </tbody>
+</table> */}
+
     </div>
   );
 }

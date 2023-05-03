@@ -22,6 +22,7 @@ app.use('/api/dayHistory', require('./routes/dayHistory'))
 app.use('/api/exeOrders', require('./routes/exeOrders'));
 app.use('/api/openOrder', require('./routes/openOrders'))
 app.use('/api/realTime', require('./routes/realTimeData'))
+app.use('/api/watchList', require('./routes/watchlist'))
 
 app.listen(port, () => {
   console.log(`app listening on port : ${port}`)

@@ -29,9 +29,9 @@ function OrderSidebar() {
     useContext(OpenOrderContext);
 
   useEffect(() => { 
-    console.log(openOrders)
-    console.log(!timer)
-    console.log(openOrders && !timer)
+    // console.log(openOrders)
+    // console.log(!timer)
+    // console.log(openOrders && !timer)
     if (openOrders && !timer) {
       setTimer(
         setInterval(() => {  
@@ -46,11 +46,11 @@ function OrderSidebar() {
             const difference = Math.abs(
               getShareLTP(order.sharename) - order.price
               ); 
-            console.log(difference);
-            console.log(difference >= range[0] && difference <= range[1])
+            // console.log(difference);
+            // console.log(difference >= range[0] && difference <= range[1])
 
             if (difference >= range[0] && difference <= range[1]) {
-              console.log(order._id);
+              // console.log(order._id);
               await cancleOrder(order._id);
               setOpenOrderCount((c) => c + 1);
               

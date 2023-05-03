@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import { makeStyles } from "@material-ui/core/styles"; 
 import DraggableModal from "./DraggableModal";
@@ -92,6 +92,22 @@ function OneShare(props) {
           </div>
         </div>
       </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Sharename</th>
+            <th>Buy</th>
+            <th>Sell</th>
+            <th>CHNG.</th>
+            <th>LTP</th>
+            <th>%CHNG.</th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>{}</td>
+        </tbody>
+      </table>
     </>
   );
 }
