@@ -99,7 +99,7 @@ function WatchList() {
           </Paper>
         </div>
 
-<div className="mainWatchList" style={{color: "white"}}>
+<div className="mainWatchList" style={{color: "white", borderLeft:"2px solid rgba(255,255,255,0.2)"}}>
   <table>
     <thead>
       <tr>

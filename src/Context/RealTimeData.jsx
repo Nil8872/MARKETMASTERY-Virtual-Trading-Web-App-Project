@@ -28,7 +28,7 @@ function RealTimeData(props) {
     setInterval(()=>{
       getRealTimePrices()
 
-    },5000)
+    },500)
   },[])
   
   return (

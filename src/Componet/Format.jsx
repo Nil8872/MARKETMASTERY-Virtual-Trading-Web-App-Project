@@ -13,7 +13,7 @@ import Sidebar from "./Sidebar";
       <div className="watchListContainer" >
         <WatchList/>
       </div>
-      <div className="sidebarContainer">
+      <div className="sidebarContainer" style={{paddingLeft:"20px"}}>
         <Sidebar/>
 
       </div>

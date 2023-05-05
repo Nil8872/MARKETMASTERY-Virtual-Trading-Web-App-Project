@@ -32,16 +32,50 @@ const randomPriceGenerator = () => {
   setInterval(() => {
     getData();
     prices.map(async (share) => {
-      let randomprice = Math.random() - 0.5;
-      share.ltp = share.ltp + randomprice;
-      share.absoluteprice = share.ltp - share.lastprice;
-      share.percentegeprice = (share.absoluteprice * 100) / share.lastprice;
-      let id = share._id;
-      await RealTimeShareData.findByIdAndUpdate(
-        id,
-        { $set: share },
-        { new: true }
-      );
+      if(Math.abs(share.percentegeprice) < 10){
+        let randomprice = Math.random() - 0.5;
+        if(share.ltp > 20000){
+
+
+          
+          randomprice = randomprice*5;
+        }
+        else if(share.ltp>2000 && share.ltp<=2000){
+          randomprice = randomprice;
+        }
+        else if(share.ltp > 1000){
+          randomprice = randomprice /2
+        }
+        else if(share.ltp >500){
+          randomprice = randomprice /5;
+        }
+        else if(share.ltp>100){
+          randomprice = randomprice /10;
+          
+        }
+        else if(share.ltp > 50){
+          randomprice = randomprice /20;
+          
+        }
+        else if(share.ltp > 10){
+          randomprice = randomprice /50;
+          
+        }
+        else if(share.ltp<10){
+          
+          randomprice = randomprice /100;
+        }
+        share.ltp = share.ltp + randomprice;
+        share.absoluteprice = share.ltp - share.lastprice;
+        share.percentegeprice = (share.absoluteprice * 100) / share.lastprice;
+        let id = share._id;
+        await RealTimeShareData.findByIdAndUpdate(
+          id,
+          { $set: share },
+          { new: true }
+          );
+        
+      }
     });
   }, [500]);
 };

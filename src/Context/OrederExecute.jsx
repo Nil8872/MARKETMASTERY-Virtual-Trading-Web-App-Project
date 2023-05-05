@@ -17,7 +17,7 @@ function OrederExecute(props) {
     
         }
         else{
-    
+          console.log("called")
           getExeOrders();
         }
       },[exeOrderCount])

@@ -22,13 +22,11 @@ function OpenOrder(props) {
     }
   }, [openOrderCount]);
   
-  useEffect(()=>{
-    // console.log("UseEffect Is called from OpenOrder.jsx");
+  useEffect(()=>{ 
     if(!token){
       
     }
-    else{
-      // console.log("CheckForLimit is run!");
+    else{ 
       if (openOrders && !timer) { 
         setTimer(
           
@@ -38,10 +36,7 @@ function OpenOrder(props) {
               const range = [0.0, 0.5]; 
               const difference = Math.abs(
                 getShareLTP(order.sharename) - order.price
-                ); 
-              // console.log(difference);
-              // console.log(difference >= range[0] && difference <= range[1])
-  
+                );  
               if (difference >= range[0] && difference <= range[1]) {
                 console.log(order._id);
                 await cancleOrder(order._id);

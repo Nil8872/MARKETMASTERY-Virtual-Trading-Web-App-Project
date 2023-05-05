@@ -145,7 +145,20 @@ function PositionSidebar() {
 const getTotalProfit = ()=>{
   let profit = 0; 
   shares.map((share)=>{   
-    profit += parseFloat((share.qty * (getShareLTP(share.sharename) - share.price))) 
+    if(share.action === "Buy"){
+      profit += parseFloat(
+        (share.qty * (getShareLTP(share.sharename) - share.price))
+        
+        ) 
+      }
+      else{
+        profit += parseFloat(
+          ( -1* (share.qty * (getShareLTP(share.sharename) - share.price)))
+          
+          ) 
+      }
+
+    
   })
   return (profit.toFixed(2))
 
@@ -179,7 +192,7 @@ const getTotalProfit = ()=>{
                   <th>Chg.</th>
                 </tr>
               </thead>
-              <tfoot>
+              {/* <tfoot>
                 <tr>
                   <td></td>
                   <td>
@@ -198,7 +211,12 @@ const getTotalProfit = ()=>{
                   <td id="total">{getTotalProfit()}</td>
                   <td></td>
                 </tr>
-              </tfoot>
+              </tfoot> */}
+              {/* <div className="empty" style={{height:"150px", width:'100%'}}>
+                  {
+                    (shares.length == 0) ? <> <p>You haven't placed any orders today</p></>:'' 
+                  }
+              </div> */}
               <tbody>
                 {shares.map((share) => {
                   return (
@@ -217,14 +235,47 @@ const getTotalProfit = ()=>{
                         <td>{share.qty}</td>
                         <td>{(share.price).toFixed(2)}</td>
                         <td>{getShareLTP(share.sharename)}</td>
-                        <td>{ (share.qty * (getShareLTP(share.sharename) - share.price)).toFixed(2)}</td>
-                        <td>{(getShareLTP(share.sharename) - share.price).toFixed(2)}</td>
+                        <td>{ share.action==="Buy"? <>{(share.qty * (getShareLTP(share.sharename) - share.price)).toFixed(2)}</>
+                        :<>{ -1 *((share.qty * (getShareLTP(share.sharename) - share.price)).toFixed(2))} </> }</td>
+                        <td>{((getShareLTP(share.sharename) - share.price).toFixed(2))}</td>
                       </tr>
                     </>
                   );
                 })}
               </tbody>
             </table>
+            { (shares.length === 0)? (
+            <div className="boxForEmpty" style={{
+              // border: '2px solid white', 
+              height:"200px" ,display:"flex", alignItems:'center', justifyContent:'center'}}>
+                  <div className="text">
+                  <h3 style={{color:'#3f7b3f', textAlign:'center', padding:"100px"}}>
+                  You don't have any positions yet
+                    </h3> 
+                  </div>  
+            </div>
+          ):( 
+            <>
+             <div className="cancleButton row" style={{marginBottom:"20px" }}>
+
+            <div style={{width:'50%'}}> 
+             <Button
+                      variant="contained"
+                      // size="small"
+                      onClick={handleExit}
+                      style={{width:"100px"}}
+                      >
+                      Exit ({checked.length})
+              </Button>
+                      </div>
+
+              <div style={{width:'50%'}}> 
+                <h3 style={{color:'rgba(255,255,255,0.8)'}}>Total P&L : <span>{getTotalProfit()}</span></h3>
+              </div>
+            </div>
+            </>
+          )
+        }
           </div>
 
           <div className="openOrder">

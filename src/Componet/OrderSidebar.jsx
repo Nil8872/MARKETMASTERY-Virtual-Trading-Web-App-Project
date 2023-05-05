@@ -28,10 +28,7 @@ function OrderSidebar() {
   const { openOrders, cancleOrder, setOpenOrderCount } =
     useContext(OpenOrderContext);
 
-  useEffect(() => { 
-    // console.log(openOrders)
-    // console.log(!timer)
-    // console.log(openOrders && !timer)
+  useEffect(() => {  
     if (openOrders && !timer) {
       setTimer(
         setInterval(() => {  
@@ -45,12 +42,9 @@ function OrderSidebar() {
 
             const difference = Math.abs(
               getShareLTP(order.sharename) - order.price
-              ); 
-            // console.log(difference);
-            // console.log(difference >= range[0] && difference <= range[1])
+              );  
 
-            if (difference >= range[0] && difference <= range[1]) {
-              // console.log(order._id);
+            if (difference >= range[0] && difference <= range[1]) { 
               await cancleOrder(order._id);
               setOpenOrderCount((c) => c + 1);
               
@@ -93,8 +87,8 @@ function OrderSidebar() {
     }
   };
 
-  const handleClearOrder = () => {
-    clearAllOrder();
+  const handleClearOrder = async() => {
+    await clearAllOrder();
     setExeOrderCount();
     toast.success("Executed Oredered History Cleared!", toastyStyle);
   };
@@ -196,26 +190,8 @@ function OrderSidebar() {
                 <th>Status</th>
               </tr>
             </thead>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={handleCancle}
-                  >
-                    Cancle ({checked.length})
-                  </Button>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td id="total"></td>
-                <td></td>
-              </tr>
-            </tfoot>
+            
+            
             <tbody>
               {openOrders.map((order) => {
                 return (
@@ -243,6 +219,32 @@ function OrderSidebar() {
             </tbody>
           </table>
         </div>
+        {
+          (openOrders.length === 0)? (
+            <div className="boxForEmpty" style={{
+              // border: '2px solid white', 
+              height:"200px" ,display:"flex", alignItems:'center', justifyContent:'center'}}>
+                  <div className="text">
+                  <h3 style={{color:'#3f7b3f'}}>
+                  You haven't placed any orders today
+                    </h3> 
+                  </div>  
+            </div>
+          ):""
+        }
+       
+        <div className="cancleButton row" style={{marginBottom:"20px",}}>
+
+          <Button
+                    variant="contained"
+                    size="small"
+                    style={{width:"100px"}}
+                    onClick={handleCancle}
+                  >
+                    Cancle ({checked.length})
+                  </Button>
+        </div>
+
         <div
           className="openOrder"
           style={{ display: "flex", justifyContent: "space-between" }}

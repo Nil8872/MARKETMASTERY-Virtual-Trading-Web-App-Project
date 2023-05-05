@@ -69,6 +69,19 @@ function Holding() {
                     })}
                   </tbody>
                 </table>
+                
+         { (shares.length === 0)? (
+            <div className="boxForEmpty" style={{
+              // border: '2px solid white', 
+              height:"600px" ,display:"flex", alignItems:'center', justifyContent:'center'}}>
+                  <div className="text">
+                  <h3 style={{color:'#3f7b3f', textAlign:'center', padding:"100px"}}>
+                  You don't have any stocks in your DEMAT yet. Get started with absolutely free equity investments.
+                    </h3> 
+                  </div>  
+            </div>
+          ):""
+        }
               </div>
  
             </div>
