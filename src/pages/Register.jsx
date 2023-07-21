@@ -58,6 +58,7 @@ function Register() {
       const { firstName, email, password, startAmount } = values;
 
       // save in DataBase using api call
+      console.log(firstName + " " + email + " " + password);
       const option = {
         method: "POST",
         headers: {
@@ -72,16 +73,22 @@ function Register() {
         }),
       };
 
-      const response = await fetch(`${baseUrl}/api/auth/createUser`, option);
-      const result = await response.json(); 
-      if(result.success){
-        setIsRegister(true);
-        toast.success(result.message, toastyStyle);
-        action.resetForm();
-
-      }
-      else{
-        toast.error(result.message, toastyStyle) 
+      try{
+        const response = await fetch(`${baseUrl}/api/auth/createUser`, option);
+        const result = await response.json(); 
+        console.log(result);
+        if(result.success){
+          setIsRegister(true);
+          toast.success(result.message, toastyStyle);
+          action.resetForm();
+  
+        }
+        else{
+          toast.error(result.errors[0].msg, toastyStyle) 
+        }
+      }catch(err){
+        console.log(err);
+        console.log("Error:");
       }
 
 

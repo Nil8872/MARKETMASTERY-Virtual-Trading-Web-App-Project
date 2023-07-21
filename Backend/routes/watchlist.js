@@ -29,24 +29,20 @@ router.post(
       const sharename = await WatchListShare.findOne({
         $and: [{ sharename: data.sharename }, { user: req.user.id }],
       });
-      console.log("*******************");
-      console.log(sharename);
-      console.log("*******************");
-      if (sharename !== null) {
-        console.log("If part run")
+      
+      if (sharename !== null) { 
+
         return res.send({
           success: false,
           message: "Share is already in your watch list",
         });
-      } else {
-        console.log("Else part run");
+      } else { 
         const share = new WatchListShare({
           user: req.user.id,
           ...data,
         });
 
-        const result = await share.save();
-        console.log("share Added");
+        const result = await share.save(); 
         res.send({ status: "success" });
       }
     } catch (error) {

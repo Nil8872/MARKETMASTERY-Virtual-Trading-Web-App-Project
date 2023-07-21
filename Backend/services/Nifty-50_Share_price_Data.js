@@ -1,6 +1,6 @@
 [
   {
-    SYMBOL: "NIFTY 50",
+    sharename: "NIFTY 50",
     OPEN: "17,950.40",
     HIGH: "18,089.15",
     LOW: "17,885.30",
@@ -16,7 +16,7 @@
     "30 D % CHNG 28-Mar-2023": "5.76",
   },
   {
-    SYMBOL: "ADANIENT",
+    sharename: "ADANIENT",
     OPEN: "1,868.05",
     HIGH: "1,944.00",
     LOW: "1,857.15",
@@ -32,7 +32,7 @@
     "30 D % CHNG 28-Mar-2023": "10.60",
   },
   {
-    SYMBOL: "ADANIPORTS",
+    sharename: "ADANIPORTS",
     OPEN: "666.20",
     HIGH: "683.00",
     LOW: "662.15",
@@ -48,7 +48,7 @@
     "30 D % CHNG 28-Mar-2023": "7.01",
   },
   {
-    SYMBOL: "NESTLEIND",
+    sharename: "NESTLEIND",
     OPEN: "21,181.95",
     HIGH: "21,849.60",
     LOW: "21,130.00",
@@ -64,7 +64,7 @@
     "30 D % CHNG 28-Mar-2023": "14.22",
   },
   {
-    SYMBOL: "WIPRO",
+    sharename: "WIPRO",
     OPEN: "380.00",
     HIGH: "388.00",
     LOW: "380.00",
@@ -80,7 +80,7 @@
     "30 D % CHNG 28-Mar-2023": "7.23",
   },
   {
-    SYMBOL: "BRITANNIA",
+    sharename: "BRITANNIA",
     OPEN: "4,415.95",
     HIGH: "4,564.85",
     LOW: "4,408.65",
@@ -96,7 +96,7 @@
     "30 D % CHNG 28-Mar-2023": "6.49",
   },
   {
-    SYMBOL: "ITC",
+    sharename: "ITC",
     OPEN: "418.00",
     HIGH: "428.25",
     LOW: "413.70",
@@ -112,7 +112,7 @@
     "30 D % CHNG 28-Mar-2023": "11.18",
   },
   {
-    SYMBOL: "HDFCLIFE",
+    sharename: "HDFCLIFE",
     OPEN: "517.10",
     HIGH: "531.00",
     LOW: "516.45",
@@ -128,7 +128,7 @@
     "30 D % CHNG 28-Mar-2023": "6.82",
   },
   {
-    SYMBOL: "LT",
+    sharename: "LT",
     OPEN: "2,312.30",
     HIGH: "2,369.00",
     LOW: "2,312.30",
@@ -144,7 +144,7 @@
     "30 D % CHNG 28-Mar-2023": "10.10",
   },
   {
-    SYMBOL: "APOLLOHOSP",
+    sharename: "APOLLOHOSP",
     OPEN: "4,442.95",
     HIGH: "4,529.00",
     LOW: "4,430.95",
@@ -160,7 +160,7 @@
     "30 D % CHNG 28-Mar-2023": "3.45",
   },
   {
-    SYMBOL: "HEROMOTOCO",
+    sharename: "HEROMOTOCO",
     OPEN: "2,520.00",
     HIGH: "2,567.00",
     LOW: "2,515.15",
@@ -176,7 +176,7 @@
     "30 D % CHNG 28-Mar-2023": "11.04",
   },
   {
-    SYMBOL: "SBIN",
+    sharename: "SBIN",
     OPEN: "567.80",
     HIGH: "580.45",
     LOW: "565.50",
@@ -192,7 +192,7 @@
     "30 D % CHNG 28-Mar-2023": "11.97",
   },
   {
-    SYMBOL: "TECHM",
+    sharename: "TECHM",
     OPEN: "981.95",
     HIGH: "1,026.70",
     LOW: "981.05",
@@ -208,7 +208,7 @@
     "30 D % CHNG  28-Mar-2023": "-5.31",
   },
   {
-    SYMBOL: "RELIANCE",
+    sharename: "RELIANCE",
     OPEN: "2,382.00",
     HIGH: "2,423.90",
     LOW: "2,381.75",
@@ -224,7 +224,7 @@
     "30 D % CHNG 28-Mar-2023": "8.31",
   },
   {
-    SYMBOL: "UPL",
+    sharename: "UPL",
     OPEN: "733.00",
     HIGH: "741.90",
     LOW: "730.80",
@@ -240,7 +240,7 @@
     "30 D % CHNG  28-Mar-2023": "4.65",
   },
   {
-    SYMBOL: "BHARTIARTL",
+    sharename: "BHARTIARTL",
     OPEN: "789.85",
     HIGH: "802.05",
     LOW: "787.20",
@@ -256,7 +256,7 @@
     "30 D % CHNG 28-Mar-2023": "7.49",
   },
   {
-    SYMBOL: "KOTAKBANK",
+    sharename: "KOTAKBANK",
     OPEN: "1,906.00",
     HIGH: "1,943.30",
     LOW: "1,896.10",
@@ -272,7 +272,7 @@
     "30 D % CHNG 28-Mar-2023": "12.61",
   },
   {
-    SYMBOL: "HINDALCO",
+    sharename: "HINDALCO",
     OPEN: "433.50",
     HIGH: "437.00",
     LOW: "430.90",
@@ -288,7 +288,7 @@
     "30 D % CHNG 28-Mar-2023": "9.28",
   },
   {
-    SYMBOL: "EICHERMOT",
+    sharename: "EICHERMOT",
     OPEN: "3,275.00",
     HIGH: "3,305.00",
     LOW: "3,265.35",
@@ -304,7 +304,7 @@
     "30 D % CHNG 28-Mar-2023": "12.52",
   },
   {
-    SYMBOL: "TATACONSUM",
+    sharename: "TATACONSUM",
     OPEN: "758.00",
     HIGH: "765.00",
     LOW: "751.50",
@@ -320,7 +320,7 @@
     "30 D % CHNG 28-Mar-2023": "9.50",
   },
   {
-    SYMBOL: "BAJFINANCE",
+    sharename: "BAJFINANCE",
     OPEN: "6,243.90",
     HIGH: "6,296.00",
     LOW: "6,111.00",
@@ -336,7 +336,7 @@
     "30 D % CHNG 28-Mar-2023": "11.64",
   },
   {
-    SYMBOL: "HCLTECH",
+    sharename: "HCLTECH",
     OPEN: "1,059.95",
     HIGH: "1,068.75",
     LOW: "1,053.75",
@@ -352,7 +352,7 @@
     "30 D % CHNG 28-Mar-2023": "-0.32",
   },
   {
-    SYMBOL: "GRASIM",
+    sharename: "GRASIM",
     OPEN: "1,705.00",
     HIGH: "1,724.95",
     LOW: "1,695.00",
@@ -368,7 +368,7 @@
     "30 D % CHNG 28-Mar-2023": "5.43",
   },
   {
-    SYMBOL: "TCS",
+    sharename: "TCS",
     OPEN: "3,200.40",
     HIGH: "3,227.25",
     LOW: "3,196.25",
@@ -384,7 +384,7 @@
     "30 D % CHNG 28-Mar-2023": "2.56",
   },
   {
-    SYMBOL: "DIVISLAB",
+    sharename: "DIVISLAB",
     OPEN: "3,248.00",
     HIGH: "3,278.50",
     LOW: "3,216.00",
@@ -400,7 +400,7 @@
     "30 D % CHNG  28-Mar-2023": "15.87",
   },
   {
-    SYMBOL: "SUNPHARMA",
+    sharename: "SUNPHARMA",
     OPEN: "984.95",
     HIGH: "992.50",
     LOW: "979.15",
@@ -416,7 +416,7 @@
     "30 D % CHNG 28-Mar-2023": "-0.43",
   },
   {
-    SYMBOL: "MARUTI",
+    sharename: "MARUTI",
     OPEN: "8,593.00",
     HIGH: "8,612.45",
     LOW: "8,535.10",
@@ -432,7 +432,7 @@
     "30 D % CHNG 28-Mar-2023": "3.55",
   },
   {
-    SYMBOL: "INDUSINDBK",
+    sharename: "INDUSINDBK",
     OPEN: "1,148.75",
     HIGH: "1,157.55",
     LOW: "1,135.00",
@@ -448,7 +448,7 @@
     "30 D % CHNG 28-Mar-2023": "9.05",
   },
   {
-    SYMBOL: "NTPC",
+    sharename: "NTPC",
     OPEN: "171.90",
     HIGH: "172.50",
     LOW: "169.60",
@@ -464,7 +464,7 @@
     "30 D % CHNG 28-Mar-2023": "-1.15",
   },
   {
-    SYMBOL: "TATAMOTORS",
+    sharename: "TATAMOTORS",
     OPEN: "481.40",
     HIGH: "488.00",
     LOW: "478.35",
@@ -480,7 +480,7 @@
     "30 D % CHNG 28-Mar-2023": "18.51",
   },
   {
-    SYMBOL: "COALINDIA",
+    sharename: "COALINDIA",
     OPEN: "232.50",
     HIGH: "234.75",
     LOW: "231.60",
@@ -496,7 +496,7 @@
     "30 D % CHNG 28-Mar-2023": "9.46",
   },
   {
-    SYMBOL: "INFY",
+    sharename: "INFY",
     OPEN: "1,255.70",
     HIGH: "1,259.00",
     LOW: "1,244.95",
@@ -512,7 +512,7 @@
     "30 D % CHNG 28-Mar-2023": "-9.45",
   },
   {
-    SYMBOL: "ULTRACEMCO",
+    sharename: "ULTRACEMCO",
     OPEN: "7,512.00",
     HIGH: "7,579.00",
     LOW: "7,490.00",
@@ -528,7 +528,7 @@
     "30 D % CHNG 28-Mar-2023": "-0.19",
   },
   {
-    SYMBOL: "HDFCBANK",
+    sharename: "HDFCBANK",
     OPEN: "1,684.70",
     HIGH: "1,691.00",
     LOW: "1,670.00",
@@ -544,7 +544,7 @@
     "30 D % CHNG 28-Mar-2023": "6.29",
   },
   {
-    SYMBOL: "TATASTEEL",
+    sharename: "TATASTEEL",
     OPEN: "107.80",
     HIGH: "108.50",
     LOW: "107.30",
@@ -560,7 +560,7 @@
     "30 D % CHNG 28-Mar-2023": "4.20",
   },
   {
-    SYMBOL: "SBILIFE",
+    sharename: "SBILIFE",
     OPEN: "1,148.00",
     HIGH: "1,148.00",
     LOW: "1,130.15",
@@ -576,7 +576,7 @@
     "30 D % CHNG 28-Mar-2023": "3.77",
   },
   {
-    SYMBOL: "BPCL",
+    sharename: "BPCL",
     OPEN: "356.00",
     HIGH: "358.30",
     LOW: "352.45",
@@ -592,7 +592,7 @@
     "30 D % CHNG  28-Mar-2023": "5.22",
   },
   {
-    SYMBOL: "POWERGRID",
+    sharename: "POWERGRID",
     OPEN: "236.95",
     HIGH: "237.95",
     LOW: "233.10",
@@ -608,7 +608,7 @@
     "30 D % CHNG 28-Mar-2023": "6.65",
   },
   {
-    SYMBOL: "ICICIBANK",
+    sharename: "ICICIBANK",
     OPEN: "915.10",
     HIGH: "920.45",
     LOW: "910.25",
@@ -624,7 +624,7 @@
     "30 D % CHNG 28-Mar-2023": "7.83",
   },
   {
-    SYMBOL: "M&M",
+    sharename: "M&M",
     OPEN: "1,225.00",
     HIGH: "1,228.75",
     LOW: "1,211.50",
@@ -640,7 +640,7 @@
     "30 D % CHNG 28-Mar-2023": "7.22",
   },
   {
-    SYMBOL: "BAJAJ-AUTO",
+    sharename: "BAJAJ-AUTO",
     OPEN: "4,397.35",
     HIGH: "4,439.70",
     LOW: "4,390.05",
@@ -656,7 +656,7 @@
     "30 D % CHNG 28-Mar-2023": "14.25",
   },
   {
-    SYMBOL: "HDFC",
+    sharename: "HDFC",
     OPEN: "2,772.00",
     HIGH: "2,780.85",
     LOW: "2,753.60",
@@ -672,7 +672,7 @@
     "30 D % CHNG 28-Mar-2023": "6.63",
   },
   {
-    SYMBOL: "DRREDDY",
+    sharename: "DRREDDY",
     OPEN: "4,918.55",
     HIGH: "4,935.00",
     LOW: "4,877.10",
@@ -688,7 +688,7 @@
     "30 D % CHNG  28-Mar-2023": "7.93",
   },
   {
-    SYMBOL: "ASIANPAINT",
+    sharename: "ASIANPAINT",
     OPEN: "2,919.95",
     HIGH: "2,919.95",
     LOW: "2,846.60",
@@ -704,7 +704,7 @@
     "30 D % CHNG 28-Mar-2023": "4.76",
   },
   {
-    SYMBOL: "BAJAJFINSV",
+    sharename: "BAJAJFINSV",
     OPEN: "1,368.95",
     HIGH: "1,368.95",
     LOW: "1,318.80",
@@ -720,7 +720,7 @@
     "30 D % CHNG 28-Mar-2023": "8.72",
   },
   {
-    SYMBOL: "HINDUNILVR",
+    sharename: "HINDUNILVR",
     OPEN: "2,436.05",
     HIGH: "2,467.80",
     LOW: "2,419.00",
@@ -736,7 +736,7 @@
     "30 D % CHNG 28-Mar-2023": "-2.91",
   },
   {
-    SYMBOL: "CIPLA",
+    sharename: "CIPLA",
     OPEN: "918.85",
     HIGH: "919.00",
     LOW: "905.15",
@@ -752,7 +752,7 @@
     "30 D % CHNG 28-Mar-2023": "2.29",
   },
   {
-    SYMBOL: "JSWSTEEL",
+    sharename: "JSWSTEEL",
     OPEN: "736.00",
     HIGH: "736.00",
     LOW: "721.55",
@@ -768,7 +768,7 @@
     "30 D % CHNG 28-Mar-2023": "6.83",
   },
   {
-    SYMBOL: "ONGC",
+    sharename: "ONGC",
     OPEN: "159.80",
     HIGH: "159.80",
     LOW: "154.85",
@@ -784,7 +784,7 @@
     "30 D % CHNG 28-Mar-2023": "6.43",
   },
   {
-    SYMBOL: "TITAN",
+    sharename: "TITAN",
     OPEN: "2,672.45",
     HIGH: "2,679.30",
     LOW: "2,619.50",
@@ -800,7 +800,7 @@
     "30 D % CHNG 28-Mar-2023": "5.04",
   },
   {
-    SYMBOL: "AXISBANK",
+    sharename: "AXISBANK",
     OPEN: "885.10",
     HIGH: "890.05",
     LOW: "853.65",

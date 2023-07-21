@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 require('dotenv').config()
 
-// process.env.DATABASE_URL
-const connectURI =
-  "mongodb://127.0.0.1:27017/MMDataBase?directConnection=true&serverSelectionTimeoutMS=2000";
+
+const connectURI = process.env.DATABASE_URL;
 const connectToMongo = () => {
   mongoose
     .connect(connectURI, {

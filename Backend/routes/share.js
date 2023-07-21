@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { fetchUser } = require("../middleware/userFetch");
 
-const baseUrl = "http://localhost:5000";
+ 
 const BuySellShare = require("../models/buySellShare");
 
 // route 1 : get share  path is : /api/share/get  auth token required..
